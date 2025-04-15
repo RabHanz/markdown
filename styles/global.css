@@ -124,6 +124,19 @@ body {
     color: #94a3b8;
 }
 
+.card-meta time {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-meta time::before {
+    content: '📅';
+    opacity: 0.7;
+}
+
 /* Theme Toggle */
 .theme-toggle {
     position: fixed;
