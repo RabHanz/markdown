@@ -5,8 +5,8 @@ function toggleDarkMode() {
   document.querySelector('.dark-mode-toggle').textContent = isLight ? '🌙' : '🌞';
 }
 
-// Initialize theme
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize theme on load
+document.addEventListener('DOMContentLoaded', () => {
   const savedLightMode = localStorage.getItem('lightMode') === 'true';
   if (savedLightMode) {
     document.body.classList.add('light-mode');
