@@ -1,62 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Digital Garden</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="styles/global.css"> <!-- Relative path -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Garden - Knowledge Repository</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="styles/global.css">
 </head>
 <body class="dark-mode">
-  <header class="site-header">
-    <div class="header-content">
-      <h1>Digital Garden</h1>
-      <p class="subtitle">A collection of notes and experiments</p>
-    </div>
-  </header>
+    <header class="hero-section">
+        <div class="header-content">
+            <h1 class="gradient-text">Digital Garden</h1>
+            <p class="subtitle">Cultivating Knowledge Through Notes & Experiments</p>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="🔍 Search notes..." class="search-input">
+            </div>
+        </div>
+    </header>
 
-  <main class="content-wrapper">
-    <section class="posts-list">
-      <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search notes..." class="search-input">
-      </div>
-      
-      <div id="postsContainer" class="posts-grid"></div>
-    </section>
-  </main>
+    <main class="content-container">
+        <div id="postsContainer" class="cards-grid"></div>
+    </main>
 
-  <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌞</button>
+    <button class="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon">🌙</span>
+    </button>
 
-  <script>
-    async function loadPosts() {
-      try {
-        // Replace with your details
-        const response = await fetch('https://api.github.com/repos/rabhanz/markdown/contents/pages');
-        const files = await response.json();
-        
-        const postsContainer = document.getElementById('postsContainer');
-        
-        files.forEach(file => {
-          if (file.name.endsWith('.html')) {
-            const postElement = document.createElement('article');
-            postElement.className = 'post-card';
-            postElement.innerHTML = `
-              <a href="pages/${file.name}" class="post-link"> <!-- Relative path -->
-                <h2 class="post-title">${file.name.replace('.html', '')}</h2>
-                <time class="post-date">${new Date(file.last_modified).toLocaleDateString()}</time>
-              </a>
-            `;
-            postsContainer.appendChild(postElement);
-          }
-        });
-      } catch (error) {
-        console.error('Error loading posts:', error);
-        postsContainer.innerHTML = '<p class="error">⚠️ Content failed to load. Please check back later.</p>';
-      }
-    }
+    <script>
+        // GitHub Content Loader
+        async function loadPosts() {
+            try {
+                const response = await fetch('https://api.github.com/repos/rabhanz/markdown/contents/pages');
+                const files = await response.json();
+                const container = document.getElementById('postsContainer');
+                
+                container.innerHTML = files
+                    .filter(file => file.name.endsWith('.html'))
+                    .map(file => `
+                        <article class="knowledge-card">
+                            <a href="pages/${file.name}" class="card-link">
+                                <div class="card-content">
+                                    <h2>${file.name.replace('.html', '').replace(/-/g, ' ')}</h2>
+                                    <div class="card-meta">
+                                        <time>${new Date(file.last_modified).toLocaleDateString()}</time>
+                                        <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
+                                    </div>
+                                    <div class="card-hover"></div>
+                                </div>
+                            </a>
+                        </article>
+                    `).join('');
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="error-state">
+                        <h3>🌱 Content Not Loaded</h3>
+                        <p>Our garden is temporarily inaccessible. Please refresh or try again later.</p>
+                    </div>
+                `;
+            }
+        }
 
-    document.addEventListener('DOMContentLoaded', loadPosts);
-  </script>
-  <script src="scripts/theme-toggle.js"></script>
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', loadPosts);
+    </script>
+    <script src="scripts/theme-toggle.js"></script>
 </body>
 </html>
