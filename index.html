@@ -27,62 +27,65 @@
     </button>
     <script>
         async function loadPosts() {
+            const container = document.getElementById('postsContainer');
+            
             try {
-                const response = await fetch('https://api.github.com/repos/rabhanz/markdown/contents/pages');
-                const files = await response.json();
-                const container = document.getElementById('postsContainer');
+                // Clear previous content
+                container.innerHTML = '<div class="loading">🌱 Loading knowledge...</div>';
                 
-                // Clear container while keeping the grid structure
+                // Fetch repository contents
+                const response = await fetch('https://api.github.com/repos/[YOUR_USERNAME]/[YOUR_REPO]/contents/pages');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const files = await response.json();
+                
+                // Clear loading state
                 container.innerHTML = '';
                 
-                // Add a temporary loading state
-                container.innerHTML = '<div class="loading">🌱 Growing knowledge...</div>';
-    
-                for (const file of files.filter(f => f.name.endsWith('.html'))) {
-                    try {
-                        const lastModified = new Date(file.last_modified || Date.now());
-                        
-                        const postElement = document.createElement('article');
-                        postElement.className = 'knowledge-card';
-                        postElement.innerHTML = `
+                // Create cards for HTML files
+                files.forEach(file => {
+                    if (file.name.endsWith('.html')) {
+                        const card = document.createElement('article');
+                        card.className = 'knowledge-card';
+                        card.innerHTML = `
                             <a href="pages/${file.name}" class="card-link">
                                 <div class="card-content">
-                                    <h2>${file.name.replace('.html', '').replace(/-/g, ' ')}</h2>
+                                    <h2>${formatTitle(file.name)}</h2>
                                     <div class="card-meta">
-                                        <time>${lastModified.toLocaleDateString('en-US', {
-                                            year: 'numeric',
-                                            month: 'short',
-                                            day: 'numeric'
-                                        })}</time>
                                         <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
                                     </div>
                                 </div>
                             </a>
                         `;
-                        container.appendChild(postElement);
-                        
-                        // Remove loading state once first card appears
-                        if (container.querySelector('.loading')) {
-                            container.removeChild(container.querySelector('.loading'));
-                        }
-                    } catch (fileError) {
-                        console.warn('Skipping file:', file.name, fileError);
+                        container.appendChild(card);
                     }
-                }
+                });
                 
                 // Handle empty state
                 if (!container.hasChildNodes()) {
-                    container.innerHTML = '<div class="empty-state">📚 No notes found</div>';
+                    container.innerHTML = '<div class="empty-state">📭 No documents found</div>';
                 }
+                
             } catch (error) {
+                console.error('Loading failed:', error);
                 container.innerHTML = `
                     <div class="error-state">
-                        <h3>🌧️ Connection Issue</h3>
-                        <p>Unable to reach the garden. Please check your internet connection.</p>
+                        <h3>⚠️ Loading Failed</h3>
+                        <p>${error.message}</p>
                     </div>
                 `;
             }
         }
+    
+        function formatTitle(filename) {
+            return filename
+                .replace('.html', '')
+                .replace(/-/g, ' ')
+                .replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+        }
+    
+        // Initialize when ready
+        document.addEventListener('DOMContentLoaded', loadPosts);
     </script>
     <script src="scripts/theme-toggle.js"></script>
 </body>
