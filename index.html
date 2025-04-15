@@ -33,7 +33,7 @@
     // Updated fetch URL with your GitHub info
     async function loadPosts() {
       try {
-        const response = await fetch('https://api.github.com/repos/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/contents/pages');
+        const response = await fetch('https://api.github.com/repos/rabhanz/markdown/contents/pages');
         const files = await response.json();
         
         const postsContainer = document.getElementById('postsContainer');
