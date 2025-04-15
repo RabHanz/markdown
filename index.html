@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Knowledge Base</title>
+  <title>Digital Garden</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles/global.css">
 </head>
 <body class="dark-mode">
@@ -17,11 +18,11 @@
   <main class="content-wrapper">
     <section class="posts-list">
       <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search notes...">
+        <input type="text" id="searchInput" placeholder="Search notes..." class="search-input">
       </div>
       
       <div id="postsContainer" class="posts-grid">
-        <!-- Dynamic content will be inserted here -->
+        <!-- Dynamic content will load here -->
       </div>
     </section>
   </main>
@@ -29,35 +30,35 @@
   <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌞</button>
 
   <script>
-    // Dynamically load all HTML files from the repository
+    // Updated fetch URL with your GitHub info
     async function loadPosts() {
       try {
-        const response = await fetch('https://api.github.com/repos/[YOUR_USERNAME]/[YOUR_REPO]/contents/pages');
+        const response = await fetch('https://api.github.com/repos/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME/contents/pages');
         const files = await response.json();
         
         const postsContainer = document.getElementById('postsContainer');
+        postsContainer.innerHTML = ''; // Clear loading state
         
         files.forEach(file => {
-          if (file.name.endsWith('.html') && file.name !== 'index.html') {
-            const postDate = new Date(file.last_modified).toLocaleDateString();
-            const postElement = `
-              <article class="post-card">
-                <a href="${file.download_url}" class="post-link">
-                  <h2 class="post-title">${file.name.replace('.html', '')}</h2>
-                  <time class="post-date">${postDate}</time>
-                  <p class="post-excerpt">${file.description || ''}</p>
-                </a>
-              </article>
+          if (file.name.endsWith('.html')) {
+            const postElement = document.createElement('article');
+            postElement.className = 'post-card';
+            postElement.innerHTML = `
+              <a href="${file.path.replace('pages/', '')}" class="post-link">
+                <h2 class="post-title">${file.name.replace('.html', '')}</h2>
+                <time class="post-date">${new Date(file.last_modified).toLocaleDateString()}</time>
+              </a>
             `;
-            postsContainer.innerHTML += postElement;
+            postsContainer.appendChild(postElement);
           }
         });
       } catch (error) {
         console.error('Error loading posts:', error);
+        postsContainer.innerHTML = '<p>⚠️ Error loading content. Please refresh or check back later.</p>';
       }
     }
 
-    // Initial load
+    // Initialize
     document.addEventListener('DOMContentLoaded', loadPosts);
   </script>
   <script src="scripts/theme-toggle.js"></script>
