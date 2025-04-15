@@ -1,0 +1,2248 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRD2-v2</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --code-bg: #1e293b;
+      --link-color: #7dd3fc;
+      --border-color: #334155;
+      --accent-color: #7dd3fc;
+      --header-bg: rgba(15,23,42,0.7);
+      --radius: 8px;
+      --content-padding: 2.5rem;
+        /* Add font size variables */
+	  --text-base: 1.125rem;
+	  --text-scale-ratio: 1.25;
+	  --text-xs: calc(var(--text-base) / var(--text-scale-ratio));
+	  --text-sm: calc(var(--text-base) * 0.9);
+	  --text-md: calc(var(--text-base) * 1.1);
+	  --text-lg: calc(var(--text-base) * 1.5);
+	  --text-xl: calc(var(--text-base) * 2);
+	  --text-xxl: calc(var(--text-base) * 2.5);
+
+    }
+
+    .light-mode {
+      --bg-color: #ffffff;
+      --text-color: #1e293b;
+      --code-bg: #f1f5f9;
+      --link-color: #0ea5e9;
+      --border-color: #cbd5e1;
+      --accent-color: #0ea5e9;
+      --header-bg: rgba(255,255,255,0.9);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      line-height: 1.65;
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      padding: var(--content-padding);
+      min-width: fit-content;
+      font-size: var(--text-base);
+  	  line-height: 1.7; /* Increased line height for better readability */
+    }
+
+    .stackedit__html {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.8em;
+      margin-bottom: 0.8em;
+      padding-bottom: 0.2em;
+    }
+
+    h1 { margin-top: 1.2em; }
+
+	h1 { font-size: var(--text-xxl); }
+	h2 { font-size: var(--text-xl); }
+	h3 { font-size: var(--text-lg); }
+	h4 { font-size: var(--text-md); }
+	h5 { font-size: var(--text-sm); }
+	h6 { font-size: var(--text-xs); }
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      z-index: 1000;
+      font-size: calc(var(--text-base) * 1.25);
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--accent-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 2.5rem 0;
+      padding: 25px;
+      border-radius: var(--radius);
+      background: var(--code-bg);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-color);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-color);
+    }
+
+    th, td {
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      min-width: 120px;
+	  font-size: calc(var(--text-base) * 0.95);
+    }
+
+    th {
+      background: var(--header-bg);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      position: sticky;
+      left: 0;
+      backdrop-filter: blur(12px);
+    }
+
+    tr {
+      transition: background 0.2s ease;
+    }
+
+    tr:hover {
+      background: rgba(125,211,252,0.05);
+    }
+
+    td:nth-child(1) {
+      font-weight: 500;
+      color: var(--accent-color);
+    }
+
+    td:nth-child(3) {
+      white-space: pre-wrap;
+      font-family: 'SF Mono', Menlo, monospace;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      th, td {
+        padding: 1rem;
+        display: block;
+        white-space: normal;
+      }
+
+      tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border-radius: var(--radius);
+        background: var(--code-bg);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      th {
+        display: none;
+      }
+
+      td {
+        border-bottom: none;
+        position: relative;
+        padding-left: 45%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        width: 40%;
+      }
+      code {
+		font-size: calc(var(--text-base) * 0.9);
+	  }
+    }
+  </style>
+</head>
+
+<body class="stackedit dark-mode">
+  <div class="stackedit__html">
+    <div class="table-container">
+      <h1 id="jtbd-driven-campaign-management--attribution-system">JTBD-Driven Campaign Management &amp; Attribution System</h1>
+<h1 id="product-requirements-document">Product Requirements Document</h1>
+<p><strong>Version 1.1 | April 16, 2025</strong></p>
+<h2 id="executive-summary">1. Executive Summary</h2>
+<p>This Product Requirements Document (PRD) defines the specifications for developing an integrated Jobs-to-be-Done (JTBD) driven campaign management and attribution system. The system will enable marketing teams to create, manage, and optimize campaigns based on JTBD principles while providing comprehensive multi-touch attribution with machine learning capabilities.</p>
+<p>The solution addresses key challenges faced by marketing and sales teams:</p>
+<ul>
+<li>Disconnect between marketing content and customer job needs</li>
+<li>Ineffective campaign targeting due to poor job alignment</li>
+<li>Inability to accurately attribute conversions across multiple touchpoints</li>
+<li>Lack of feedback loops between sales outcomes and marketing content</li>
+</ul>
+<p>This system will integrate with existing website infrastructure, CRM systems (primarily Odoo), and content management processes to create a comprehensive JTBD-driven marketing ecosystem.</p>
+<p><strong>Update Notes (v1.1):</strong> This document has been updated based on the comprehensive validation process conducted across nine critical documents, which identified significant gaps and enhancement opportunities in the original system design. Key enhancements include expanded force analysis framework, visual tools implementation, comprehensive data structure specification, process automation framework, and AI integration capabilities.</p>
+<h2 id="system-architecture">2. System Architecture</h2>
+<p>The system consists of eight primary components that work together to create a complete JTBD-driven campaign management and attribution ecosystem:</p>
+<ol>
+<li><strong>JTBD Radar</strong> (Data Collection &amp; Analysis)</li>
+<li><strong>Force Analysis Engine</strong></li>
+<li><strong>Content Brain</strong></li>
+<li><strong>Guided Wizards</strong></li>
+<li><strong>Personalization Engine</strong></li>
+<li><strong>Component Library</strong></li>
+<li><strong>Conversion Layer</strong></li>
+<li><strong>Analytics &amp; Optimization</strong></li>
+</ol>
+<p>Each component addresses specific aspects of the campaign management and attribution process while maintaining JTBD principles throughout.</p>
+<h3 id="system-architecture-diagram">2.1 System Architecture Diagram</h3>
+<pre><code>+----------------------------------+
+|       Data Collection Layer      |
++----------------------------------+
+               |
++----------------------------------+
+|        JTBD &amp; ODI Radar         |
++----------------------------------+
+               |
+       +-----------------+
+       |                 |
++------------------+  +-------------------+
+| Force Analysis   |  | Content Brain     |
+| Engine           |  |                   |
++------------------+  +-------------------+
+       |                      |
+       |     +-----------------+
+       |     | Guided Wizards  |
+       |     +-----------------+
+       |              |
++----------------------------------+
+|      Personalization Engine      |
++----------------------------------+
+               |
++----------------------------------+
+|        Component Library         |
++----------------------------------+
+               |
++----------------------------------+
+|         Conversion Layer         |
++----------------------------------+
+               |
++----------------------------------+
+|     Analytics &amp; Optimization     |
++----------------------------------+
+               |
++----------------------------------+
+|       CRM Integration Layer      |
++----------------------------------+
+</code></pre>
+<h3 id="integration-architecture">2.2 Integration Architecture</h3>
+<p>The system will integrate with the following external systems:</p>
+<ol>
+<li><strong>Website Platform</strong>: Provides frontend for campaign delivery and user interaction</li>
+<li><strong>Odoo CRM</strong>: Stores customer data, sales information, and JTBD-specific fields</li>
+<li><strong>Content Management System</strong>: Stores and delivers campaign content</li>
+<li><strong>Analytics Platforms</strong>: Provides data for performance tracking and optimization</li>
+<li><strong>n8n Workflow Platform</strong>: Provides AI assistance and workflow automation</li>
+<li><strong>Project Management Systems</strong>: Connects to delivery platforms for post-conversion</li>
+<li><strong>Partner Ecosystem Platforms</strong>: Integrates with partner systems for co-marketing</li>
+</ol>
+<pre><code>+---------------------+
+|   Website Platform  |
++---------------------+
+          |
++-----------------------+
+| Personalization Layer |
++-----------------------+
+          |
++----------------------+    +-----------------+
+| Campaign Management  |&lt;--&gt;| Odoo CRM System |
++----------------------+    +-----------------+
+          |                         |
++----------------------+    +--------------------+
+| Content Brain        |&lt;--&gt;| Content Management |
++----------------------+    +--------------------+
+          |                         |
++----------------------+    +--------------------+
+| Analytics &amp; Reporting|&lt;--&gt;| Analytics Platform |
++----------------------+    +--------------------+
+          |                         |
++----------------------+    +--------------------+
+| Force Analysis       |&lt;--&gt;| n8n AI Workflows   |
++----------------------+    +--------------------+
+          |                         |
++----------------------+    +--------------------+
+| Post-Conversion      |&lt;--&gt;| Project Management |
++----------------------+    +--------------------+
+</code></pre>
+<h2 id="detailed-component-requirements">3. Detailed Component Requirements</h2>
+<h3 id="jtbd-radar-data-collection--analysis">3.1 JTBD Radar (Data Collection &amp; Analysis)</h3>
+<h4 id="data-sources">3.1.1 Data Sources</h4>
+<ul>
+<li><strong>Requirement</strong>: System must collect data from multiple sources to identify customer jobs</li>
+<li><strong>Sources</strong>:
+<ul>
+<li>Reddit, industry forums, and social media platforms</li>
+<li>CRM data (sales notes, call transcripts)</li>
+<li>Manual inputs from sales and customer success teams</li>
+<li>Website behavior and engagement metrics</li>
+<li>Partner ecosystem feedback channels</li>
+<li>Customer support interactions</li>
+<li>Survey and research data</li>
+</ul>
+</li>
+</ul>
+<h4 id="data-privacy-controls">3.1.2 Data Privacy Controls</h4>
+<ul>
+<li><strong>Requirement</strong>: System must maintain compliance with data privacy regulations</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job statement anonymization layer</li>
+<li>PII detection and removal</li>
+<li>Standardized job statement templating</li>
+<li>GDPR-compliant data storage</li>
+<li>Data retention policies and management</li>
+<li>Consent management framework</li>
+<li>Cross-border data transfer protocols</li>
+<li>Automated compliance verification</li>
+</ul>
+</li>
+</ul>
+<h4 id="anxiety-detection-algorithm">3.1.3 Anxiety Detection Algorithm</h4>
+<ul>
+<li><strong>Requirement</strong>: System must identify and classify customer anxieties related to specific jobs</li>
+<li><strong>Features</strong>:
+<ul>
+<li>NLP-based classification of pain points</li>
+<li>Sentiment analysis for emotional triggers</li>
+<li>Pattern recognition for recurring challenges</li>
+<li>Urgency scoring based on language and frequency</li>
+<li>Anxiety-to-job mapping</li>
+<li>Competitive position anxiety detection</li>
+<li>Implementation capability gap identification</li>
+<li>Risk perception measurement</li>
+</ul>
+</li>
+</ul>
+<h4 id="processing-pipeline">3.1.4 Processing Pipeline</h4>
+<ul>
+<li><strong>Requirement</strong>: System must process raw data into structured job insights</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Initial filtering with Python and RegEx</li>
+<li>Classification using OpenAI API and custom models</li>
+<li>Clustering for topic modeling</li>
+<li>Prioritization with custom scoring algorithm</li>
+<li>Regular retraining schedule for machine learning models</li>
+<li>Automated pattern library enrichment</li>
+<li>Job statement extraction and enhancement</li>
+<li>Cross-source signal correlation</li>
+</ul>
+</li>
+</ul>
+<h4 id="rules-based-fallback-system">3.1.5 Rules-Based Fallback System</h4>
+<ul>
+<li><strong>Requirement</strong>: System must maintain operation during AI service outages</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Pattern-matching rules when AI is unavailable</li>
+<li>Critical job detection during outages</li>
+<li>Cached job statements for common patterns</li>
+<li>Continuity during integration failures</li>
+<li>Alert system for extended outages</li>
+<li>Degraded operation modes</li>
+<li>Manual override capabilities</li>
+<li>Recovery synchronization after outage resolution</li>
+</ul>
+</li>
+</ul>
+<h3 id="force-analysis-engine">3.2 Force Analysis Engine</h3>
+<h4 id="signal-processing">3.2.1 Signal Processing</h4>
+<ul>
+<li><strong>Requirement</strong>: System must identify and classify market signals relevant to customer jobs</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Market signal categorization by source and reliability</li>
+<li>Trigger event identification and classification</li>
+<li>Momentum calculation algorithm</li>
+<li>Risk level assessment and categorization</li>
+<li>Signal strength weighting by source credibility</li>
+<li>Force weighting customization</li>
+<li>Cross-source signal aggregation</li>
+<li>Temporal trend analysis</li>
+</ul>
+</li>
+</ul>
+<h4 id="decision-window-analysis">3.2.2 Decision Window Analysis</h4>
+<ul>
+<li><strong>Requirement</strong>: System must determine optimal timing for campaign delivery</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Trigger window determination (immediate to long-term)</li>
+<li>Buying signal strength quantification</li>
+<li>Contract loss and other significant event detection</li>
+<li>Signal strength aggregation and scoring</li>
+<li>Opportunity urgency classification</li>
+<li>Budget cycle alignment</li>
+<li>Decision authority identification</li>
+<li>Competitive event response timing</li>
+</ul>
+</li>
+</ul>
+<h4 id="force-item-management">3.2.3 Force Item Management</h4>
+<ul>
+<li><strong>Requirement</strong>: System must track and manage individual forces affecting customer decisions</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Individual forces with strength scoring</li>
+<li>Categorization by type (push, pull, anxiety, habit)</li>
+<li>Impact area classification</li>
+<li>Visualization of force relationships</li>
+<li>Force strength trending over time</li>
+<li>Evidence attachment capability</li>
+<li>Force pattern matching</li>
+<li>Force-based recommendation engine</li>
+</ul>
+</li>
+</ul>
+<h4 id="job-evolution-detection">3.2.4 Job Evolution Detection</h4>
+<ul>
+<li><strong>Requirement</strong>: System must track how jobs change over time</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Tracking job progression patterns</li>
+<li>Identification of job maturity stages</li>
+<li>Detection of job priority shifts</li>
+<li>Content adaptation signals as jobs evolve</li>
+<li>Historical job evolution visualization</li>
+<li>Transition criteria identification</li>
+<li>Evolution prediction modeling</li>
+<li>Intervention point identification</li>
+</ul>
+</li>
+</ul>
+<h4 id="force-analysis-visualization">3.2.5 Force Analysis Visualization</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide visual representations of force analysis</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Interactive force field diagram</li>
+<li>Momentum gauge visualization</li>
+<li>Force impact matrix view</li>
+<li>Comparative force analysis</li>
+<li>Historical trend visualization</li>
+<li>What-if scenario modeling</li>
+<li>Force relationship mapping</li>
+<li>Stakeholder-specific views</li>
+</ul>
+</li>
+</ul>
+<h3 id="content-brain">3.3 Content Brain</h3>
+<h4 id="jtbd-aligned-content-templates">3.3.1 JTBD-Aligned Content Templates</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide templates aligned with specific jobs and outcomes</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job-based and outcome-based frameworks</li>
+<li>Vertical-specific messaging variations</li>
+<li>Decision stage-appropriate content structures</li>
+<li>Pain point to solution mapping</li>
+<li>Multiple template variations for A/B testing</li>
+<li>Role-specific content adaptation</li>
+<li>Force-aligned messaging options</li>
+<li>Implementation methodology content</li>
+</ul>
+</li>
+</ul>
+<h4 id="strategic-transformation-content">3.3.2 Strategic Transformation Content</h4>
+<ul>
+<li><strong>Requirement</strong>: System must support higher-level organizational change content</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Value pricing transition content</li>
+<li>Client portfolio improvement frameworks</li>
+<li>Agency differentiation messaging</li>
+<li>Strategic repositioning guidance</li>
+<li>Change management support content</li>
+<li>Leadership alignment materials</li>
+<li>Team adoption acceleration content</li>
+<li>Cultural transformation guidance</li>
+</ul>
+</li>
+</ul>
+<h4 id="dynamic-content-assembly">3.3.3 Dynamic Content Assembly</h4>
+<ul>
+<li><strong>Requirement</strong>: System must dynamically assemble content based on visitor profile</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Component selection based on visitor profile</li>
+<li>Content sequencing by job importance</li>
+<li>Proof point selection aligned to jobs</li>
+<li>Modular content blocks with variant testing</li>
+<li>Real-time content optimization</li>
+<li>Force-aligned messaging selection</li>
+<li>Role-appropriate content delivery</li>
+<li>Progressive disclosure implementation</li>
+</ul>
+</li>
+</ul>
+<h4 id="content-gap-analysis-protocol">3.3.4 Content Gap Analysis Protocol</h4>
+<ul>
+<li><strong>Requirement</strong>: System must identify and address content gaps</li>
+<li><strong>Features</strong>:
+<ul>
+<li>JTBD→Outcome translation verification</li>
+<li>Content alignment scoring</li>
+<li>AI-powered content regeneration</li>
+<li>Human review workflow with approval states</li>
+<li>Gap prioritization by business impact</li>
+<li>Force coverage assessment</li>
+<li>Competitive content positioning</li>
+<li>Continuous optimization process</li>
+</ul>
+</li>
+</ul>
+<h4 id="content-feedback-loop">3.3.5 Content Feedback Loop</h4>
+<ul>
+<li><strong>Requirement</strong>: System must continuously improve content based on performance</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Performance-based content refinement</li>
+<li>Automatic regeneration of underperforming job content</li>
+<li>Analytics-informed template evolution</li>
+<li>Continuous improvement based on engagement data</li>
+<li>A/B test result incorporation</li>
+<li>Sales feedback integration</li>
+<li>Client response learning</li>
+<li>Force effectiveness tracking</li>
+</ul>
+</li>
+</ul>
+<h3 id="guided-wizards">3.4 Guided Wizards</h3>
+<h4 id="job-statement-builder">3.4.1 Job Statement Builder</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide guided creation of job statements</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Step-by-step interface (situation → motivation → outcome)</li>
+<li>Pattern suggestions from existing database</li>
+<li>Industry-specific templates</li>
+<li>Validation and quality scoring</li>
+<li>Collaborative editing capabilities</li>
+<li>AI-assisted completion suggestions</li>
+<li>Job clarity assessment</li>
+<li>Example gallery and inspiration</li>
+</ul>
+</li>
+</ul>
+<h4 id="force-analysis-helper">3.4.2 Force Analysis Helper</h4>
+<ul>
+<li><strong>Requirement</strong>: System must guide users through force analysis</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Guided identification of push/pull forces</li>
+<li>Guided identification of anxiety/habit forces</li>
+<li>Strength assessment assistance</li>
+<li>Recommendations for common forces</li>
+<li>Momentum calculation assistance</li>
+<li>Visual force mapping tools</li>
+<li>Evidence documentation assistance</li>
+<li>Competitive force identification</li>
+</ul>
+</li>
+</ul>
+<h4 id="outcome-definition-guide">3.4.3 Outcome Definition Guide</h4>
+<ul>
+<li><strong>Requirement</strong>: System must assist in defining measurable outcomes</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Metric selection assistance</li>
+<li>Milestone planning interface</li>
+<li>Target value setting</li>
+<li>Timeline development</li>
+<li>Benchmark comparison tools</li>
+<li>Measurement methodology guidance</li>
+<li>Economic impact calculation</li>
+<li>Value visualization tools</li>
+</ul>
+</li>
+</ul>
+<h4 id="team-knowledge-transfer-tool">3.4.4 Team Knowledge Transfer Tool</h4>
+<ul>
+<li><strong>Requirement</strong>: System must facilitate knowledge sharing between teams</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job-focused handoff protocols between teams</li>
+<li>Role-specific guidance for implementation</li>
+<li>Shared understanding of job priorities</li>
+<li>Job progress tracking across team boundaries</li>
+<li>Collaborative annotation capabilities</li>
+<li>Historical context preservation</li>
+<li>Implementation guidance repository</li>
+<li>Cross-functional alignment tools</li>
+</ul>
+</li>
+</ul>
+<h4 id="visual-tools-interface">3.4.5 Visual Tools Interface</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide intuitive interfaces for JTBD visualization</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Force analysis visualization interface</li>
+<li>Outcome mapping visualization tools</li>
+<li>Intent signal heatmap generation</li>
+<li>White space opportunity mapping</li>
+<li>Stakeholder mapping interface</li>
+<li>Portfolio analysis visualization</li>
+<li>Evolution pathway charting</li>
+<li>Integration point visualization</li>
+</ul>
+</li>
+</ul>
+<h3 id="personalization-engine">3.5 Personalization Engine</h3>
+<h4 id="visitor-identification">3.5.1 Visitor Identification</h4>
+<ul>
+<li><strong>Requirement</strong>: System must identify and track visitors across sessions</li>
+<li><strong>Features</strong>:
+<ul>
+<li>First-party cookie and localStorage approach</li>
+<li>Anonymous profile creation and enrichment</li>
+<li>Return visitor recognition</li>
+<li>CRM record matching when available</li>
+<li>Progressive profiling capabilities</li>
+<li>Cross-device visitor tracking</li>
+<li>Behavioral pattern recognition</li>
+<li>Privacy-compliant identification</li>
+</ul>
+</li>
+</ul>
+<h4 id="edge-based-personalization">3.5.2 Edge-Based Personalization</h4>
+<ul>
+<li><strong>Requirement</strong>: System must deliver personalized content with minimal latency</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Vercel Edge Functions implementation</li>
+<li>Real-time rules processing</li>
+<li>Segment-based content selection</li>
+<li>Dynamic component variation</li>
+<li>Caching strategies for performance optimization</li>
+<li>A/B testing framework</li>
+<li>Multi-variate testing capability</li>
+<li>Performance monitoring and optimization</li>
+</ul>
+</li>
+</ul>
+<h4 id="job-pattern-matching">3.5.3 Job Pattern Matching</h4>
+<ul>
+<li><strong>Requirement</strong>: System must match visitor behavior to job patterns</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Behavioral analysis for job pattern identification</li>
+<li>Content engagement pattern matching</li>
+<li>Implicit need identification through behavior</li>
+<li>Explicit selection reinforcement</li>
+<li>Progressive job clarity improvement</li>
+<li>AI-assisted pattern recognition</li>
+<li>Confidence scoring for matches</li>
+<li>Pattern library refinement from behavior</li>
+</ul>
+</li>
+</ul>
+<h4 id="job-portfolio-analysis">3.5.4 Job Portfolio Analysis</h4>
+<ul>
+<li><strong>Requirement</strong>: System must handle multiple concurrent jobs for each prospect</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Multiple concurrent job detection</li>
+<li>Job priority weighting within portfolios</li>
+<li>Complementary job identification</li>
+<li>Cross-job solution optimization</li>
+<li>Job interrelationship mapping</li>
+<li>Portfolio composition visualization</li>
+<li>Job priority optimization</li>
+<li>Portfolio evolution tracking</li>
+</ul>
+</li>
+</ul>
+<h4 id="persona-based-customization">3.5.5 Persona-Based Customization</h4>
+<ul>
+<li><strong>Requirement</strong>: System must adapt content based on visitor role</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Content adaptation for different roles</li>
+<li>Role-specific CTAs and proof points</li>
+<li>Language adaptation by technical level</li>
+<li>Decision-stage appropriate content</li>
+<li>Role detection algorithms</li>
+<li>Influence level assessment</li>
+<li>Decision authority identification</li>
+<li>Stakeholder mapping integration</li>
+</ul>
+</li>
+</ul>
+<h3 id="component-library">3.6 Component Library</h3>
+<h4 id="base-components">3.6.1 Base Components</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide foundational UI components</li>
+<li><strong>Features</strong>:
+<ul>
+<li>v0.dev-generated foundational elements</li>
+<li>Server-side rendering optimization</li>
+<li>Responsive design across devices</li>
+<li>Accessibility compliance</li>
+<li>Performance optimization</li>
+<li>Themable components</li>
+<li>Animation standards</li>
+<li>Interaction patterns</li>
+</ul>
+</li>
+</ul>
+<h4 id="component-variants">3.6.2 Component Variants</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide multiple variants for each component</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Pain-focused, solution-focused, outcome-focused variants</li>
+<li>Agency-specific, ROI-focused, competitive-edge proof points</li>
+<li>Low, medium, and high commitment CTAs</li>
+<li>Various case study and testimonial formats</li>
+<li>Job-specific component variations</li>
+<li>Force-aligned messaging components</li>
+<li>Role-appropriate visualizations</li>
+<li>Decision-stage adaptive components</li>
+</ul>
+</li>
+</ul>
+<h4 id="internal-consensus-components">3.6.3 Internal Consensus Components</h4>
+<ul>
+<li><strong>Requirement</strong>: System must support team alignment content</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Team alignment presentation materials</li>
+<li>Leadership justification frameworks</li>
+<li>Resource requirement calculators</li>
+<li>Implementation readiness assessments</li>
+<li>ROI visualization tools</li>
+<li>Change management resources</li>
+<li>Stakeholder alignment tools</li>
+<li>Risk mitigation resources</li>
+</ul>
+</li>
+</ul>
+<h4 id="testing-system">3.6.4 Testing System</h4>
+<ul>
+<li><strong>Requirement</strong>: System must support component variant testing</li>
+<li><strong>Features</strong>:
+<ul>
+<li>A/B testing framework for component variants</li>
+<li>Automated optimization based on conversion data</li>
+<li>Performance tracking by job alignment</li>
+<li>Multivariate testing capabilities</li>
+<li>Statistical significance determination</li>
+<li>Experiment design assistance</li>
+<li>Result analysis and visualization</li>
+<li>Test recommendation engine</li>
+</ul>
+</li>
+</ul>
+<h4 id="interactive-decision-tools">3.6.5 Interactive Decision Tools</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide interactive tools for decision support</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Decision criteria weighting interface</li>
+<li>Digital gap analysis tool</li>
+<li>ROI calculator components</li>
+<li>Cost of inaction calculator</li>
+<li>Comparison tools for alternatives</li>
+<li>Timeline visualization components</li>
+<li>Budget planning tools</li>
+<li>Resource allocation visualizers</li>
+</ul>
+</li>
+</ul>
+<h3 id="conversion-layer">3.7 Conversion Layer</h3>
+<h4 id="micro-conversion-systems">3.7.1 Micro-Conversion Systems</h4>
+<ul>
+<li><strong>Requirement</strong>: System must support progressive engagement steps</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job-specific engagement pathways</li>
+<li>Outcome-oriented interactive tools</li>
+<li>Progressive engagement steps</li>
+<li>Low-friction starting points</li>
+<li>Value-to-effort optimization</li>
+<li>Commitment-appropriate requests</li>
+<li>Lead scoring integration</li>
+<li>Engagement path optimization</li>
+</ul>
+</li>
+</ul>
+<h4 id="alternative-comparison-tools">3.7.2 Alternative Comparison Tools</h4>
+<ul>
+<li><strong>Requirement</strong>: System must support solution comparison</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Solution comparison frameworks</li>
+<li>Competitive differentiator visualizations</li>
+<li>Build vs. buy calculators</li>
+<li>Risk/reward assessment tools</li>
+<li>Total cost of ownership calculators</li>
+<li>Feature comparison matrices</li>
+<li>Value comparison visualizations</li>
+<li>Implementation complexity assessment</li>
+</ul>
+</li>
+</ul>
+<h4 id="consultation-booking-system">3.7.3 Consultation Booking System</h4>
+<ul>
+<li><strong>Requirement</strong>: System must facilitate consultation scheduling</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Integrated calendar scheduling</li>
+<li>Pre-meeting job clarification</li>
+<li>Automated follow-up</li>
+<li>Meeting preparation guidance</li>
+<li>CRM integration for context transfer</li>
+<li>Video meeting platform integration</li>
+<li>Team member matching by expertise</li>
+<li>Outcome-oriented agenda creation</li>
+</ul>
+</li>
+</ul>
+<h4 id="ml-driven-attribution-model">3.7.4 ML-Driven Attribution Model</h4>
+<ul>
+<li><strong>Requirement</strong>: System must accurately attribute conversions across touchpoints</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Multi-touch attribution modeling</li>
+<li>Channel influence weighting</li>
+<li>Content effectiveness scoring</li>
+<li>Conversion path mapping</li>
+<li>Time-decay modeling</li>
+<li>First/last touch options</li>
+<li>Custom attribution rule configuration</li>
+<li>Attribution visualization</li>
+</ul>
+</li>
+</ul>
+<h3 id="post-conversion-onboarding">3.8 Post-Conversion Onboarding</h3>
+<h4 id="implementation-guidance">3.8.1 Implementation Guidance</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide implementation support</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job-specific implementation plans</li>
+<li>Resource requirement planning</li>
+<li>Milestone establishment</li>
+<li>Success criteria definition</li>
+<li>Implementation timeline generator</li>
+<li>Risk identification and mitigation</li>
+<li>Dependency management</li>
+<li>Project template selection</li>
+</ul>
+</li>
+</ul>
+<h4 id="team-training-system">3.8.2 Team Training System</h4>
+<ul>
+<li><strong>Requirement</strong>: System must support team education</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Role-specific training modules</li>
+<li>Job framework education</li>
+<li>Implementation best practices</li>
+<li>Ongoing support resources</li>
+<li>Knowledge verification checkpoints</li>
+<li>Interactive learning materials</li>
+<li>Certification processes</li>
+<li>Continuous education framework</li>
+</ul>
+</li>
+</ul>
+<h4 id="success-measurement-setup">3.8.3 Success Measurement Setup</h4>
+<ul>
+<li><strong>Requirement</strong>: System must establish success metrics</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job completion metrics configuration</li>
+<li>Baseline establishment</li>
+<li>Tracking implementation</li>
+<li>Reporting structure setup</li>
+<li>Custom dashboard creation</li>
+<li>Stakeholder view configuration</li>
+<li>Milestone alert system</li>
+<li>Value realization tracking</li>
+</ul>
+</li>
+</ul>
+<h4 id="project-management-integration">3.8.4 Project Management Integration</h4>
+<ul>
+<li><strong>Requirement</strong>: System must connect to project delivery platforms</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Project creation from opportunities</li>
+<li>Task template assignment by job category</li>
+<li>Resource allocation assistance</li>
+<li>Timeline development</li>
+<li>Milestone synchronization</li>
+<li>Status reporting automation</li>
+<li>Client communication workflow</li>
+<li>Risk management integration</li>
+</ul>
+</li>
+</ul>
+<h3 id="analytics--optimization">3.9 Analytics &amp; Optimization</h3>
+<h4 id="performance-tracking">3.9.1 Performance Tracking</h4>
+<ul>
+<li><strong>Requirement</strong>: System must track campaign performance</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Job effectiveness measurement</li>
+<li>Outcome achievement analysis</li>
+<li>Content performance by job type</li>
+<li>Conversion path optimization</li>
+<li>Attribution model customization</li>
+<li>Force effectiveness monitoring</li>
+<li>Pattern success tracking</li>
+<li>Cohort analysis tools</li>
+</ul>
+</li>
+</ul>
+<h4 id="stakeholder-impact-metrics">3.9.2 Stakeholder Impact Metrics</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide executive-level metrics</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Leadership-focused ROI visualization</li>
+<li>Comparative performance data</li>
+<li>Strategic impact measurement</li>
+<li>Investment justification metrics</li>
+<li>Board-level reporting tools</li>
+<li>Business outcome correlation</li>
+<li>Competitive positioning metrics</li>
+<li>Value realization dashboards</li>
+</ul>
+</li>
+</ul>
+<h4 id="self-optimization-system">3.9.3 Self-Optimization System</h4>
+<ul>
+<li><strong>Requirement</strong>: System must automatically optimize based on performance</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Automated A/B test winner determination</li>
+<li>Content variant generation</li>
+<li>Performance-based content selection</li>
+<li>Job-based content effectiveness scoring</li>
+<li>Continuous learning algorithms</li>
+<li>Pattern library refinement</li>
+<li>Force effectiveness optimization</li>
+<li>Resource allocation suggestions</li>
+</ul>
+</li>
+</ul>
+<h4 id="job-effectiveness-feedback-loop">3.9.4 Job Effectiveness Feedback Loop</h4>
+<ul>
+<li><strong>Requirement</strong>: System must improve job definitions based on performance</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Continuous pattern library refinement</li>
+<li>Job definition improvement based on performance</li>
+<li>Automated signal prioritization</li>
+<li>System-wide learning from successful jobs</li>
+<li>Job refinement recommendations</li>
+<li>Force adjustment suggestions</li>
+<li>Outcome alignment optimization</li>
+<li>Cross-job learning</li>
+</ul>
+</li>
+</ul>
+<h4 id="analytics-dashboard-framework">3.9.5 Analytics Dashboard Framework</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide comprehensive visual analytics</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Performance metrics visualization</li>
+<li>Pattern recognition reporting</li>
+<li>Pipeline health analysis</li>
+<li>Economic impact display</li>
+<li>Portfolio analysis visualization</li>
+<li>Predictive modeling integration</li>
+<li>Job effectiveness reporting</li>
+<li>Force analysis trends</li>
+</ul>
+</li>
+</ul>
+<h3 id="process-automation-framework">3.10 Process Automation Framework</h3>
+<h4 id="workflow-engine">3.10.1 Workflow Engine</h4>
+<ul>
+<li><strong>Requirement</strong>: System must automate key workflows</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Stage-based automation</li>
+<li>Condition-based branching</li>
+<li>Task generation</li>
+<li>Notification system</li>
+<li>Follow-up scheduling</li>
+<li>Approval workflows</li>
+<li>Lead routing</li>
+<li>Content workflow automation</li>
+</ul>
+</li>
+</ul>
+<h4 id="trigger-system">3.10.2 Trigger System</h4>
+<ul>
+<li><strong>Requirement</strong>: System must provide event-based automation</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Event-based triggers</li>
+<li>Scheduled triggers</li>
+<li>Threshold-based triggers</li>
+<li>Manual trigger options</li>
+<li>Cross-system event handling</li>
+<li>Conditional trigger execution</li>
+<li>Prioritization logic</li>
+<li>Conflict resolution</li>
+</ul>
+</li>
+</ul>
+<h4 id="action-execution">3.10.3 Action Execution</h4>
+<ul>
+<li><strong>Requirement</strong>: System must execute automated actions</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Task creation</li>
+<li>Notification dispatch</li>
+<li>Document generation</li>
+<li>API action calls</li>
+<li>Data transformation</li>
+<li>Record updates</li>
+<li>Integration triggers</li>
+<li>Scheduled actions</li>
+</ul>
+</li>
+</ul>
+<h4 id="workflow-monitoring">3.10.4 Workflow Monitoring</h4>
+<ul>
+<li><strong>Requirement</strong>: System must track automated processes</li>
+<li><strong>Features</strong>:
+<ul>
+<li>Workflow analytics</li>
+<li>Bottleneck detection</li>
+<li>Completion tracking</li>
+<li>Exception handling</li>
+<li>Optimization suggestions</li>
+<li>Performance metrics</li>
+<li>Error reporting</li>
+<li>Audit logging</li>
+</ul>
+</li>
+</ul>
+<h2 id="odoo-crm-integration-requirements">4. Odoo CRM Integration Requirements</h2>
+<p>The system will integrate with Odoo CRM to store and manage JTBD-specific data. This section defines the custom fields, models, and integration points required.</p>
+<h3 id="custom-fields">4.1 Custom Fields</h3>
+<h4 id="core-jtbd-framework-fields">4.1.1 Core JTBD Framework Fields</h4>
+<ul>
+<li><strong>jtbd_job_category</strong> (Selection): Primary classification of the client’s job</li>
+<li><strong>jtbd_job_statement</strong> (Text): Structured job statement</li>
+<li><strong>jtbd_job_quadrant</strong> (Selection): Functional, emotional, social, strategic</li>
+<li><strong>jtbd_job_clarity_score</strong> (Integer): 0-100 rating of job clarity</li>
+</ul>
+<h4 id="force-analysis--trigger-management-fields">4.1.2 Force Analysis / Trigger Management Fields</h4>
+<ul>
+<li><strong>jtbd_risk_level</strong> (Selection): Risk assessment based on Force Analysis</li>
+<li><strong>jtbd_contract_loss</strong> (Boolean): Flag indicating a significant trigger event</li>
+<li><strong>jtbd_trigger_window</strong> (Selection): Estimated buying decision timeframe</li>
+<li><strong>jtbd_signal_strength</strong> (Integer): Combined score reflecting buying intent</li>
+<li><strong>jtbd_momentum_score</strong> (Integer): Score representing momentum toward change</li>
+</ul>
+<h4 id="core-odi--outcome-mapping-fields">4.1.3 Core ODI / Outcome Mapping Fields</h4>
+<ul>
+<li><strong>jtbd_outcome_metric</strong> (Text): Primary outcome measurement</li>
+<li><strong>jtbd_white_space</strong> (Text): Potential expansion opportunities</li>
+</ul>
+<h4 id="agency-profile-fields">4.1.4 Agency Profile Fields</h4>
+<ul>
+<li><strong>jtbd_agency_size</strong> (Integer): Estimated number of employees</li>
+<li><strong>jtbd_revenue_range</strong> (Selection): Annual revenue bracket</li>
+<li><strong>jtbd_account_tier</strong> (Selection): Strategic, target, watch</li>
+<li><strong>jtbd_geo_scope</strong> (Selection): Geographic service area</li>
+</ul>
+<h4 id="technology-stack-fields">4.1.5 Technology Stack Fields</h4>
+<ul>
+<li><strong>jtbd_current_tools</strong> (Text): Primary tools used by agency</li>
+<li><strong>jtbd_tech_stack_match</strong> (Float): Technology alignment score</li>
+</ul>
+<h4 id="campaign-related-fields">4.1.6 Campaign-Related Fields</h4>
+<ul>
+<li><strong>jtbd_automation_source</strong> (Selection): Source of lead (inbound, outbound)</li>
+<li><strong>jtbd_engagement_quality</strong> (Integer): 0-100 rating of engagement quality</li>
+<li><strong>jtbd_content_approval_state</strong> (Selection): Draft, review, approved</li>
+<li><strong>jtbd_content_alignment</strong> (Float): 0-100 rating of content-to-job alignment</li>
+</ul>
+<h4 id="economic-analysis-fields">4.1.7 Economic Analysis Fields</h4>
+<ul>
+<li><strong>jtbd_mrr</strong> (Monetary): Monthly recurring revenue potential</li>
+<li><strong>jtbd_ltv_cac_ratio</strong> (Float): Lifetime value to acquisition cost ratio</li>
+<li><strong>jtbd_ecosystem_impact</strong> (Selection): Partner ecosystem impact assessment</li>
+</ul>
+<h4 id="decision-analysis-fields">4.1.8 Decision Analysis Fields</h4>
+<ul>
+<li><strong>jtbd_decision_authority</strong> (Selection): Key decision-maker roles</li>
+<li><strong>jtbd_objection_forecast</strong> (Text): Predicted objections</li>
+</ul>
+<h4 id="relationship-health-fields">4.1.9 Relationship Health Fields</h4>
+<ul>
+<li><strong>jtbd_relationship_health_score</strong> (Integer): 0-100 overall relationship health</li>
+<li><strong>jtbd_knowledge_transfer_status</strong> (Selection): Not started, in progress, completed</li>
+</ul>
+<h4 id="implementation-fields">4.1.10 Implementation Fields</h4>
+<ul>
+<li><strong>jtbd_onboarding_status</strong> (Selection): Implementation status</li>
+<li><strong>jtbd_accelerator_path</strong> (Selection): Implementation path type</li>
+</ul>
+<h3 id="custom-models">4.2 Custom Models</h3>
+<h4 id="jtbd.job.pattern">4.2.1 jtbd.job.pattern</h4>
+<ul>
+<li><strong>name</strong> (Char): Pattern identifier</li>
+<li><strong>description</strong> (Text): Pattern description</li>
+<li><strong>job_category_id</strong> (Many2one): Related job category</li>
+<li><strong>situation_template</strong> (Text): Template for situation component</li>
+<li><strong>motivation_template</strong> (Text): Template for motivation component</li>
+<li><strong>outcome_template</strong> (Text): Template for outcome component</li>
+<li><strong>applicable_agency_types</strong> (Many2many): Agency types this pattern applies to</li>
+<li><strong>frequency_score</strong> (Float): Occurrence frequency</li>
+</ul>
+<h4 id="jtbd.force.analysis">4.2.2 jtbd.force.analysis</h4>
+<ul>
+<li><strong>lead_id</strong> (Many2one): Related opportunity</li>
+<li><strong>name</strong> (Char): Analysis name</li>
+<li><strong>date</strong> (Date): Analysis date</li>
+<li><strong>user_id</strong> (Many2one): Analyst who created it</li>
+<li><strong>push_force_ids</strong> (One2many): Related push forces</li>
+<li><strong>pull_force_ids</strong> (One2many): Related pull forces</li>
+<li><strong>anxiety_force_ids</strong> (One2many): Related anxiety forces</li>
+<li><strong>habit_force_ids</strong> (One2many): Related habit forces</li>
+<li><strong>push_score</strong> (Integer): Combined push force strength</li>
+<li><strong>pull_score</strong> (Integer): Combined pull force strength</li>
+<li><strong>anxiety_score</strong> (Integer): Combined anxiety force strength</li>
+<li><strong>habit_score</strong> (Integer): Combined habit force strength</li>
+<li><strong>momentum_score</strong> (Integer): Overall momentum toward change</li>
+<li><strong>trigger_window</strong> (Selection): Decision timing</li>
+<li><strong>signal_strength</strong> (Integer): Combined intent and trigger signals</li>
+<li><strong>contract_loss</strong> (Boolean): Significant trigger event</li>
+</ul>
+<h4 id="jtbd.force.item">4.2.3 jtbd.force.item</h4>
+<ul>
+<li><strong>analysis_id</strong> (Many2one): Related force analysis</li>
+<li><strong>name</strong> (Char): Force description</li>
+<li><strong>force_type</strong> (Selection): Push, pull, anxiety, habit</li>
+<li><strong>strength</strong> (Integer): Strength score (1-10)</li>
+<li><strong>evidence</strong> (Text): Supporting evidence for this force</li>
+<li><strong>impact_area</strong> (Selection): Financial, operational, competitive, etc.</li>
+<li><strong>sequence</strong> (Integer): Display order</li>
+</ul>
+<h4 id="jtbd.outcome.mapping">4.2.4 jtbd.outcome.mapping</h4>
+<ul>
+<li><strong>lead_id</strong> (Many2one): Related opportunity</li>
+<li><strong>name</strong> (Char): Mapping name</li>
+<li><strong>job_category</strong> (Selection): Related job category</li>
+<li><strong>job_statement</strong> (Text): Related job statement</li>
+<li><strong>outcome_metric</strong> (Char): Primary outcome metric</li>
+<li><strong>current_value</strong> (Float): Current metric value</li>
+<li><strong>target_value</strong> (Float): Target metric value</li>
+<li><strong>metric_unit</strong> (Char): Unit of measure</li>
+<li><strong>additional_outcome_ids</strong> (One2many): Related secondary outcomes</li>
+<li><strong>milestone_ids</strong> (One2many): Related milestone tracking</li>
+<li><strong>white_space</strong> (Text): Potential expansion opportunities</li>
+</ul>
+<h4 id="jtbd.outcome.milestone">4.2.5 jtbd.outcome.milestone</h4>
+<ul>
+<li><strong>mapping_id</strong> (Many2one): Related outcome mapping</li>
+<li><strong>name</strong> (Char): Milestone description</li>
+<li><strong>target_date</strong> (Date): Expected achievement date</li>
+<li><strong>target_value</strong> (Float): Expected metric value at milestone</li>
+<li><strong>achieved</strong> (Boolean): Whether milestone has been achieved</li>
+<li><strong>actual_date</strong> (Date): Actual achievement date</li>
+<li><strong>actual_value</strong> (Float): Actual metric value achieved</li>
+<li><strong>sequence</strong> (Integer): Milestone order</li>
+</ul>
+<h4 id="jtbd.content.alignment">4.2.6 jtbd.content.alignment</h4>
+<ul>
+<li><strong>content_id</strong> (Many2one): Related content</li>
+<li><strong>job_pattern_id</strong> (Many2one): Related job pattern</li>
+<li><strong>alignment_score</strong> (Float): 0-100 alignment rating</li>
+<li><strong>improvement_suggestions</strong> (Text): How to improve alignment</li>
+<li><strong>performance_metrics</strong> (One2many): Performance data</li>
+</ul>
+<h4 id="jtbd.job.portfolio">4.2.7 jtbd.job.portfolio</h4>
+<ul>
+<li><strong>lead_id</strong> (Many2one): Related lead/opportunity</li>
+<li><strong>job_patterns</strong> (Many2many): Associated job patterns</li>
+<li><strong>priority_weights</strong> (One2many): Priority weight for each job</li>
+<li><strong>interrelationships</strong> (One2many): How jobs relate to each other</li>
+<li><strong>conflicts</strong> (One2many): Conflicting job needs</li>
+</ul>
+<h4 id="jtbd.knowledge.transfer">4.2.8 jtbd.knowledge.transfer</h4>
+<ul>
+<li><strong>name</strong> (Char): Transfer identifier</li>
+<li><strong>source_team</strong> (Many2one): Team transferring knowledge</li>
+<li><strong>target_team</strong> (Many2one): Team receiving knowledge</li>
+<li><strong>job_patterns</strong> (Many2many): Relevant job patterns</li>
+<li><strong>components</strong> (One2many): Transfer components</li>
+<li><strong>completion_status</strong> (Float): Percentage complete</li>
+<li><strong>verification_steps</strong> (One2many): Verification checkpoints</li>
+</ul>
+<h4 id="jtbd.job.evolution">4.2.9 jtbd.job.evolution</h4>
+<ul>
+<li><strong>job_pattern_id</strong> (Many2one): Related job pattern</li>
+<li><strong>previous_states</strong> (One2many): Historical states</li>
+<li><strong>transition_triggers</strong> (One2many): What caused transitions</li>
+<li><strong>maturity_indicators</strong> (One2many): Indicators of maturity level</li>
+<li><strong>evolution_timeline</strong> (One2many): Timeline of evolution</li>
+</ul>
+<h4 id="jtbd.integration.settings">4.2.10 jtbd.integration.settings</h4>
+<ul>
+<li><strong>name</strong> (Char): Integration name</li>
+<li><strong>system_type</strong> (Selection): Marketing, delivery, analytics, partner</li>
+<li><strong>api_endpoint</strong> (Char): API endpoint URL</li>
+<li><strong>api_key</strong> (Char): API key (encrypted)</li>
+<li><strong>is_active</strong> (Boolean): Whether integration is active</li>
+<li><strong>sync_frequency</strong> (Selection): Sync timing schedule</li>
+<li><strong>field_mapping_ids</strong> (One2many): Field mappings</li>
+<li><strong>webhook_url</strong> (Char): Webhook URL if applicable</li>
+</ul>
+<h3 id="integration-points">4.3 Integration Points</h3>
+<h4 id="lead-creation">4.3.1 Lead Creation</h4>
+<ul>
+<li>System will create leads in Odoo with appropriate JTBD fields populated</li>
+<li>Job patterns will be matched and linked</li>
+<li>Initial job clarity score will be calculated</li>
+<li>Engagement quality will be determined</li>
+<li>Force analysis preliminary assessment created</li>
+<li>Signal strength calculation initiated</li>
+</ul>
+<h4 id="campaign-integration">4.3.2 Campaign Integration</h4>
+<ul>
+<li>Campaign performance metrics will update content alignment scores</li>
+<li>Job pattern effectiveness will be tracked by campaign</li>
+<li>Content gaps will trigger alerts for content creation</li>
+<li>Attribution data will inform job effectiveness</li>
+<li>Force analysis will guide campaign optimization</li>
+<li>Signal strength will inform campaign prioritization</li>
+</ul>
+<h4 id="sales-process-integration">4.3.3 Sales Process Integration</h4>
+<ul>
+<li>Sales feedback will update job clarity scores</li>
+<li>Objection tracking will validate objection forecasts</li>
+<li>Sales outcomes will inform job pattern effectiveness</li>
+<li>Force analysis will update during sales process</li>
+<li>Outcome definition will be refined during sales</li>
+<li>Economic impact will be calculated from sales data</li>
+</ul>
+<h4 id="project-management-integration-1">4.3.4 Project Management Integration</h4>
+<ul>
+<li>Opportunity-to-project conversion for implementation</li>
+<li>Job-specific task templates</li>
+<li>Milestone creation from outcome mapping</li>
+<li>Resource requirement calculations</li>
+<li>Timeline development based on implementation complexity</li>
+<li>Status reporting back to CRM</li>
+</ul>
+<h4 id="reporting-integration">4.3.5 Reporting Integration</h4>
+<ul>
+<li>Custom reports will visualize job pattern performance</li>
+<li>Outcome achievement will be tracked and reported</li>
+<li>Force analysis results will be available in dashboards</li>
+<li>Pipeline health analysis by job category</li>
+<li>Attribution modeling results visualization</li>
+<li>Performance metrics by job quadrant</li>
+<li>Force effectiveness tracking</li>
+<li>White space opportunity reporting</li>
+</ul>
+<h3 id="field-data-structure-implementation">4.4 Field Data Structure Implementation</h3>
+<h4 id="field-implementation-phases">4.4.1 Field Implementation Phases</h4>
+<ul>
+<li><strong>Phase 1/2</strong>: Core JTBD Framework, Force Analysis, Agency Profile, Tech Stack</li>
+<li><strong>Phase 3</strong>: Economic Analysis, Decision Analysis, Market Intelligence, Cultural Fit</li>
+<li><strong>Phase 4</strong>: Pattern Recognition, Risk Assessment, Client Operations</li>
+<li><strong>Phase 5</strong>: Service Quality, Implementation Tracking, Partner Extensions</li>
+</ul>
+<h4 id="computed-field-logic">4.4.2 Computed Field Logic</h4>
+<ul>
+<li><strong>jtbd_job_clarity_score</strong>: Based on completeness, specificity, and alignment</li>
+</ul>
+<pre class=" language-python"><code class="prism  language-python">@api<span class="token punctuation">.</span>depends<span class="token punctuation">(</span><span class="token string">'jtbd_job_statement'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">_compute_job_clarity_score</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> record <span class="token keyword">in</span> self<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> record<span class="token punctuation">.</span>jtbd_job_statement<span class="token punctuation">:</span>
+            record<span class="token punctuation">.</span>jtbd_job_clarity_score <span class="token operator">=</span> <span class="token number">0</span>
+            <span class="token keyword">continue</span>
+            
+        <span class="token comment"># Base score starting at 50</span>
+        score <span class="token operator">=</span> <span class="token number">50</span>
+        
+        <span class="token comment"># Check for situation component</span>
+        <span class="token keyword">if</span> <span class="token string">"when "</span> <span class="token keyword">in</span> record<span class="token punctuation">.</span>jtbd_job_statement<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            score <span class="token operator">+=</span> <span class="token number">15</span>
+            
+        <span class="token comment"># Check for motivation component    </span>
+        <span class="token keyword">if</span> <span class="token string">" i want to "</span> <span class="token keyword">in</span> record<span class="token punctuation">.</span>jtbd_job_statement<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            score <span class="token operator">+=</span> <span class="token number">15</span>
+            
+        <span class="token comment"># Check for outcome component</span>
+        <span class="token keyword">if</span> <span class="token string">" so i can "</span> <span class="token keyword">in</span> record<span class="token punctuation">.</span>jtbd_job_statement<span class="token punctuation">.</span>lower<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            score <span class="token operator">+=</span> <span class="token number">15</span>
+            
+        <span class="token comment"># Adjust for statement length (penalize if too short)</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>record<span class="token punctuation">.</span>jtbd_job_statement<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">30</span><span class="token punctuation">:</span>
+            score <span class="token operator">-=</span> <span class="token number">25</span>
+        
+        <span class="token comment"># Cap at 0-100 range</span>
+        record<span class="token punctuation">.</span>jtbd_job_clarity_score <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token builtin">min</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> score<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li><strong>jtbd_momentum_score</strong>: Calculation of decision momentum</li>
+</ul>
+<pre class=" language-python"><code class="prism  language-python">@api<span class="token punctuation">.</span>depends<span class="token punctuation">(</span><span class="token string">'push_score'</span><span class="token punctuation">,</span> <span class="token string">'pull_score'</span><span class="token punctuation">,</span> <span class="token string">'anxiety_score'</span><span class="token punctuation">,</span> <span class="token string">'habit_score'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">_compute_momentum_score</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> record <span class="token keyword">in</span> self<span class="token punctuation">:</span>
+        <span class="token comment"># Combined forces pushing toward change</span>
+        change_forces <span class="token operator">=</span> record<span class="token punctuation">.</span>push_score <span class="token operator">+</span> record<span class="token punctuation">.</span>pull_score
+        
+        <span class="token comment"># Combined forces maintaining status quo</span>
+        inertia_forces <span class="token operator">=</span> record<span class="token punctuation">.</span>anxiety_score <span class="token operator">+</span> record<span class="token punctuation">.</span>habit_score
+        
+        <span class="token comment"># If no forces, default to middle</span>
+        <span class="token keyword">if</span> change_forces <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">and</span> inertia_forces <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            record<span class="token punctuation">.</span>momentum_score <span class="token operator">=</span> <span class="token number">50</span>
+            <span class="token keyword">continue</span>
+            
+        <span class="token comment"># Calculate momentum ratio and convert to 0-100 scale</span>
+        <span class="token keyword">if</span> inertia_forces <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            momentum_ratio <span class="token operator">=</span> change_forces <span class="token operator">/</span> <span class="token punctuation">(</span>change_forces <span class="token operator">+</span> inertia_forces<span class="token punctuation">)</span>
+            record<span class="token punctuation">.</span>momentum_score <span class="token operator">=</span> <span class="token builtin">int</span><span class="token punctuation">(</span>momentum_ratio <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            record<span class="token punctuation">.</span>momentum_score <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>change_forces <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>  <span class="token comment"># Double the force if no inertia</span>
+</code></pre>
+<ul>
+<li><strong>jtbd_signal_strength</strong>: Combined measure of intent and urgency</li>
+</ul>
+<pre class=" language-python"><code class="prism  language-python">@api<span class="token punctuation">.</span>depends<span class="token punctuation">(</span><span class="token string">'momentum_score'</span><span class="token punctuation">,</span> <span class="token string">'trigger_window'</span><span class="token punctuation">,</span> <span class="token string">'contract_loss'</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">_compute_signal_strength</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> record <span class="token keyword">in</span> self<span class="token punctuation">:</span>
+        <span class="token comment"># Start with momentum score</span>
+        signal <span class="token operator">=</span> record<span class="token punctuation">.</span>momentum_score
+        
+        <span class="token comment"># Adjust based on trigger window</span>
+        window_adjustments <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">'immediate'</span><span class="token punctuation">:</span> <span class="token number">30</span><span class="token punctuation">,</span>
+            <span class="token string">'short'</span><span class="token punctuation">:</span> <span class="token number">15</span><span class="token punctuation">,</span>
+            <span class="token string">'medium'</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+            <span class="token string">'long'</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">15</span><span class="token punctuation">,</span>
+            <span class="token boolean">False</span><span class="token punctuation">:</span> <span class="token number">0</span>
+        <span class="token punctuation">}</span>
+        signal <span class="token operator">+=</span> window_adjustments<span class="token punctuation">.</span>get<span class="token punctuation">(</span>record<span class="token punctuation">.</span>trigger_window<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        
+        <span class="token comment"># Adjust based on contract loss</span>
+        <span class="token keyword">if</span> record<span class="token punctuation">.</span>contract_loss<span class="token punctuation">:</span>
+            signal <span class="token operator">+=</span> <span class="token number">10</span>
+            
+        <span class="token comment"># Ensure signal is within 0-100 range</span>
+        record<span class="token punctuation">.</span>signal_strength <span class="token operator">=</span> <span class="token builtin">max</span><span class="token punctuation">(</span><span class="token builtin">min</span><span class="token punctuation">(</span>signal<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+</code></pre>
+<h4 id="field-validation-rules">4.4.3 Field Validation Rules</h4>
+<ul>
+<li><strong>jtbd_job_statement</strong>: Must include “when”, “I want to”, and “so I can” components</li>
+<li><strong>jtbd_outcome_metric</strong>: Must have a measurable component</li>
+<li><strong>Force strength</strong>: Must be between 1-10</li>
+<li><strong>Percentage fields</strong>: Must be between 0-100</li>
+<li><strong>Monetary fields</strong>: Must be non-negative</li>
+<li><strong>Required fields</strong>: Job category, statement, and quadrant required when job clarity &gt; 50</li>
+</ul>
+<h4 id="field-dependencies">4.4.4 Field Dependencies</h4>
+<ul>
+<li>Job statement must exist before force analysis</li>
+<li>Force analysis must exist before signal strength</li>
+<li>Job category must exist before pattern matching</li>
+<li>Outcome metric must exist before milestone creation</li>
+<li>Agency profile must exist before tech stack match</li>
+</ul>
+<h2 id="implementation-requirements">5. Implementation Requirements</h2>
+<h3 id="phased-implementation-approach">5.1 Phased Implementation Approach</h3>
+<p>The system will be implemented in four phases to ensure proper sequencing and validation:</p>
+<h4 id="phase-1-foundation--anonymization-1-2-months">5.1.1 Phase 1: Foundation + Anonymization (1-2 months)</h4>
+<ul>
+<li>Core JTBD data structure and fields</li>
+<li>Job anonymization layer</li>
+<li>Basic data collection pipeline</li>
+<li>Job Statement Builder wizard</li>
+<li>Initial CRM integration</li>
+<li>Force Analysis Framework foundation</li>
+<li>Data privacy framework</li>
+<li>System resilience measures</li>
+<li>Basic visual tools</li>
+</ul>
+<h4 id="phase-2-analysis-tools--onboarding-2-3-months">5.1.2 Phase 2: Analysis Tools + Onboarding (2-3 months)</h4>
+<ul>
+<li>Complete Force Analysis Engine with visual tools</li>
+<li>Visual Tools Framework</li>
+<li>Outcome Mapping Tool with visualization</li>
+<li>Component Library basics</li>
+<li>Post-Conversion Onboarding Flow</li>
+<li>Trace Link Documentation System</li>
+<li>Integration Framework foundation</li>
+<li>Process Automation Framework</li>
+</ul>
+<h4 id="phase-3-intelligence--feedback-loops-3-4-months">5.1.3 Phase 3: Intelligence + Feedback Loops (3-4 months)</h4>
+<ul>
+<li>Personalization Engine with Job Portfolio Analysis</li>
+<li>Pattern recognition with evolution detection</li>
+<li>Content Brain with feedback loops</li>
+<li>Analytics Dashboard with stakeholder metrics</li>
+<li>Team Knowledge Transfer Tools</li>
+<li>Project Management Integration</li>
+<li>Unit Economics Calculation</li>
+<li>Advanced feedback loops</li>
+</ul>
+<h4 id="phase-4-process-optimization-4-6-months">5.1.4 Phase 4: Process Optimization (4-6 months)</h4>
+<ul>
+<li>AI Integration Framework</li>
+<li>Self-optimizing system</li>
+<li>Advanced CRM integration</li>
+<li>Milestone tracking with economic impact calculation</li>
+<li>Predictive patterns</li>
+<li>Documentation Framework</li>
+<li>Growth Strategy Enhancement</li>
+<li>Enhanced Success Metrics</li>
+</ul>
+<h3 id="technical-implementation-requirements">5.2 Technical Implementation Requirements</h3>
+<h4 id="frontend-technologies">5.2.1 Frontend Technologies</h4>
+<ul>
+<li>Next.js for server-side rendering</li>
+<li>TailwindCSS for styling</li>
+<li>React for component development</li>
+<li>Vercel for hosting and edge functions</li>
+<li>D3.js for data visualization</li>
+<li>Three.js for complex visualizations</li>
+<li>Recharts for chart components</li>
+<li>React Flow for relationship mapping</li>
+</ul>
+<h4 id="backend-technologies">5.2.2 Backend Technologies</h4>
+<ul>
+<li>Python for data processing</li>
+<li>Node.js for API development</li>
+<li>OpenAI API for NLP and content generation</li>
+<li>HuggingFace for machine learning models</li>
+<li>FastAPI for high-performance endpoints</li>
+<li>Celery for background task processing</li>
+<li>Redis for caching and message queuing</li>
+<li>PostgreSQL for primary database</li>
+</ul>
+<h4 id="data-storage">5.2.3 Data Storage</h4>
+<ul>
+<li>PlanetScale for main database</li>
+<li>Upstash for caching</li>
+<li>Google Sheets for lightweight data storage</li>
+<li>MongoDB for document storage</li>
+<li>Elasticsearch for search functionality</li>
+<li>S3 for file storage</li>
+<li>Pinecone for vector embeddings</li>
+<li>Redis Streams for event processing</li>
+</ul>
+<h4 id="integration-technologies">5.2.4 Integration Technologies</h4>
+<ul>
+<li>REST APIs for system integration</li>
+<li>GraphQL for complex data queries</li>
+<li>Webhook system for event-driven architecture</li>
+<li>XML-RPC for Odoo integration</li>
+<li>OAuth for authentication</li>
+<li>JWT for secure communication</li>
+<li>AMQP for message queuing</li>
+<li>gRPC for high-performance services</li>
+</ul>
+<h3 id="post-conversion-workflow-implementation">5.3 Post-Conversion Workflow Implementation</h3>
+<h4 id="seamless-handoff-process">5.3.1 Seamless Handoff Process</h4>
+<ul>
+<li>Connect consultation booking directly to onboarding</li>
+<li>Transfer job context from sales to implementation</li>
+<li>Maintain consistent job language across teams</li>
+<li>Automated handoff notifications and documentation</li>
+<li>Client expectation setting and alignment</li>
+<li>Implementation team preparation</li>
+<li>Knowledge preservation from sales process</li>
+<li>Stakeholder introduction and mapping</li>
+</ul>
+<h4 id="implementation-planning-wizard">5.3.2 Implementation Planning Wizard</h4>
+<ul>
+<li>Job-specific implementation templates</li>
+<li>Resource requirement calculators</li>
+<li>Timeline generators</li>
+<li>Risk identification tools</li>
+<li>Milestone creation interface</li>
+<li>Dependency management tools</li>
+<li>Team assignment recommendations</li>
+<li>Budget allocation assistance</li>
+</ul>
+<h4 id="success-criteria-establishment">5.3.3 Success Criteria Establishment</h4>
+<ul>
+<li>Job completion metric definition</li>
+<li>Milestone creation tools</li>
+<li>Economic impact calculators</li>
+<li>Outcome tracking setup</li>
+<li>Success verification process</li>
+<li>Stakeholder approval workflows</li>
+<li>Measurement methodology documentation</li>
+<li>Reporting structure configuration</li>
+</ul>
+<h3 id="feedback-loop-implementation">5.4 Feedback Loop Implementation</h3>
+<h4 id="analytics-→-content-brain-loop">5.4.1 Analytics → Content Brain Loop</h4>
+<ul>
+<li>Automated performance data aggregation</li>
+<li>Job content effectiveness scoring</li>
+<li>Underperforming content flagging</li>
+<li>Improvement recommendation generation</li>
+<li>Content refresh scheduling</li>
+<li>A/B test result incorporation</li>
+<li>Pattern library updates</li>
+<li>Success story extraction</li>
+</ul>
+<h4 id="crm-→-personalization-loop">5.4.2 CRM → Personalization Loop</h4>
+<ul>
+<li>Job evolution signals to personalization rules</li>
+<li>Sales insights to content prioritization</li>
+<li>Account history to returning visitor experiences</li>
+<li>Success patterns to prospect journeys</li>
+<li>Learning algorithm for pattern refinement</li>
+<li>Objection handling to content adaptation</li>
+<li>Deal velocity to urgency signals</li>
+<li>Loss reasons to content improvements</li>
+</ul>
+<h4 id="force-analysis-→-jtbd-radar-loop">5.4.3 Force Analysis → JTBD Radar Loop</h4>
+<ul>
+<li>Momentum signals to job pattern library</li>
+<li>Trigger patterns to data collection priorities</li>
+<li>Decision windows to content urgency</li>
+<li>Risk levels to personalization intensity</li>
+<li>Market shift detection and adaptation</li>
+<li>Force strength calibration</li>
+<li>New force type identification</li>
+<li>Impact area classification refinement</li>
+</ul>
+<h3 id="trace-link-documentation-system">5.5 Trace Link Documentation System</h3>
+<h4 id="component-tagging-framework">5.5.1 Component Tagging Framework</h4>
+<ul>
+<li>Standardized job connection documentation</li>
+<li>Primary and secondary job linkage</li>
+<li>Missing job link identification</li>
+<li>Job coverage visualization</li>
+<li>Automated trace verification</li>
+<li>Force connection tagging</li>
+<li>Outcome relationship mapping</li>
+<li>Implementation dependency tracking</li>
+</ul>
+<h4 id="pre-launch-validation-process">5.5.2 Pre-Launch Validation Process</h4>
+<ul>
+<li>Job trace verification checklist</li>
+<li>Minimum job coverage requirements</li>
+<li>Feedback loop validation</li>
+<li>Fallback mechanism verification</li>
+<li>Trace completeness reporting</li>
+<li>Performance impact assessment</li>
+<li>Security and privacy verification</li>
+<li>Accessibility compliance checking</li>
+</ul>
+<h4 id="quarterly-trace-review-system">5.5.3 Quarterly Trace Review System</h4>
+<ul>
+<li>Component-by-component job alignment audit</li>
+<li>Gap identification and prioritization</li>
+<li>Trace link update process</li>
+<li>Unnecessary component identification</li>
+<li>System efficiency optimization</li>
+<li>Pattern effectiveness review</li>
+<li>Success metric correlation analysis</li>
+<li>Documentation accuracy verification</li>
+</ul>
+<h3 id="ai-integration-framework">5.6 AI Integration Framework</h3>
+<h4 id="n8n-workflow-integration">5.6.1 n8n Workflow Integration</h4>
+<ul>
+<li>Workflow trigger definition</li>
+<li>Input data preparation</li>
+<li>Result processing methodology</li>
+<li>Error handling</li>
+<li>Fallback mechanisms</li>
+<li>Performance monitoring</li>
+<li>Credential management</li>
+<li>Workflow versioning</li>
+</ul>
+<h4 id="llm-processing">5.6.2 LLM Processing</h4>
+<ul>
+<li>Prompt engineering standards</li>
+<li>Response parsing</li>
+<li>Confidence scoring</li>
+<li>Output validation</li>
+<li>Cost optimization</li>
+<li>Model selection</li>
+<li>Fine-tuning approach</li>
+<li>Safety guardrails</li>
+</ul>
+<h4 id="ai-assisted-jtbd-components">5.6.3 AI-Assisted JTBD Components</h4>
+<ul>
+<li>Job statement quality enhancement</li>
+<li>Force analysis pattern recognition</li>
+<li>White space opportunity identification</li>
+<li>Content personalization</li>
+<li>Objection prediction</li>
+<li>Pattern matching improvement</li>
+<li>Risk assessment</li>
+<li>Value proposition generation</li>
+</ul>
+<h2 id="success-metrics-and-kpis">6. Success Metrics and KPIs</h2>
+<h3 id="system-performance-metrics">6.1 System Performance Metrics</h3>
+<h4 id="technical-performance">6.1.1 Technical Performance</h4>
+<ul>
+<li>JTBD Detection Speed: &lt;48 hours</li>
+<li>Personalization Accuracy: ≥87%</li>
+<li>Edge Response Time: &lt;200ms</li>
+<li>Content Gap Resolution: &lt;24 hours for critical gaps</li>
+<li>System Availability During Tool Outages: ≥99.5%</li>
+<li>Job Pattern Recognition Accuracy: ≥85%</li>
+<li>Force Analysis Completion Time: &lt;15 minutes</li>
+<li>Trace Link Coverage: 100% of core components</li>
+</ul>
+<h4 id="content-performance">6.1.2 Content Performance</h4>
+<ul>
+<li>Content-Job Alignment Score: ≥90%</li>
+<li>Content Engagement Rate: ≥65%</li>
+<li>A/B Test Improvement Rate: ≥15% per iteration</li>
+<li>Job Clarity Improvement: ≥25% after engagement</li>
+<li>Force-Aligned Content Performance: +35% over generic</li>
+<li>Outcome-Focused Content Conversion: +40% over feature-focused</li>
+<li>Role-Specific Content Engagement: +25% over general</li>
+<li>Visual Tool Usage Rate: ≥70% of users</li>
+</ul>
+<h4 id="campaign-performance">6.1.3 Campaign Performance</h4>
+<ul>
+<li>Campaign Alignment Accuracy: ≥85%</li>
+<li>Multi-channel Attribution Accuracy: ≥90%</li>
+<li>Campaign Optimization Speed: &lt;72 hours</li>
+<li>Cross-channel Consistency: ≥95%</li>
+<li>Job-Based Segment Performance: +45% over traditional segments</li>
+<li>Force-Targeted Campaign Response: +30% over standard messaging</li>
+<li>Decision Window Timing Accuracy: ≥80%</li>
+<li>White Space Opportunity Conversion: ≥25%</li>
+</ul>
+<h3 id="business-impact-metrics">6.2 Business Impact Metrics</h3>
+<h4 id="marketing-performance">6.2.1 Marketing Performance</h4>
+<ul>
+<li>Lead Generation: 65% increase</li>
+<li>Conversion Rate: 3.5% (from 1.8%)</li>
+<li>Cost Per Acquisition: 40% reduction</li>
+<li>Marketing ROI: 3:1 minimum</li>
+<li>Content Production Efficiency: +40%</li>
+<li>Job-Aligned Campaign Performance: +55%</li>
+<li>Force-Optimized Messaging Response: +35%</li>
+<li>Personalization Effectiveness: +60%</li>
+</ul>
+<h4 id="sales-performance">6.2.2 Sales Performance</h4>
+<ul>
+<li>Sales Cycle Length: 26 days (from 41)</li>
+<li>Proposal Win Rate: 35% (from 22%)</li>
+<li>Objection Handling Effectiveness: 80%</li>
+<li>Customer Lifetime Value: 25% increase</li>
+<li>Average Deal Size: +40% through value-based pricing</li>
+<li>Deal Velocity Improvement: 30% faster progression</li>
+<li>Force-Based Negotiation Success: +25%</li>
+<li>Job Clarity Impact on Close Rate: +40%</li>
+</ul>
+<h4 id="content-roi">6.2.3 Content ROI</h4>
+<ul>
+<li>Content Production Efficiency: 40% improvement</li>
+<li>Content Asset ROI: $21.4K per asset</li>
+<li>Content Reusability: 75% of components reused</li>
+<li>Time-to-Value for New Content: &lt;14 days</li>
+<li>Job-Focused Content Performance: +55% over product-focused</li>
+<li>Visual Tool Usage Impact: +35% on engagement</li>
+<li>Pattern Library Utilization: 80% of content creation</li>
+<li>Automated Optimization Impact: +25% on performance</li>
+</ul>
+<h4 id="implementation-success">6.2.4 Implementation Success</h4>
+<ul>
+<li>Implementation Timeline Adherence: ≥90%</li>
+<li>Implementation Success Rate: ≥85% of clients</li>
+<li>Customer Satisfaction Score: ≥4.5/5</li>
+<li>Repeat Business Rate: ≥80%</li>
+<li>Outcome Achievement Rate: ≥75% of defined outcomes</li>
+<li>Resource Utilization Efficiency: +30%</li>
+<li>Knowledge Transfer Effectiveness: 90% completion</li>
+<li>Economic Impact Realization: ≥80% of projected value</li>
+</ul>
+<h3 id="jtbd-trace-coverage-metrics">6.3 JTBD Trace Coverage Metrics</h3>
+<h4 id="component-coverage">6.3.1 Component Coverage</h4>
+<ul>
+<li>Components with Primary Job Links: 100%</li>
+<li>Components with Multiple Job Links: ≥90%</li>
+<li>Components with Force Analysis Connection: ≥85%</li>
+<li>Components with Outcome Linkage: ≥95%</li>
+<li>Visual Tools Implementation: 100% of key visualizations</li>
+<li>Process Automation Coverage: ≥85% of workflows</li>
+<li>Integration Framework Implementation: 100% of critical systems</li>
+<li>AI Assistance Integration: ≥75% of suitable touchpoints</li>
+</ul>
+<h4 id="feedback-loop-coverage">6.3.2 Feedback Loop Coverage</h4>
+<ul>
+<li>Job Feedback Loops: At least 1 per major component</li>
+<li>Content Performance Feedback: 100% of assets</li>
+<li>User Behavior to Personalization Loops: ≥95%</li>
+<li>CRM to Content Optimization Loops: ≥90%</li>
+<li>Force Analysis Evolution Loops: ≥85%</li>
+<li>Outcome Achievement Feedback: 100% of projects</li>
+<li>Implementation Learning Loops: ≥80% of deliveries</li>
+<li>Pattern Library Refinement Loops: Quarterly updates</li>
+</ul>
+<h4 id="job-completeness">6.3.3 Job Completeness</h4>
+<ul>
+<li>Unaddressed Jobs: &lt;5% of identified customer jobs</li>
+<li>Job Statement Completeness: ≥90% include situation, motivation, outcome</li>
+<li>Job Portfolio Coverage: ≥85% of clients have multiple jobs mapped</li>
+<li>Job Evolution Tracking: ≥80% of jobs have documented evolution</li>
+<li>Force Analysis Completeness: ≥90% have all force types</li>
+<li>Outcome Definition Clarity: ≥85% have measurable metrics</li>
+<li>Visual Representation Quality: ≥90% meet standards</li>
+<li>Documentation Comprehensiveness: 100% of components</li>
+</ul>
+<h2 id="testing-and-quality-assurance">7. Testing and Quality Assurance</h2>
+<h3 id="testing-approach">7.1 Testing Approach</h3>
+<h4 id="unit-testing">7.1.1 Unit Testing</h4>
+<ul>
+<li>Individual component functionality testing</li>
+<li>API endpoint validation</li>
+<li>Database interaction verification</li>
+<li>Error handling validation</li>
+<li>Field computation testing</li>
+<li>Validation rule verification</li>
+<li>Permission model testing</li>
+<li>Computed field accuracy testing</li>
+</ul>
+<h4 id="integration-testing">7.1.2 Integration Testing</h4>
+<ul>
+<li>Cross-component communication testing</li>
+<li>External system integration validation</li>
+<li>Data flow verification</li>
+<li>Error propagation testing</li>
+<li>Authentication and authorization testing</li>
+<li>Event handling validation</li>
+<li>Workflow execution verification</li>
+<li>Multi-system transaction testing</li>
+</ul>
+<h4 id="system-testing">7.1.3 System Testing</h4>
+<ul>
+<li>End-to-end workflow validation</li>
+<li>Performance testing under load</li>
+<li>Security and privacy compliance testing</li>
+<li>Recovery and fallback testing</li>
+<li>Data migration validation</li>
+<li>Backup and restore verification</li>
+<li>Compatibility testing across browsers/devices</li>
+<li>Scalability testing with large data volumes</li>
+</ul>
+<h4 id="user-acceptance-testing">7.1.4 User Acceptance Testing</h4>
+<ul>
+<li>Marketing team workflow validation</li>
+<li>Sales team integration testing</li>
+<li>Content team usability testing</li>
+<li>Executive dashboard validation</li>
+<li>Implementation team process verification</li>
+<li>Visual tool effectiveness testing</li>
+<li>Role-specific workflow validation</li>
+<li>Documentation usability testing</li>
+</ul>
+<h3 id="quality-metrics">7.2 Quality Metrics</h3>
+<h4 id="code-quality">7.2.1 Code Quality</h4>
+<ul>
+<li>Test coverage: ≥90%</li>
+<li>Static analysis compliance: 100%</li>
+<li>Documentation completeness: ≥95%</li>
+<li>Code review completion: 100%</li>
+<li>Architectural standards compliance: 100%</li>
+<li>Security vulnerability assessment: 0 critical issues</li>
+<li>Performance benchmark compliance: 100%</li>
+<li>Accessibility compliance: WCAG 2.1 AA standard</li>
+</ul>
+<h4 id="data-quality">7.2.2 Data Quality</h4>
+<ul>
+<li>Job statement quality score: ≥90%</li>
+<li>Data completeness: ≥95% of required fields</li>
+<li>Data consistency: ≥99% across systems</li>
+<li>Data freshness: ≤24 hours for critical data</li>
+<li>Pattern library accuracy: ≥95%</li>
+<li>Force analysis consistency: ≥90%</li>
+<li>Outcome definition clarity: ≥85%</li>
+<li>Integration data mapping accuracy: 100%</li>
+</ul>
+<h4 id="user-experience-quality">7.2.3 User Experience Quality</h4>
+<ul>
+<li>System Usability Scale (SUS) score: ≥85</li>
+<li>Task completion rate: ≥95%</li>
+<li>Error rate: ≤5% per workflow</li>
+<li>User satisfaction rating: ≥4.5/5</li>
+<li>Visual tool effectiveness rating: ≥4.2/5</li>
+<li>Help system usefulness rating: ≥4.0/5</li>
+<li>Learning curve assessment: ≤3 days to proficiency</li>
+<li>Cross-role collaboration effectiveness: ≥4.3/5</li>
+</ul>
+<h2 id="maintenance-and-support">8. Maintenance and Support</h2>
+<h3 id="system-monitoring">8.1 System Monitoring</h3>
+<h4 id="performance-monitoring">8.1.1 Performance Monitoring</h4>
+<ul>
+<li>Real-time dashboard for system performance</li>
+<li>Alert system for performance degradation</li>
+<li>Trend analysis for capacity planning</li>
+<li>Component-level performance tracking</li>
+<li>Integration performance monitoring</li>
+<li>Database query optimization</li>
+<li>Memory usage tracking</li>
+<li>Response time monitoring</li>
+</ul>
+<h4 id="error-monitoring">8.1.2 Error Monitoring</h4>
+<ul>
+<li>Centralized error logging and tracking</li>
+<li>Error categorization and prioritization</li>
+<li>Resolution time tracking</li>
+<li>Root cause analysis process</li>
+<li>Error pattern identification</li>
+<li>Recurring issue detection</li>
+<li>Integration failure monitoring</li>
+<li>User-reported issue tracking</li>
+</ul>
+<h4 id="usage-monitoring">8.1.3 Usage Monitoring</h4>
+<ul>
+<li>Feature usage tracking</li>
+<li>User engagement metrics</li>
+<li>Resource utilization tracking</li>
+<li>Bottleneck identification</li>
+<li>Adoption rate monitoring</li>
+<li>Role-specific usage patterns</li>
+<li>Tool effectiveness measurement</li>
+<li>Value realization tracking</li>
+</ul>
+<h3 id="maintenance-procedures">8.2 Maintenance Procedures</h3>
+<h4 id="routine-maintenance">8.2.1 Routine Maintenance</h4>
+<ul>
+<li>Weekly database optimization</li>
+<li>Monthly performance review</li>
+<li>Quarterly security audits</li>
+<li>Bi-annual architecture review</li>
+<li>Data archiving procedures</li>
+<li>Log rotation and management</li>
+<li>Backup verification testing</li>
+<li>System health checks</li>
+</ul>
+<h4 id="data-maintenance">8.2.2 Data Maintenance</h4>
+<ul>
+<li>Job pattern library curation process</li>
+<li>Content alignment score recalibration</li>
+<li>Attribution model recalibration</li>
+<li>Historical data archiving</li>
+<li>Force effectiveness assessment</li>
+<li>Pattern success rate analysis</li>
+<li>Field calculation verification</li>
+<li>Database index optimization</li>
+</ul>
+<h4 id="system-updates">8.2.3 System Updates</h4>
+<ul>
+<li>Continuous deployment for minor updates</li>
+<li>Scheduled releases for major features</li>
+<li>Backward compatibility requirements</li>
+<li>Update notification system</li>
+<li>Rollback procedures</li>
+<li>Change impact assessment</li>
+<li>User training for significant changes</li>
+<li>Post-update verification</li>
+</ul>
+<h3 id="support-structure">8.3 Support Structure</h3>
+<h4 id="user-support">8.3.1 User Support</h4>
+<ul>
+<li>In-application help system</li>
+<li>Knowledge base for common questions</li>
+<li>Support ticket system for issues</li>
+<li>Video tutorials for key functions</li>
+<li>Chat support during business hours</li>
+<li>Regular office hours for questions</li>
+<li>Role-specific support resources</li>
+<li>Training refresher sessions</li>
+</ul>
+<h4 id="technical-support">8.3.2 Technical Support</h4>
+<ul>
+<li>Developer documentation</li>
+<li>API reference materials</li>
+<li>Integration troubleshooting guides</li>
+<li>System architecture documentation</li>
+<li>Database schema documentation</li>
+<li>Code examples for customization</li>
+<li>Performance optimization guidelines</li>
+<li>Security best practices</li>
+</ul>
+<h4 id="ongoing-training">8.3.3 Ongoing Training</h4>
+<ul>
+<li>Monthly training webinars</li>
+<li>Role-specific training modules</li>
+<li>Feature update training</li>
+<li>Advanced usage workshops</li>
+<li>New user onboarding program</li>
+<li>Certification program</li>
+<li>Train-the-trainer resources</li>
+<li>Self-guided learning paths</li>
+</ul>
+<h2 id="documentation-framework">9. Documentation Framework</h2>
+<h3 id="agency-jtbd-master-playbook">9.1 Agency JTBD Master Playbook</h3>
+<h4 id="structure-and-organization">9.1.1 Structure and Organization</h4>
+<ul>
+<li>Overall framework methodology</li>
+<li>Phase-by-phase implementation guidance</li>
+<li>Role-specific sections</li>
+<li>Tool reference guides</li>
+<li>Process workflows</li>
+<li>Template library</li>
+<li>Case study examples</li>
+<li>Best practice guidelines</li>
+</ul>
+<h4 id="content-standards">9.1.2 Content Standards</h4>
+<ul>
+<li>Consistent terminology</li>
+<li>Visual aids and diagrams</li>
+<li>Step-by-step instructions</li>
+<li>Example-based learning</li>
+<li>Clear formatting</li>
+<li>Progressive disclosure of complexity</li>
+<li>Cross-referencing between sections</li>
+<li>Version tracking</li>
+</ul>
+<h4 id="maintenance-approach">9.1.3 Maintenance Approach</h4>
+<ul>
+<li>Regular review schedule</li>
+<li>Update tracking</li>
+<li>Version control</li>
+<li>Contribution guidelines</li>
+<li>Quality assurance process</li>
+<li>Distribution methodology</li>
+<li>Feedback incorporation</li>
+<li>Archiving policy</li>
+</ul>
+<h3 id="role-based-quick-start-guides">9.2 Role-Based Quick Start Guides</h3>
+<h4 id="marketing-team-guide">9.2.1 Marketing Team Guide</h4>
+<ul>
+<li>JTBD fundamentals for marketers</li>
+<li>Campaign alignment techniques</li>
+<li>Content development workflow</li>
+<li>Performance measurement</li>
+<li>Job pattern utilization</li>
+<li>Force analysis application</li>
+<li>Tool-specific instructions</li>
+<li>Common scenario walkthrough</li>
+</ul>
+<h4 id="sales-team-guide">9.2.2 Sales Team Guide</h4>
+<ul>
+<li>JTBD discovery techniques</li>
+<li>Force analysis in sales context</li>
+<li>Objection handling with forces</li>
+<li>Value articulation methods</li>
+<li>Tool usage in sales process</li>
+<li>CRM field guidance</li>
+<li>Meeting preparation</li>
+<li>Closing techniques</li>
+</ul>
+<h4 id="content-team-guide">9.2.3 Content Team Guide</h4>
+<ul>
+<li>JTBD content development</li>
+<li>Force-aligned messaging</li>
+<li>Component library usage</li>
+<li>Content testing workflow</li>
+<li>Performance analysis</li>
+<li>Template utilization</li>
+<li>Collaboration with sales</li>
+<li>Content optimization</li>
+</ul>
+<h4 id="implementation-team-guide">9.2.4 Implementation Team Guide</h4>
+<ul>
+<li>JTBD implementation planning</li>
+<li>Outcome tracking setup</li>
+<li>Project template usage</li>
+<li>Client onboarding workflow</li>
+<li>Knowledge transfer methods</li>
+<li>Success measurement</li>
+<li>Tool configuration</li>
+<li>Client communication</li>
+</ul>
+<h3 id="process-workflow-documentation">9.3 Process Workflow Documentation</h3>
+<h4 id="visual-workflow-documentation">9.3.1 Visual Workflow Documentation</h4>
+<ul>
+<li>Process flow diagrams</li>
+<li>Decision point documentation</li>
+<li>Swimlane responsibility charts</li>
+<li>Integration touchpoints</li>
+<li>Exception handling</li>
+<li>SLA expectations</li>
+<li>Handoff procedures</li>
+<li>Verification checkpoints</li>
+</ul>
+<h4 id="step-definition-standards">9.3.2 Step Definition Standards</h4>
+<ul>
+<li>Consistent action formatting</li>
+<li>Role responsibility clarity</li>
+<li>Input requirements</li>
+<li>Output expectations</li>
+<li>Tool references</li>
+<li>Time expectations</li>
+<li>Quality criteria</li>
+<li>Success verification</li>
+</ul>
+<h4 id="decision-point-documentation">9.3.3 Decision Point Documentation</h4>
+<ul>
+<li>Criteria for decisions</li>
+<li>Authority levels</li>
+<li>Supporting data requirements</li>
+<li>Approval workflow</li>
+<li>Alternative paths</li>
+<li>Impact assessment</li>
+<li>Escalation procedures</li>
+<li>Documentation requirements</li>
+</ul>
+<h3 id="tool-specific-guides">9.4 Tool-Specific Guides</h3>
+<h4 id="job-statement-builder-guide">9.4.1 Job Statement Builder Guide</h4>
+<ul>
+<li>Interface overview</li>
+<li>Step-by-step usage</li>
+<li>Pattern suggestion utilization</li>
+<li>Quality assessment</li>
+<li>Editing techniques</li>
+<li>Example gallery</li>
+<li>Troubleshooting</li>
+<li>Best practices</li>
+</ul>
+<h4 id="force-analysis-tool-guide">9.4.2 Force Analysis Tool Guide</h4>
+<ul>
+<li>Interface orientation</li>
+<li>Force identification techniques</li>
+<li>Strength assessment guidance</li>
+<li>Evidence documentation</li>
+<li>Visualization interpretation</li>
+<li>Momentum calculation</li>
+<li>Decision window analysis</li>
+<li>Strategic application</li>
+</ul>
+<h4 id="outcome-mapping-tool-guide">9.4.3 Outcome Mapping Tool Guide</h4>
+<ul>
+<li>Interface walkthrough</li>
+<li>Metric selection guidance</li>
+<li>Target setting methodology</li>
+<li>Milestone planning</li>
+<li>Visualization tools</li>
+<li>Progress tracking</li>
+<li>White space identification</li>
+<li>Integration with other tools</li>
+</ul>
+<h4 id="visual-tool-user-guides">9.4.4 Visual Tool User Guides</h4>
+<ul>
+<li>Tool navigation</li>
+<li>Interaction patterns</li>
+<li>Data interpretation</li>
+<li>Customization options</li>
+<li>Export capabilities</li>
+<li>Collaborative features</li>
+<li>Integration with workflow</li>
+<li>Troubleshooting common issues</li>
+</ul>
+<h3 id="training-materials">9.5 Training Materials</h3>
+<h4 id="e-learning-modules">9.5.1 E-Learning Modules</h4>
+<ul>
+<li>JTBD fundamentals course</li>
+<li>Force analysis training</li>
+<li>Outcome mapping curriculum</li>
+<li>Tool proficiency modules</li>
+<li>Process workflow training</li>
+<li>Implementation methodology</li>
+<li>Performance analysis</li>
+<li>Advanced application techniques</li>
+</ul>
+<h4 id="workshop-facilitation-guides">9.5.2 Workshop Facilitation Guides</h4>
+<ul>
+<li>JTBD discovery workshop</li>
+<li>Force analysis workshop</li>
+<li>Outcome definition workshop</li>
+<li>Implementation planning</li>
+<li>Content strategy development</li>
+<li>Team alignment sessions</li>
+<li>Performance review workshops</li>
+<li>Process improvement facilitation</li>
+</ul>
+<h4 id="certification-program">9.5.3 Certification Program</h4>
+<ul>
+<li>Foundation certification</li>
+<li>Advanced practitioner path</li>
+<li>Specialist certifications</li>
+<li>Assessment methodology</li>
+<li>Practice exercises</li>
+<li>Case study analysis</li>
+<li>Certification maintenance</li>
+<li>Trainer certification</li>
+</ul>
+<h2 id="version-history">10. Version History</h2>
+<h3 id="version-1.0-april-14-2025">10.1 Version 1.0 (April 14, 2025)</h3>
+<ul>
+<li>Initial document creation</li>
+</ul>
+<h3 id="version-1.1-april-16-2025">10.2 Version 1.1 (April 16, 2025)</h3>
+<ul>
+<li>Enhanced Force Analysis Framework with complete force types</li>
+<li>Added Visual Tools Framework with comprehensive visualization components</li>
+<li>Expanded Integration Framework with detailed connector specifications</li>
+<li>Added Process Automation Framework with workflow engine</li>
+<li>Enhanced field specifications with implementation phasing</li>
+<li>Added AI Integration Framework with n8n workflows</li>
+<li>Expanded Post-Conversion Framework with project management</li>
+<li>Added Documentation Framework with comprehensive guide structure</li>
+<li>Updated implementation approach based on validation findings</li>
+<li>Enhanced success metrics with visual tools and documentation metrics</li>
+</ul>
+<h2 id="appendices">11. Appendices</h2>
+<h3 id="appendix-a-jtbd-field-specifications">Appendix A: JTBD Field Specifications</h3>
+<p>Detailed field specifications for all 48 JTBD-related fields including:</p>
+<ul>
+<li>Field name and type</li>
+<li>Model placement</li>
+<li>Computation logic</li>
+<li>Validation rules</li>
+<li>Example values</li>
+<li>Implementation phase</li>
+<li>Dependencies</li>
+<li>UI representation</li>
+</ul>
+<h3 id="appendix-b-visual-tools-specifications">Appendix B: Visual Tools Specifications</h3>
+<p>Detailed specifications for all visualization components:</p>
+<ul>
+<li>Force field diagram standards</li>
+<li>Outcome progress visualization</li>
+<li>Intent signal heatmap</li>
+<li>White space opportunity map</li>
+<li>Stakeholder mapping</li>
+<li>Analytics dashboard</li>
+<li>Job portfolio visualization</li>
+<li>Evolution pathway charting</li>
+</ul>
+<h3 id="appendix-c-integration-connector-specifications">Appendix C: Integration Connector Specifications</h3>
+<p>Detailed specifications for external system connectors:</p>
+<ul>
+<li>Authentication requirements</li>
+<li>Field mapping tables</li>
+<li>Data transformation rules</li>
+<li>Webhook configurations</li>
+<li>Error handling procedures</li>
+<li>Performance expectations</li>
+<li>Security requirements</li>
+<li>Versioning support</li>
+</ul>
+<h3 id="appendix-d-workflow-engine-configuration">Appendix D: Workflow Engine Configuration</h3>
+<p>Detailed configuration for process automation:</p>
+<ul>
+<li>Workflow templates by process</li>
+<li>Trigger definitions</li>
+<li>Condition specifications</li>
+<li>Action configurations</li>
+<li>Notification templates</li>
+<li>Task generation rules</li>
+<li>Error recovery procedures</li>
+<li>Monitoring setup</li>
+</ul>
+<h3 id="appendix-e-ai-integration-patterns">Appendix E: AI Integration Patterns</h3>
+<p>Comprehensive patterns for AI assistance:</p>
+<ul>
+<li>Prompt templates by function</li>
+<li>Response parsing rules</li>
+<li>Confidence thresholds</li>
+<li>Fallback procedures</li>
+<li>Cost optimization techniques</li>
+<li>Performance benchmarks</li>
+<li>Model selection criteria</li>
+<li>Fine-tuning approach</li>
+</ul>
+
+    </div>
+  </div>
+
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌞</button>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('lightMode', isLight);
+      document.querySelector('.dark-mode-toggle').textContent = isLight ? '🌙' : '🌞';
+    }
+
+    // Initialize theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedLightMode = localStorage.getItem('lightMode') === 'true';
+      if (savedLightMode) {
+        document.body.classList.add('light-mode');
+        document.querySelector('.dark-mode-toggle').textContent = '🌙';
+      }
+
+      // Mobile table labels
+      const updateDataLabels = () => {
+        const cells = document.querySelectorAll('td');
+        cells.forEach(cell => {
+          const header = cell.closest('table')?.querySelectorAll('th')[cell.cellIndex];
+          if (header) cell.setAttribute('data-label', header.textContent);
+        });
+      };
+      
+      updateDataLabels();
+      new MutationObserver(updateDataLabels).observe(document.body, { 
+        subtree: true, 
+        childList: true 
+      });
+    });
+  </script>
+</body>
+
+</html>
