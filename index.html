@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Digital Garden</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
-  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="styles/global.css"> <!-- Relative path -->
 </head>
 <body class="dark-mode">
   <header class="site-header">
@@ -21,30 +21,27 @@
         <input type="text" id="searchInput" placeholder="Search notes..." class="search-input">
       </div>
       
-      <div id="postsContainer" class="posts-grid">
-        <!-- Dynamic content will load here -->
-      </div>
+      <div id="postsContainer" class="posts-grid"></div>
     </section>
   </main>
 
   <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌞</button>
 
   <script>
-    // Updated fetch URL with your GitHub info
     async function loadPosts() {
       try {
+        // Replace with your details
         const response = await fetch('https://api.github.com/repos/rabhanz/markdown/contents/pages');
         const files = await response.json();
         
         const postsContainer = document.getElementById('postsContainer');
-        postsContainer.innerHTML = ''; // Clear loading state
         
         files.forEach(file => {
           if (file.name.endsWith('.html')) {
             const postElement = document.createElement('article');
             postElement.className = 'post-card';
             postElement.innerHTML = `
-              <a href="/pages/${file.name}" class="post-link">
+              <a href="pages/${file.name}" class="post-link"> <!-- Relative path -->
                 <h2 class="post-title">${file.name.replace('.html', '')}</h2>
                 <time class="post-date">${new Date(file.last_modified).toLocaleDateString()}</time>
               </a>
@@ -54,11 +51,10 @@
         });
       } catch (error) {
         console.error('Error loading posts:', error);
-        postsContainer.innerHTML = '<p>⚠️ Error loading content. Please refresh or check back later.</p>';
+        postsContainer.innerHTML = '<p class="error">⚠️ Content failed to load. Please check back later.</p>';
       }
     }
 
-    // Initialize
     document.addEventListener('DOMContentLoaded', loadPosts);
   </script>
   <script src="scripts/theme-toggle.js"></script>
