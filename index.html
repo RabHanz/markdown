@@ -27,29 +27,38 @@
     </button>
 
     <script>
-        // GitHub Content Loader
         async function loadPosts() {
             try {
-                const response = await fetch('https://api.github.com/repos/rabhanz/markdown/contents/pages');
+                const response = await fetch('https://api.github.com/repos/[USERNAME]/[REPO]/contents/pages');
                 const files = await response.json();
                 const container = document.getElementById('postsContainer');
                 
-                container.innerHTML = files
-                    .filter(file => file.name.endsWith('.html'))
-                    .map(file => `
-                        <article class="knowledge-card">
-                            <a href="pages/${file.name}" class="card-link">
-                                <div class="card-content">
-                                    <h2>${file.name.replace('.html', '').replace(/-/g, ' ')}</h2>
-                                    <div class="card-meta">
-                                        <time>${new Date(file.last_modified).toLocaleDateString()}</time>
-                                        <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
-                                    </div>
-                                    <div class="card-hover"></div>
+                for (const file of files.filter(f => f.name.endsWith('.html'))) {
+                    // Get proper commit date
+                    const commitRes = await fetch(file.git_url);
+                    const commitData = await commitRes.json();
+                    const lastModified = new Date(commitData.last_modified || commitData.commit?.committer?.date);
+                    
+                    const postElement = document.createElement('article');
+                    postElement.className = 'knowledge-card';
+                    postElement.innerHTML = `
+                        <a href="pages/${file.name}" class="card-link">
+                            <div class="card-content">
+                                <h2>${file.name.replace('.html', '').replace(/-/g, ' ')}</h2>
+                                <div class="card-meta">
+                                    <time>${lastModified.toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric'
+                                    })}</time>
+                                    <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
                                 </div>
-                            </a>
-                        </article>
-                    `).join('');
+                                <div class="card-hover"></div>
+                            </div>
+                        </a>
+                    `;
+                    container.appendChild(postElement);
+                }
             } catch (error) {
                 container.innerHTML = `
                     <div class="error-state">
@@ -59,9 +68,6 @@
                 `;
             }
         }
-
-        // Initial Load
-        document.addEventListener('DOMContentLoaded', loadPosts);
     </script>
     <script src="scripts/theme-toggle.js"></script>
 </body>
