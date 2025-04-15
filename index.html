@@ -25,7 +25,6 @@
     <button class="theme-toggle" aria-label="Toggle theme">
         <span class="theme-icon">🌙</span>
     </button>
-
     <script>
         async function loadPosts() {
             try {
@@ -33,37 +32,53 @@
                 const files = await response.json();
                 const container = document.getElementById('postsContainer');
                 
+                // Clear container while keeping the grid structure
+                container.innerHTML = '';
+                
+                // Add a temporary loading state
+                container.innerHTML = '<div class="loading">🌱 Growing knowledge...</div>';
+    
                 for (const file of files.filter(f => f.name.endsWith('.html'))) {
-                    // Get proper commit date
-                    const commitRes = await fetch(file.git_url);
-                    const commitData = await commitRes.json();
-                    const lastModified = new Date(commitData.last_modified || commitData.commit?.committer?.date);
-                    
-                    const postElement = document.createElement('article');
-                    postElement.className = 'knowledge-card';
-                    postElement.innerHTML = `
-                        <a href="pages/${file.name}" class="card-link">
-                            <div class="card-content">
-                                <h2>${file.name.replace('.html', '').replace(/-/g, ' ')}</h2>
-                                <div class="card-meta">
-                                    <time>${lastModified.toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric'
-                                    })}</time>
-                                    <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
+                    try {
+                        const lastModified = new Date(file.last_modified || Date.now());
+                        
+                        const postElement = document.createElement('article');
+                        postElement.className = 'knowledge-card';
+                        postElement.innerHTML = `
+                            <a href="pages/${file.name}" class="card-link">
+                                <div class="card-content">
+                                    <h2>${file.name.replace('.html', '').replace(/-/g, ' ')}</h2>
+                                    <div class="card-meta">
+                                        <time>${lastModified.toLocaleDateString('en-US', {
+                                            year: 'numeric',
+                                            month: 'short',
+                                            day: 'numeric'
+                                        })}</time>
+                                        <span class="file-size">${(file.size/1024).toFixed(1)} KB</span>
+                                    </div>
                                 </div>
-                                <div class="card-hover"></div>
-                            </div>
-                        </a>
-                    `;
-                    container.appendChild(postElement);
+                            </a>
+                        `;
+                        container.appendChild(postElement);
+                        
+                        // Remove loading state once first card appears
+                        if (container.querySelector('.loading')) {
+                            container.removeChild(container.querySelector('.loading'));
+                        }
+                    } catch (fileError) {
+                        console.warn('Skipping file:', file.name, fileError);
+                    }
+                }
+                
+                // Handle empty state
+                if (!container.hasChildNodes()) {
+                    container.innerHTML = '<div class="empty-state">📚 No notes found</div>';
                 }
             } catch (error) {
                 container.innerHTML = `
                     <div class="error-state">
-                        <h3>🌱 Content Not Loaded</h3>
-                        <p>Our garden is temporarily inaccessible. Please refresh or try again later.</p>
+                        <h3>🌧️ Connection Issue</h3>
+                        <p>Unable to reach the garden. Please check your internet connection.</p>
                     </div>
                 `;
             }
