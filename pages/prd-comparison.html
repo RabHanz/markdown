@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>prd</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --code-bg: #1e293b;
+      --link-color: #7dd3fc;
+      --border-color: #334155;
+      --accent-color: #7dd3fc;
+      --header-bg: rgba(15,23,42,0.7);
+      --radius: 8px;
+      --content-padding: 2.5rem;
+        /* Add font size variables */
+	  --text-base: 1.125rem;
+	  --text-scale-ratio: 1.25;
+	  --text-xs: calc(var(--text-base) / var(--text-scale-ratio));
+	  --text-sm: calc(var(--text-base) * 0.9);
+	  --text-md: calc(var(--text-base) * 1.1);
+	  --text-lg: calc(var(--text-base) * 1.5);
+	  --text-xl: calc(var(--text-base) * 2);
+	  --text-xxl: calc(var(--text-base) * 2.5);
+
+    }
+
+    .light-mode {
+      --bg-color: #ffffff;
+      --text-color: #1e293b;
+      --code-bg: #f1f5f9;
+      --link-color: #0ea5e9;
+      --border-color: #cbd5e1;
+      --accent-color: #0ea5e9;
+      --header-bg: rgba(255,255,255,0.9);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      line-height: 1.65;
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      padding: var(--content-padding);
+      min-width: fit-content;
+      font-size: var(--text-base);
+  	  line-height: 1.7; /* Increased line height for better readability */
+    }
+
+    .stackedit__html {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.8em;
+      margin-bottom: 0.8em;
+      padding-bottom: 0.2em;
+    }
+
+    h1 { margin-top: 1.2em; }
+
+	h1 { font-size: var(--text-xxl); }
+	h2 { font-size: var(--text-xl); }
+	h3 { font-size: var(--text-lg); }
+	h4 { font-size: var(--text-md); }
+	h5 { font-size: var(--text-sm); }
+	h6 { font-size: var(--text-xs); }
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      z-index: 1000;
+      font-size: calc(var(--text-base) * 1.25);
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--accent-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 2.5rem 0;
+      padding: 25px;
+      border-radius: var(--radius);
+      background: var(--code-bg);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-color);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-color);
+    }
+
+    th, td {
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      min-width: 120px;
+	  font-size: calc(var(--text-base) * 0.95);
+    }
+
+    th {
+      background: var(--header-bg);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      position: sticky;
+      left: 0;
+      backdrop-filter: blur(12px);
+    }
+
+    tr {
+      transition: background 0.2s ease;
+    }
+
+    tr:hover {
+      background: rgba(125,211,252,0.05);
+    }
+
+    td:nth-child(1) {
+      font-weight: 500;
+      color: var(--accent-color);
+    }
+
+    td:nth-child(3) {
+      white-space: pre-wrap;
+      font-family: 'SF Mono', Menlo, monospace;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      th, td {
+        padding: 1rem;
+        display: block;
+        white-space: normal;
+      }
+
+      tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border-radius: var(--radius);
+        background: var(--code-bg);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      th {
+        display: none;
+      }
+
+      td {
+        border-bottom: none;
+        position: relative;
+        padding-left: 45%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        width: 40%;
+      }
+      code {
+		font-size: calc(var(--text-base) * 0.9);
+	  }
+    }
+  </style>
+</head>
+
+<body class="stackedit dark-mode">
+  <div class="stackedit__html">
+    <div class="table-container">
+      <p>Okay, let’s break down and compare these two Product Requirements Documents (PRDs) for the JTBD/ODI Odoo Module.</p>
+<p><strong>Overall Impression:</strong></p>
+<ul>
+<li><strong>PRD1:</strong> Serves as a solid initial draft or high-level overview. It outlines the core concepts, goals, phases, and key features but lacks deep technical specificity in many areas.</li>
+<li><strong>PRD2:</strong> Represents a significantly more mature and detailed specification. It builds upon the foundation of PRD1, incorporates feedback (“updated version 1.1 based on validation”), provides much greater technical granularity, introduces new concepts, and includes more formal project management elements.</li>
+</ul>
+<p><strong>Comparison and Analysis:</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Feature/Section</th>
+<th align="left">PRD1 Description</th>
+<th align="left">PRD2 Description</th>
+<th align="left">Analysis &amp; Technical Differences</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>Document Structure</strong></td>
+<td align="left">Standard PRD sections.</td>
+<td align="left">More detailed, numbered sections, includes Implementation Resources, Change Management, Appendices, Revision History.</td>
+<td align="left">PRD2 is more formally structured, indicating a more rigorous process and likely integration into a larger project management framework. Versioning (1.1) confirms it’s an evolution.</td>
+</tr>
+<tr>
+<td align="left"><strong>Goals</strong></td>
+<td align="left">6 high-level goals.</td>
+<td align="left">10 goals, including PRD1’s + goals explicitly calling out Visualization, Integration, Automation, AI.</td>
+<td align="left">PRD2 expands the explicit strategic objectives, giving more weight to specific technical enablers mentioned later in the document.</td>
+</tr>
+<tr>
+<td align="left"><strong>User Personas</strong></td>
+<td align="left">Lists 6 personas.</td>
+<td align="left">Lists same 6 personas but adds Needs, Activities, Critical Tools for each.</td>
+<td align="left">PRD2 provides more context for design and development, but the core technical requirement (supporting these personas) is the same.</td>
+</tr>
+<tr>
+<td align="left"><strong>Module Structure</strong></td>
+<td align="left">Lists 7 core components.</td>
+<td align="left">Lists same 7 components but with detailed sub-points for each.</td>
+<td align="left">PRD2 provides a more granular upfront breakdown of the module’s technical composition (e.g., specific types of data models, wizards, visual tools planned).</td>
+</tr>
+<tr>
+<td align="left"><strong>Phased Implementation</strong></td>
+<td align="left">4 phases, general descriptions.</td>
+<td align="left">4 phases, more specific deliverables per phase (e.g., “Visual Tools Framework”, “Trace Link System” introduced in Phase 2).</td>
+<td align="left">PRD2 has a more detailed and potentially revised rollout plan, introducing foundational technical frameworks earlier. It adds specific systems like the Trace Link System not mentioned in PRD1.</td>
+</tr>
+<tr>
+<td align="left"><strong>Data Models (Overall)</strong></td>
+<td align="left">Defines core fields, uses <code>x_</code> prefix convention.</td>
+<td align="left">Defines fields with more Odoo-like naming (<code>jtbd_</code>), specifies Odoo field types (<code>fields.Selection</code>), often specifies the target Odoo model (<code>On Model: crm.lead</code>). Adds new models and fields.</td>
+<td align="left">PRD2 is vastly more technically specific. It uses more standard Odoo naming, defines types precisely, links fields to models, and introduces entirely new data models (e.g., <code>jtbd.trace.link</code>, <code>jtbd.job.portfolio</code>).</td>
+</tr>
+<tr>
+<td align="left"><strong>Phase 1: Foundation</strong></td>
+<td align="left">Basic JTBD fields, wizard, basic integration config.</td>
+<td align="left">Adds <code>jtbd_job_clarity_score</code>, more Force/Trigger fields (<code>jtbd_risk_level</code>, <code>jtbd_momentum_score</code>), defines Force Analysis models (<code>jtbd.force.analysis</code>) &amp; logic, more detailed UI specs.</td>
+<td align="left">PRD2 front-loads more technical detail into Phase 1, including the core Force Analysis data structure and calculation logic, which PRD1 deferred. Adds new computed fields and risk/momentum tracking early.</td>
+</tr>
+<tr>
+<td align="left"><strong>Phase 2: Analysis Tools</strong></td>
+<td align="left">Introduces Force/Outcome tools, basic project int.</td>
+<td align="left">Adds <strong>Visual Tools Framework</strong>, <strong>Integration Framework</strong> (detailed architecture, connectors), <strong>Process Automation Framework</strong> (workflow models), <strong>Trace Link Documentation System</strong>. Much more detail on existing tools.</td>
+<td align="left">PRD2 introduces significant new technical frameworks (Visual Tools, Integration, Automation, Trace Links) and provides deep technical specifications for connectors and architecture, far exceeding PRD1’s detail.</td>
+</tr>
+<tr>
+<td align="left"><strong>Phase 3: Intelligence</strong></td>
+<td align="left">Analytics, Patterns, Advanced Int., Unit Economics.</td>
+<td align="left">Adds <strong>Job Portfolio Analysis</strong> (model: <code>jtbd.job.portfolio</code>), <strong>Job Evolution Detection</strong> (model: <code>jtbd.job.evolution</code>). More detail on existing items.</td>
+<td align="left">PRD2 introduces entirely new functional modules (Portfolio Analysis, Evolution Detection) requiring specific technical implementation (new models, logic), beyond what PRD1 outlined.</td>
+</tr>
+<tr>
+<td align="left"><strong>Phase 4: Optimization</strong></td>
+<td align="left">AI (n8n), Adv. Project Delivery, Portfolio Analysis, Predictive Modeling.</td>
+<td align="left">Specifies AI trigger model (<code>jtbd.ai.trigger</code>), elaborates on Documentation Framework. Includes items like Growth Strategy, Content Journey Mapping.</td>
+<td align="left">PRD2 provides more technical structure for AI integration and significantly expands the scope of the documentation deliverable. Some additions seem more process-oriented.</td>
+</tr>
+<tr>
+<td align="left"><strong>Technical Requirements</strong></td>
+<td align="left">Covers basics (Version, Int., Perf., Security).</td>
+<td align="left">Covers same areas but adds more specifics (GraphQL, Batch processing, Caching, Field-level security, Audit logging, Encryption).</td>
+<td align="left">PRD2 provides more granular technical constraints and expected capabilities, showing deeper technical consideration.</td>
+</tr>
+<tr>
+<td align="left"><strong>Success Metrics</strong></td>
+<td align="left">Covers Adoption, Business Impact, Tech Performance.</td>
+<td align="left">Adds more metrics, includes a <strong>JTBD Trace Coverage</strong> category linked to the new Trace Link system.</td>
+<td align="left">PRD2’s metrics are more comprehensive and directly tied to its expanded feature set, especially the new Trace Link system for validation.</td>
+</tr>
+<tr>
+<td align="left"><strong>Non-Functional Req.</strong></td>
+<td align="left">Covers Usability, Maintainability, Scalability.</td>
+<td align="left">Adds more specifics under each (e.g., Progressive disclosure, CI/CD support, specific storage/user numbers).</td>
+<td align="left">PRD2 provides slightly more detailed NFRs.</td>
+</tr>
+<tr>
+<td align="left"><strong>New Sections in PRD2</strong></td>
+<td align="left">N/A</td>
+<td align="left">Implementation Resources, Change Management, Appendices, Revision History.</td>
+<td align="left">These sections add project management context and formality but are not technical features of the module itself.</td>
+</tr>
+</tbody>
+</table><p><strong>Does PRD2 contain everything PRD1 has to offer from a technical point of view?</strong></p>
+<p><strong>Yes, comprehensively.</strong> PRD2 covers all the core technical concepts and features mentioned in PRD1 (JTBD data, Force Analysis, Outcome Mapping, Project Integration, Analytics, AI/n8n Integration, etc.). It doesn’t just cover them; it significantly expands upon them with much greater technical detail, specificity, and structure.</p>
+<p><strong>Things PRD2 has that PRD1 missed (Technical Perspective):</strong></p>
+<ol>
+<li><strong>Technical Specificity:</strong> PRD2 provides precise Odoo field names, types, and target models, specific calculation logic, and detailed UI descriptions that PRD1 lacks.</li>
+<li><strong>Visual Tools Framework:</strong> PRD2 defines a dedicated framework for visual components (Force Field, Outcome Canvas, Heatmaps, etc.), suggesting a more unified and reusable approach to UI development.</li>
+<li><strong>Formalized Integration Framework:</strong> PRD2 outlines a specific technical architecture for integrations (REST, GraphQL, Webhooks, Workers, Settings Models), specific connectors, and field mapping capabilities, far beyond PRD1’s basic mention.</li>
+<li><strong>Process Automation Framework:</strong> PRD2 introduces explicit workflow engine models (<code>jtbd.workflow.template</code>, <code>jtbd.workflow.stage</code>) and architecture, formalizing the automation aspect technically.</li>
+<li><strong>Trace Link Documentation System:</strong> This is an entirely new technical system introduced in PRD2 (<code>jtbd.trace.link</code>, <code>jtbd.trace.review</code>) focused on requirements validation and quality assurance, absent in PRD1.</li>
+<li><strong>Job Portfolio Analysis Module:</strong> A new functional area with technical underpinnings (e.g., <code>jtbd.job.portfolio</code> model) for managing multiple jobs per client.</li>
+<li><strong>Job Evolution Detection Module:</strong> Another new functional area with technical components (e.g., <code>jtbd.job.evolution</code> model) for tracking changes in client needs.</li>
+<li><strong>Enhanced Data Models:</strong> Addition of fields like <code>jtbd_job_clarity_score</code>, <code>jtbd_risk_level</code>, specific Force Analysis models in Phase 1, detailed Project Template models, AI Trigger models, etc.</li>
+<li><strong>More Granular Technical &amp; Non-Functional Requirements:</strong> Specific details on performance (caching, lazy loading), security (field-level, encryption), and scalability are more defined.</li>
+<li><strong>Detailed Success Metrics:</strong> Includes metrics directly tied to new technical components like the Trace Link system.</li>
+</ol>
+<p><strong>Things PRD2 may have missed from PRD1:</strong></p>
+<p>From a <em>technical features</em> perspective, <strong>it’s highly unlikely PRD2 missed anything substantial from PRD1.</strong> PRD1 acts as a less detailed precursor. PRD2 appears to be a direct evolution and significant expansion based on PRD1’s concepts, informed by a validation process. One could argue PRD1 offered <em>simplicity</em> due to its lack of detail, but it didn’t offer technical <em>features</em> omitted by PRD2.</p>
+<p><strong>Conclusion:</strong></p>
+<p>PRD2 is a far more comprehensive and technically detailed document than PRD1. It fully encompasses the technical vision of PRD1 and expands upon it significantly by adding new frameworks (Visual Tools, Integration, Automation, Trace Links), new functional modules (Portfolio Analysis, Evolution Detection), greater technical specificity across the board, and a more structured, mature approach to defining requirements. PRD2 is clearly the more definitive technical specification for building the module.</p>
+
+    </div>
+  </div>
+
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌞</button>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('lightMode', isLight);
+      document.querySelector('.dark-mode-toggle').textContent = isLight ? '🌙' : '🌞';
+    }
+
+    // Initialize theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedLightMode = localStorage.getItem('lightMode') === 'true';
+      if (savedLightMode) {
+        document.body.classList.add('light-mode');
+        document.querySelector('.dark-mode-toggle').textContent = '🌙';
+      }
+
+      // Mobile table labels
+      const updateDataLabels = () => {
+        const cells = document.querySelectorAll('td');
+        cells.forEach(cell => {
+          const header = cell.closest('table')?.querySelectorAll('th')[cell.cellIndex];
+          if (header) cell.setAttribute('data-label', header.textContent);
+        });
+      };
+      
+      updateDataLabels();
+      new MutationObserver(updateDataLabels).observe(document.body, { 
+        subtree: true, 
+        childList: true 
+      });
+    });
+  </script>
+</body>
+
+</html>
