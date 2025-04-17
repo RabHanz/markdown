@@ -1,0 +1,423 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>High Level Overview</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --code-bg: #1e293b;
+      --link-color: #7dd3fc;
+      --border-color: #334155;
+      --accent-color: #7dd3fc;
+      --header-bg: rgba(15,23,42,0.7);
+      --radius: 8px;
+      --content-padding: 2.5rem;
+        /* Add font size variables */
+	  --text-base: 1.125rem;
+	  --text-scale-ratio: 1.25;
+	  --text-xs: calc(var(--text-base) / var(--text-scale-ratio));
+	  --text-sm: calc(var(--text-base) * 0.9);
+	  --text-md: calc(var(--text-base) * 1.1);
+	  --text-lg: calc(var(--text-base) * 1.5);
+	  --text-xl: calc(var(--text-base) * 2);
+	  --text-xxl: calc(var(--text-base) * 2.5);
+
+    }
+
+    .light-mode {
+      --bg-color: #ffffff;
+      --text-color: #1e293b;
+      --code-bg: #f1f5f9;
+      --link-color: #0ea5e9;
+      --border-color: #cbd5e1;
+      --accent-color: #0ea5e9;
+      --header-bg: rgba(255,255,255,0.9);
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      line-height: 1.65;
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 0;
+      padding: var(--content-padding);
+      min-width: fit-content;
+      font-size: var(--text-base);
+  	  line-height: 1.7; /* Increased line height for better readability */
+    }
+
+    .stackedit__html {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.8em;
+      margin-bottom: 0.8em;
+      padding-bottom: 0.2em;
+    }
+
+    h1 { margin-top: 1.2em; }
+
+	h1 { font-size: var(--text-xxl); }
+	h2 { font-size: var(--text-xl); }
+	h3 { font-size: var(--text-lg); }
+	h4 { font-size: var(--text-md); }
+	h5 { font-size: var(--text-sm); }
+	h6 { font-size: var(--text-xs); }
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    .dark-mode-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      background: var(--header-bg);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+      z-index: 1000;
+      font-size: calc(var(--text-base) * 1.25);
+    }
+
+    .dark-mode-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      border-color: var(--accent-color);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin: 2.5rem 0;
+      padding: 25px;
+      border-radius: var(--radius);
+      background: var(--code-bg);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-color);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-color);
+    }
+
+    th, td {
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      min-width: 120px;
+	  font-size: calc(var(--text-base) * 0.95);
+    }
+
+    th {
+      background: var(--header-bg);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      position: sticky;
+      left: 0;
+      backdrop-filter: blur(12px);
+    }
+
+    tr {
+      transition: background 0.2s ease;
+    }
+
+    tr:hover {
+      background: rgba(125,211,252,0.05);
+    }
+
+    td:nth-child(1) {
+      font-weight: 500;
+      color: var(--accent-color);
+    }
+
+    td:nth-child(3) {
+      white-space: pre-wrap;
+      font-family: 'SF Mono', Menlo, monospace;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1.5rem;
+      }
+
+      th, td {
+        padding: 1rem;
+        display: block;
+        white-space: normal;
+      }
+
+      tr {
+        display: block;
+        margin-bottom: 1.5rem;
+        border-radius: var(--radius);
+        background: var(--code-bg);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      th {
+        display: none;
+      }
+
+      td {
+        border-bottom: none;
+        position: relative;
+        padding-left: 45%;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        top: 1rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        width: 40%;
+      }
+      code {
+		font-size: calc(var(--text-base) * 0.9);
+	  }
+    }
+  </style>
+</head>
+
+<body class="stackedit dark-mode">
+  <div class="stackedit__html">
+    <div class="table-container">
+      <p>Okay, let’s break down the non-Odoo components outlined in PRD2. Realizing the full vision requires building or configuring several interconnected pieces beyond the <code>jtbd_odoo_crm</code> module itself.</p>
+<p>Think of the Odoo module as the central data repository and workflow hub for internal users (sales, marketing ops, delivery). These other components handle data acquisition, external user interaction (website), content management, advanced analytics, and AI/automation orchestration.</p>
+<p>Here’s a breakdown of the external components, their likely type, tech stack considerations, and high-level checklists:</p>
+<hr>
+<p><strong>1. JTBD Radar (Data Collection &amp; Analysis Engine)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Collects raw data from diverse sources (web, forums, CRM notes, support tickets), processes it using NLP/AI to identify potential jobs, pains, and anxieties, scores them, and feeds structured insights into Odoo.</li>
+<li><strong>Component Type:</strong> Primarily a <strong>Backend System/Data Pipeline</strong>. Could involve scheduled jobs, data scrapers, microservices, and potentially a simple admin interface.</li>
+<li><strong>Key PRD Requirements:</strong> Multi-source data ingestion, privacy controls (anonymization, PII removal), anxiety detection (NLP/sentiment), processing pipeline (filtering, classification, clustering, prioritization), rules-based fallback.</li>
+<li><strong>Suggested Tech Stack:</strong>
+<ul>
+<li><em>Backend/Processing:</em> Python (strong libraries for scraping - Scrapy/BeautifulSoup, NLP - spaCy/NLTK, ML - scikit-learn, data processing - Pandas) is ideal. Node.js is also an option.</li>
+<li><em>AI/NLP:</em> OpenAI API, Hugging Face models (for classification, sentiment, potentially summarization).</li>
+<li><em>Workflow/Scheduling:</em> Celery/Redis, Airflow, or cloud-native options (AWS Step Functions, Google Cloud Workflows).</li>
+<li><em>Database:</em> PostgreSQL (for structured results), possibly a Vector Database (like Pinecone, Weaviate) if semantic job searching is needed. Elasticsearch for text search.</li>
+<li><em>Deployment:</em> Docker, Kubernetes, or Serverless functions (AWS Lambda, Google Cloud Functions) depending on scraping needs and processing load.</li>
+</ul>
+</li>
+<li><strong>High-Level Checklist:</strong>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Define target data sources and scraping/API access methods.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up data processing pipeline architecture (e.g., using Celery/Airflow).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement initial data filtering and cleaning modules.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Integrate with NLP/AI services (OpenAI/Hugging Face) for classification and sentiment analysis.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Develop job clustering and prioritization algorithms.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build the rules-based fallback system.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement anonymization/PII scrubbing steps.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Define API endpoint/webhook to push structured job insights into Odoo (<code>crm.lead</code> or a dedicated JTBD insights model).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up monitoring and error handling.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>2. Content Brain &amp; CMS Integration</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Manages JTBD-aligned content templates, dynamically assembles content variants, analyzes content performance, identifies gaps, and integrates with the primary Content Management System (CMS).</li>
+<li><strong>Component Type:</strong> Mostly <strong>Backend Logic/Service</strong>, potentially with an admin UI, tightly integrated with an existing CMS. It’s less about <em>storing</em> content (that’s the CMS’s job) and more about the <em>logic</em> of selection, assembly, and analysis.</li>
+<li><strong>Key PRD Requirements:</strong> JTBD/Outcome templates, strategic content support, dynamic assembly rules, gap analysis protocol, feedback loop integration (receiving analytics data, pushing update triggers).</li>
+<li><strong>Suggested Tech Stack:</strong>
+<ul>
+<li><em>Backend:</em> Python (Flask/Django) or Node.js (Express/NestJS) are suitable for building the API and logic engine.</li>
+<li><em>Database:</em> PostgreSQL or MongoDB might be needed to store template metadata, rules, alignment scores, and performance links (if not stored directly in Odoo or the CMS).</li>
+<li><em>CMS Integration:</em> Requires specific connectors/APIs based on the chosen CMS (WordPress, Contentful, Strapi, etc.). GraphQL might be useful if the CMS supports it.</li>
+<li><em>Templating Engine:</em> Jinja2 (Python) or Handlebars/EJS (Node.js) could be used for assembly logic if not handled by the CMS itself.</li>
+<li><em>AI Integration (via n8n/direct):</em> OpenAI API for content regeneration/suggestions.</li>
+</ul>
+</li>
+<li><strong>High-Level Checklist:</strong>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Define content component structure and metadata schema.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Choose and integrate with the primary CMS API.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Develop logic for storing and retrieving JTBD-aligned templates/frameworks.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build the dynamic content assembly engine based on rules (linking JTBD profiles to content variants).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement the content gap analysis protocol (comparison logic).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Define API endpoints for the Personalization Engine to request assembled content.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Define API endpoints/webhooks to receive performance data from Analytics.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Integrate with n8n/AI for content regeneration triggers.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>3. Website Platform, Personalization Engine &amp; Component Library</strong></p>
+<ul>
+<li><strong>Purpose:</strong> The user-facing website delivers the personalized campaign experience. The Personalization Engine modifies content in real-time based on visitor profiles and JTBD insights. The Component Library provides the reusable UI building blocks.</li>
+<li><strong>Component Type:</strong> <strong>Frontend Web Application</strong> (Website), <strong>Edge Compute Layer</strong> (Personalization), and <strong>UI Library</strong>.</li>
+<li><strong>Key PRD Requirements:</strong> Visitor ID/tracking, edge-based personalization (Vercel Edge), job pattern matching (behavioral), job portfolio handling, persona customization, base components (v0.dev), component variants (pain/solution/outcome), internal consensus components, A/B testing, interactive decision tools.</li>
+<li><strong>Suggested Tech Stack:</strong>
+<ul>
+<li><em>Frontend Framework:</em> <strong>Next.js</strong> (React) is explicitly mentioned and ideal for SSR, static generation, and Vercel Edge Functions. Alternatives: Nuxt.js (Vue), SvelteKit.</li>
+<li><em>UI Components:</em> Shadcn/ui (built on Radix/Tailwind, integrates well with v0.dev style), Material UI, Chakra UI, or a custom library based on TailwindCSS.</li>
+<li><em>Edge Platform:</em> <strong>Vercel</strong> (as mentioned) or Cloudflare Workers.</li>
+<li><em>State Management:</em> Zustand, Jotai, Redux Toolkit (depending on complexity).</li>
+<li><em>Analytics Integration:</em> Libraries for Google Analytics, Segment, etc.</li>
+<li><em>API Client:</em> Fetch API, Axios, TanStack Query, or Apollo Client (if using GraphQL).</li>
+</ul>
+</li>
+<li><strong>High-Level Checklist:</strong>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up Next.js project structure and hosting (Vercel).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement visitor identification and tracking (cookies, localStorage).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build the core UI Component Library based on design/PRD specs.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Develop backend API endpoints (or use Odoo’s) for fetching visitor profiles, JTBD data (from Odoo), and content requests.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement Vercel Edge Functions for real-time personalization logic (reading visitor data, fetching rules/content variants).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Integrate dynamic content rendering based on personalization engine output.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement behavioral tracking for job pattern matching logic.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build interactive components (calculators, comparison tools).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up A/B testing framework integration (e.g., Vercel Split Testing, external tool).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Ensure tight integration with the Conversion Layer’s CTAs.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>4. Conversion Layer (Frontend/Website Integration)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Provides the mechanisms on the website for users to take the next step (micro-conversions, comparisons, booking). Also includes the ML attribution model.</li>
+<li><strong>Component Type:</strong> Primarily <strong>Frontend Features</strong> built into the Website Platform, potentially with <strong>Backend Services</strong> for complex logic (like attribution).</li>
+<li><strong>Key PRD Requirements:</strong> Micro-conversion systems, alternative comparison tools, consultation booking integration, ML-driven attribution model.</li>
+<li><strong>Suggested Tech Stack:</strong>
+<ul>
+<li><em>Frontend:</em> Same as Website Platform (Next.js/React).</li>
+<li><em>Booking Integration:</em> Calendly embed, HubSpot Meetings, or custom integration with Odoo Calendar/backend service.</li>
+<li><em>Attribution Backend:</em> Python (Pandas, scikit-learn) or specialized external attribution tool API. Needs data pipeline access.</li>
+<li><em>Database (for Attribution):</em> Data warehouse or analytics database where touchpoint data is aggregated.</li>
+</ul>
+</li>
+<li><strong>High-Level Checklist:</strong>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Design and implement micro-conversion components (e.g., checklist tools, quick calculators) on the website.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build interactive comparison tool components.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Integrate chosen consultation booking system.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement frontend tracking to capture all relevant touchpoints (page views, form fills, CTA clicks, content downloads).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up data pipeline to consolidate touchpoint data into an analytics store.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Develop or configure the ML attribution model (requires significant data science effort).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build API/process to feed attribution results back into Odoo/Analytics platforms.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>5. n8n Workflow Platform (Automation &amp; AI Orchestration)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Acts as the central hub for automating workflows between systems and orchestrating calls to AI services (like OpenAI) for tasks requiring advanced reasoning or generation.</li>
+<li><strong>Component Type:</strong> <strong>Workflow Automation Platform Configuration</strong>. The “build” involves creating workflows within the n8n interface.</li>
+<li><strong>Key PRD Requirements:</strong> Workflow triggers, LLM processing calls, result integration back to Odoo, automated actions based on AI recommendations, specific AI-assisted components (job statement quality, force pattern recognition, white space ID, content personalization, etc.).</li>
+<li><strong>Suggested Tech Stack:</strong> n8n (Self-hosted or Cloud). Requires secure credential management for connected services (Odoo API key, OpenAI API key, CMS API key, etc.).</li>
+<li><strong>High-Level Checklist:</strong>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up n8n instance (Cloud or Self-Hosted Docker).</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Configure secure credentials for Odoo, OpenAI, CMS, Analytics, etc.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Develop specific n8n workflows triggered by Odoo webhooks or scheduled jobs for:
+<ul>
+<li>Job Statement quality scoring/enhancement.</li>
+<li>Force Analysis pattern suggestions.</li>
+<li>Content gap analysis triggers.</li>
+<li>AI-driven content regeneration requests.</li>
+<li>White space opportunity suggestions based on Odoo data.</li>
+<li>Pushing insights/scores back to Odoo fields.</li>
+<li>Orchestrating multi-step processes involving several APIs.</li>
+</ul>
+</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Implement robust error handling and logging within n8n workflows.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Configure monitoring for workflow execution.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>6. Analytics &amp; Optimization (External Platform Integration)</strong></p>
+<ul>
+<li><strong>Purpose:</strong> Consolidates data from Odoo, Website, CMS, etc., for advanced analysis, reporting, performance tracking, and driving the self-optimization system.</li>
+<li><strong>Component Type:</strong> <strong>Integration with External BI/Analytics Platform</strong> and <strong>Data Pipelines (ETL/ELT)</strong>. You likely aren’t building the BI platform itself.</li>
+<li><strong>Key PRD Requirements:</strong> Performance tracking, stakeholder impact metrics, self-optimization system (requires feeding results back), job effectiveness feedback loop, Analytics Dashboard framework (the <em>data backend</em>).</li>
+<li><strong>Suggested Tech Stack:</strong>
+<ul>
+<li><em>BI Platform:</em> Looker, Tableau, Power BI, Metabase, etc.</li>
+<li><em>Data Warehouse:</em> BigQuery, Snowflake, Redshift, PostgreSQL.</li>
+<li><em>ETL/ELT Tools:</em> Fivetran, Airbyte, dbt, custom Python scripts, or n8n for simpler pipelines.</li>
+</ul>
+</li>
+<li><strong>High-Level Checklist:</strong>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Select primary Analytics/BI Platform.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Design data warehouse schema to consolidate data from Odoo, Website, CMS, etc.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build ETL/ELT pipelines to populate the data warehouse.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Configure connections between Odoo/other sources and the pipeline/warehouse.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Build core dashboards and reports within the BI platform based on PRD2 metrics.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Develop logic/workflows (potentially in n8n) to feed optimization insights back to Content Brain/Personalization Engine.</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Set up performance monitoring and alerting on key metrics.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>This breakdown provides a clearer picture of the distinct components needed alongside the Odoo module. Successful implementation requires <strong>parallel planning and coordinated development</strong> across these different areas, with a strong focus on <strong>API design and data contracts</strong> from the beginning.</p>
+
+    </div>
+  </div>
+
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌞</button>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('lightMode', isLight);
+      document.querySelector('.dark-mode-toggle').textContent = isLight ? '🌙' : '🌞';
+    }
+
+    // Initialize theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedLightMode = localStorage.getItem('lightMode') === 'true';
+      if (savedLightMode) {
+        document.body.classList.add('light-mode');
+        document.querySelector('.dark-mode-toggle').textContent = '🌙';
+      }
+
+      // Mobile table labels
+      const updateDataLabels = () => {
+        const cells = document.querySelectorAll('td');
+        cells.forEach(cell => {
+          const header = cell.closest('table')?.querySelectorAll('th')[cell.cellIndex];
+          if (header) cell.setAttribute('data-label', header.textContent);
+        });
+      };
+      
+      updateDataLabels();
+      new MutationObserver(updateDataLabels).observe(document.body, { 
+        subtree: true, 
+        childList: true 
+      });
+    });
+  </script>
+</body>
+
+</html>
