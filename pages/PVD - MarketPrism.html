@@ -1,0 +1,2963 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>marketprism</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+  <style>pre { line-height: 125%; }
+td.linenos .normal { color: #37474F; background-color: #263238; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: #37474F; background-color: #263238; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #607A86; background-color: #263238; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #607A86; background-color: #263238; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #2C3B41 }
+.codehilite .c { color: #546E7A; font-style: italic } /* Comment */
+.codehilite .err { color: #FF5370 } /* Error */
+.codehilite .esc { color: #89DDFF } /* Escape */
+.codehilite .g { color: #EFF } /* Generic */
+.codehilite .k { color: #BB80B3 } /* Keyword */
+.codehilite .l { color: #C3E88D } /* Literal */
+.codehilite .n { color: #EFF } /* Name */
+.codehilite .o { color: #89DDFF } /* Operator */
+.codehilite .p { color: #89DDFF } /* Punctuation */
+.codehilite .ch { color: #546E7A; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #546E7A; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #546E7A; font-style: italic } /* Comment.Preproc */
+.codehilite .cpf { color: #546E7A; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #546E7A; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #546E7A; font-style: italic } /* Comment.Special */
+.codehilite .gd { color: #FF5370 } /* Generic.Deleted */
+.codehilite .ge { color: #89DDFF } /* Generic.Emph */
+.codehilite .ges { color: #FFCB6B } /* Generic.EmphStrong */
+.codehilite .gr { color: #FF5370 } /* Generic.Error */
+.codehilite .gh { color: #C3E88D } /* Generic.Heading */
+.codehilite .gi { color: #C3E88D } /* Generic.Inserted */
+.codehilite .go { color: #546E7A } /* Generic.Output */
+.codehilite .gp { color: #FFCB6B } /* Generic.Prompt */
+.codehilite .gs { color: #FF5370 } /* Generic.Strong */
+.codehilite .gu { color: #89DDFF } /* Generic.Subheading */
+.codehilite .gt { color: #FF5370 } /* Generic.Traceback */
+.codehilite .kc { color: #89DDFF } /* Keyword.Constant */
+.codehilite .kd { color: #BB80B3 } /* Keyword.Declaration */
+.codehilite .kn { color: #89DDFF; font-style: italic } /* Keyword.Namespace */
+.codehilite .kp { color: #89DDFF } /* Keyword.Pseudo */
+.codehilite .kr { color: #BB80B3 } /* Keyword.Reserved */
+.codehilite .kt { color: #BB80B3 } /* Keyword.Type */
+.codehilite .ld { color: #C3E88D } /* Literal.Date */
+.codehilite .m { color: #F78C6C } /* Literal.Number */
+.codehilite .s { color: #C3E88D } /* Literal.String */
+.codehilite .na { color: #BB80B3 } /* Name.Attribute */
+.codehilite .nb { color: #82AAFF } /* Name.Builtin */
+.codehilite .nc { color: #FFCB6B } /* Name.Class */
+.codehilite .no { color: #EFF } /* Name.Constant */
+.codehilite .nd { color: #82AAFF } /* Name.Decorator */
+.codehilite .ni { color: #89DDFF } /* Name.Entity */
+.codehilite .ne { color: #FFCB6B } /* Name.Exception */
+.codehilite .nf { color: #82AAFF } /* Name.Function */
+.codehilite .nl { color: #82AAFF } /* Name.Label */
+.codehilite .nn { color: #FFCB6B } /* Name.Namespace */
+.codehilite .nx { color: #EFF } /* Name.Other */
+.codehilite .py { color: #FFCB6B } /* Name.Property */
+.codehilite .nt { color: #FF5370 } /* Name.Tag */
+.codehilite .nv { color: #89DDFF } /* Name.Variable */
+.codehilite .ow { color: #89DDFF; font-style: italic } /* Operator.Word */
+.codehilite .pm { color: #89DDFF } /* Punctuation.Marker */
+.codehilite .w { color: #EFF } /* Text.Whitespace */
+.codehilite .mb { color: #F78C6C } /* Literal.Number.Bin */
+.codehilite .mf { color: #F78C6C } /* Literal.Number.Float */
+.codehilite .mh { color: #F78C6C } /* Literal.Number.Hex */
+.codehilite .mi { color: #F78C6C } /* Literal.Number.Integer */
+.codehilite .mo { color: #F78C6C } /* Literal.Number.Oct */
+.codehilite .sa { color: #BB80B3 } /* Literal.String.Affix */
+.codehilite .sb { color: #C3E88D } /* Literal.String.Backtick */
+.codehilite .sc { color: #C3E88D } /* Literal.String.Char */
+.codehilite .dl { color: #EFF } /* Literal.String.Delimiter */
+.codehilite .sd { color: #546E7A; font-style: italic } /* Literal.String.Doc */
+.codehilite .s2 { color: #C3E88D } /* Literal.String.Double */
+.codehilite .se { color: #EFF } /* Literal.String.Escape */
+.codehilite .sh { color: #C3E88D } /* Literal.String.Heredoc */
+.codehilite .si { color: #89DDFF } /* Literal.String.Interpol */
+.codehilite .sx { color: #C3E88D } /* Literal.String.Other */
+.codehilite .sr { color: #89DDFF } /* Literal.String.Regex */
+.codehilite .s1 { color: #C3E88D } /* Literal.String.Single */
+.codehilite .ss { color: #89DDFF } /* Literal.String.Symbol */
+.codehilite .bp { color: #89DDFF } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #82AAFF } /* Name.Function.Magic */
+.codehilite .vc { color: #89DDFF } /* Name.Variable.Class */
+.codehilite .vg { color: #89DDFF } /* Name.Variable.Global */
+.codehilite .vi { color: #89DDFF } /* Name.Variable.Instance */
+.codehilite .vm { color: #82AAFF } /* Name.Variable.Magic */
+.codehilite .il { color: #F78C6C } /* Literal.Number.Integer.Long */</style>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11.0.0/dist/mermaid.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-light: #ffffff;
+      --text-dark: #f8fafc;
+      --text-light: #1e293b;
+      --code-dark: #1e293b;
+      --code-light: #f8fafc;
+      --link-dark: #7dd3fc;
+      --link-light: #0ea5e9;
+      --border-dark: #334155;
+      --border-light: #e2e8f0;
+      --accent-dark: #7dd3fc;
+      --accent-light: #0ea5e9;
+      --header-dark: rgba(15,23,42,0.9);
+      --header-light: rgba(255,255,255,0.9);
+      --radius: 12px;
+      --content-padding: 2.5rem;
+      --text-base: 1.125rem;
+      
+      --phase-dark: #1e40af;
+      --phase-light: #3b82f6;
+      --phase-border-dark: #3b82f6;
+      --phase-border-light: #1e40af;
+      --overview-dark: rgba(30, 64, 175, 0.15);
+      --overview-light: rgba(59, 130, 246, 0.1);
+      --section-dark: rgba(51, 65, 85, 0.4);
+      --section-light: rgba(241, 245, 249, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      line-height: 1.7;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      font-size: var(--text-base);
+      min-height: 100vh;
+    }
+
+    body.light-mode {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    /* FLOATING SIDEBAR NAVIGATION */
+    .sidebar-nav {
+      position: fixed;
+      left: -340px;
+      top: 0;
+      width: 340px;
+      height: 100vh;
+      background: var(--header-dark);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border-dark);
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2000;
+      overflow-y: auto;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .sidebar-nav {
+      background: var(--header-light);
+      border-right-color: var(--border-light);
+    }
+
+    .sidebar-nav.open {
+      left: 0;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      background: var(--header-dark);
+      backdrop-filter: blur(20px);
+      z-index: 10;
+    }
+
+    body.light-mode .sidebar-header {
+      border-bottom-color: var(--border-light);
+      background: var(--header-light);
+    }
+
+    .sidebar-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent-dark);
+    }
+
+    body.light-mode .sidebar-title {
+      color: var(--accent-light);
+    }
+
+    .close-sidebar {
+      background: none;
+      border: none;
+      color: var(--text-dark);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    body.light-mode .close-sidebar {
+      color: var(--text-light);
+    }
+
+    .close-sidebar:hover {
+      background: var(--section-dark);
+    }
+
+    body.light-mode .close-sidebar:hover {
+      background: var(--section-light);
+    }
+
+    /* INTELLIGENT NAVIGATION SECTIONS */
+    .nav-section {
+      margin: 0.5rem 0;
+    }
+
+    .nav-section-title {
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s;
+    }
+
+    body.light-mode .nav-section-title {
+      color: var(--accent-light);
+    }
+
+    .nav-section-title:hover {
+      background: var(--section-dark);
+    }
+
+    body.light-mode .nav-section-title:hover {
+      background: var(--section-light);
+    }
+
+    .nav-section-title i {
+      transition: transform 0.2s;
+    }
+
+    .nav-section.collapsed .nav-section-title i {
+      transform: rotate(-90deg);
+    }
+
+    .nav-items {
+      max-height: 500px;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .nav-section.collapsed .nav-items {
+      max-height: 0;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 0.6rem 1.5rem;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+      position: relative;
+    }
+
+    body.light-mode .nav-item {
+      color: var(--text-light);
+    }
+
+    .nav-item:hover {
+      background: var(--section-dark);
+      border-left-color: var(--accent-dark);
+      transform: translateX(4px);
+      text-decoration: none;
+    }
+
+    body.light-mode .nav-item:hover {
+      background: var(--section-light);
+      border-left-color: var(--accent-light);
+    }
+
+    .nav-item.active {
+      background: var(--overview-dark);
+      border-left-color: var(--accent-dark);
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    body.light-mode .nav-item.active {
+      background: var(--overview-light);
+      border-left-color: var(--accent-light);
+      color: var(--accent-light);
+    }
+
+    /* FLOATING ACTION BUTTONS */
+    .floating-controls {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 1500;
+    }
+
+    .fab {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--accent-dark);
+      color: var(--bg-dark);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 20px rgba(125, 211, 252, 0.3);
+    }
+
+    body.light-mode .fab {
+      background: var(--accent-light);
+      color: var(--bg-light);
+    }
+
+    .fab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(125, 211, 252, 0.4);
+    }
+
+    .fab.secondary {
+      width: 48px;
+      height: 48px;
+      background: var(--header-dark);
+      color: var(--text-dark);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-dark);
+    }
+
+    body.light-mode .fab.secondary {
+      background: var(--header-light);
+      color: var(--text-light);
+      border-color: var(--border-light);
+    }
+
+    /* MOBILE MENU TOGGLE */
+    .menu-toggle {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 1600;
+      background: var(--header-dark);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-dark);
+      color: var(--text-dark);
+      padding: 12px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    body.light-mode .menu-toggle {
+      background: var(--header-light);
+      border-color: var(--border-light);
+      color: var(--text-light);
+    }
+
+    .menu-toggle:hover {
+      background: var(--section-dark);
+    }
+
+    body.light-mode .menu-toggle:hover {
+      background: var(--section-light);
+    }
+
+    /* DARK MODE TOGGLE */
+    .dark-mode-toggle {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-dark);
+      cursor: pointer;
+      background: var(--header-dark);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 1600;
+      font-size: 1.2rem;
+      color: var(--accent-dark);
+    }
+
+    body.light-mode .dark-mode-toggle {
+      border-color: var(--border-light);
+      background: var(--header-light);
+      color: var(--accent-light);
+    }
+
+    .dark-mode-toggle:hover {
+      transform: scale(1.05);
+      background: var(--section-dark);
+    }
+
+    body.light-mode .dark-mode-toggle:hover {
+      background: var(--section-light);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: 0;
+      padding: var(--content-padding);
+      padding-top: 5rem;
+      transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    .sidebar-open .main-content {
+      margin-left: 340px;
+      width: calc(100% - 340px);
+    }
+
+    .stackedit__html {
+      max-width: none;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+    }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      background: var(--header-dark);
+      backdrop-filter: blur(12px);
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .breadcrumb {
+      background: var(--header-light);
+      border-color: var(--border-light);
+    }
+
+    .breadcrumb-item {
+      color: var(--text-dark);
+      opacity: 0.7;
+    }
+
+    body.light-mode .breadcrumb-item {
+      color: var(--text-light);
+    }
+
+    .breadcrumb-item.active {
+      color: var(--accent-dark);
+      opacity: 1;
+      font-weight: 500;
+    }
+
+    body.light-mode .breadcrumb-item.active {
+      color: var(--accent-light);
+    }
+
+    .breadcrumb-separator {
+      color: var(--border-dark);
+    }
+
+    body.light-mode .breadcrumb-separator {
+      color: var(--border-light);
+    }
+
+    /* HEADINGS */
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 2em;
+      margin-bottom: 1em;
+      scroll-margin-top: 6rem;
+    }
+
+    h1 { 
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, var(--accent-dark), var(--phase-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    body.light-mode h1 {
+      background: linear-gradient(135deg, var(--accent-light), var(--phase-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.5rem; }
+
+    /* LINKS */
+    a {
+      color: var(--link-dark);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    body.light-mode a {
+      color: var(--link-light);
+    }
+
+    a:hover {
+      color: var(--accent-dark);
+      text-decoration: none;
+    }
+
+    body.light-mode a:hover {
+      color: var(--accent-light);
+    }
+
+    /* MERMAID DIAGRAMS */
+    .mermaid {
+      background: var(--code-dark);
+      padding: 2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      overflow: auto;
+      width: 100%;
+      position: relative;
+    }
+
+    body.light-mode .mermaid {
+      background: var(--code-light);
+      border-color: var(--border-light);
+    }
+
+    .diagram-container {
+      position: relative;
+      margin: 2rem 0;
+      width: 100%;
+    }
+
+    .diagram-container.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-dark);
+      z-index: 9998;
+      padding: 2rem;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.light-mode .diagram-container.fullscreen {
+      background: var(--bg-light);
+    }
+
+    .diagram-container.fullscreen .mermaid {
+      width: 95vw;
+      height: 95vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .diagram-container.fullscreen .mermaid svg {
+      max-width: 100%;
+      max-height: 100%;
+      height: auto;
+    }
+
+    .exit-fullscreen-btn {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--accent-dark);
+      color: var(--bg-dark);
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    body.light-mode .exit-fullscreen-btn {
+      background: var(--accent-light);
+      color: var(--bg-light);
+    }
+
+    .diagram-toolbar {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 200;
+      background: var(--header-dark);
+      backdrop-filter: blur(8px);
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    body.light-mode .diagram-toolbar {
+      background: var(--header-light);
+      border-color: var(--border-light);
+    }
+
+    .diagram-btn {
+      background: transparent;
+      border: 1px solid var(--border-dark);
+      color: var(--text-dark);
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    body.light-mode .diagram-btn {
+      border-color: var(--border-light);
+      color: var(--text-light);
+    }
+
+    .diagram-btn:hover {
+      background: var(--accent-dark);
+      color: var(--bg-dark);
+      border-color: var(--accent-dark);
+    }
+
+    body.light-mode .diagram-btn:hover {
+      background: var(--accent-light);
+      color: var(--bg-light);
+      border-color: var(--accent-light);
+    }
+
+    /* DIAGRAM BREAKDOWN MODAL */
+    .diagram-breakdown-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.8);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      padding: 2rem;
+    }
+
+    .diagram-breakdown-content {
+      background: var(--bg-dark);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    body.light-mode .diagram-breakdown-content {
+      background: var(--bg-light);
+      border-color: var(--border-light);
+    }
+
+    /* SUBGRAPH VIEWER */
+    .subgraph-viewer {
+      background: var(--header-dark);
+      backdrop-filter: blur(12px);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      border: 1px solid var(--border-dark);
+    }
+
+    body.light-mode .subgraph-viewer {
+      background: var(--header-light);
+      border-color: var(--border-light);
+    }
+
+    .subgraph-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .subgraph-btn {
+      background: var(--section-dark);
+      border: 1px solid var(--border-dark);
+      color: var(--text-dark);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.85rem;
+    }
+
+    body.light-mode .subgraph-btn {
+      background: var(--section-light);
+      border-color: var(--border-light);
+      color: var(--text-light);
+    }
+
+    .subgraph-btn.active {
+      background: var(--accent-dark);
+      color: var(--bg-dark);
+      border-color: var(--accent-dark);
+    }
+
+    body.light-mode .subgraph-btn.active {
+      background: var(--accent-light);
+      color: var(--bg-light);
+      border-color: var(--accent-light);
+    }
+
+    .subgraph-content {
+      background: var(--code-dark);
+      border-radius: 8px;
+      padding: 1.5rem;
+      min-height: 400px;
+      overflow: auto;
+    }
+
+    body.light-mode .subgraph-content {
+      background: var(--code-light);
+    }
+
+    /* MINIMAP */
+    .diagram-minimap {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      width: 200px;
+      height: 150px;
+      background: var(--header-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      overflow: hidden;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    body.light-mode .diagram-minimap {
+      background: var(--header-light);
+      border-color: var(--border-light);
+    }
+
+    .diagram-minimap:hover {
+      opacity: 1;
+    }
+
+    .minimap-viewport {
+      position: absolute;
+      border: 2px solid var(--accent-dark);
+      background: rgba(125, 211, 252, 0.2);
+      pointer-events: none;
+    }
+
+    body.light-mode .minimap-viewport {
+      border-color: var(--accent-light);
+      background: rgba(14, 165, 233, 0.2);
+    }
+
+    /* SEARCH IN DIAGRAM */
+    .diagram-search {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: none;
+      background: var(--header-dark);
+      backdrop-filter: blur(8px);
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-dark);
+    }
+
+    body.light-mode .diagram-search {
+      background: var(--header-light);
+      border-color: var(--border-light);
+    }
+
+    .diagram-search.active {
+      display: block;
+    }
+
+    .diagram-search-input {
+      background: var(--code-dark);
+      border: 1px solid var(--border-dark);
+      color: var(--text-dark);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      width: 200px;
+    }
+
+    body.light-mode .diagram-search-input {
+      background: var(--code-light);
+      border-color: var(--border-light);
+      color: var(--text-light);
+    }
+
+    /* HIGHLIGHT EFFECT */
+    .mermaid .highlight {
+      filter: drop-shadow(0 0 8px var(--accent-dark));
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    body.light-mode .mermaid .highlight {
+      filter: drop-shadow(0 0 8px var(--accent-light));
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* WORKFLOW SECTIONS */
+    .overview-section {
+      background: var(--overview-dark);
+      padding: 2rem;
+      border-radius: var(--radius);
+      margin: 2rem 0;
+      border: 1px solid var(--phase-border-dark);
+      box-shadow: 0 4px 20px rgba(30, 64, 175, 0.1);
+    }
+
+    body.light-mode .overview-section {
+      background: var(--overview-light);
+      border-color: var(--phase-border-light);
+    }
+
+    .phase-section {
+      margin: 3rem 0;
+      padding: 2rem;
+      border-left: 4px solid var(--phase-border-dark);
+      background: var(--section-dark);
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    body.light-mode .phase-section {
+      border-left-color: var(--phase-border-light);
+      background: var(--section-light);
+    }
+
+    .phase-section h3 {
+      color: var(--phase-dark);
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    body.light-mode .phase-section h3 {
+      color: var(--phase-light);
+    }
+
+    .phase-icon {
+      width: 12px;
+      height: 12px;
+      background: linear-gradient(135deg, var(--phase-dark), var(--accent-dark));
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    body.light-mode .phase-icon {
+      background: linear-gradient(135deg, var(--phase-light), var(--accent-light));
+    }
+
+    .support-section {
+      background: rgba(239, 68, 68, 0.1);
+      padding: 2rem;
+      border-radius: var(--radius);
+      border-left: 4px solid #ef4444;
+      margin: 2rem 0;
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
+    }
+
+    .nav-info {
+      background: var(--overview-dark);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      margin: 2rem 0;
+      border-left: 4px solid var(--accent-dark);
+      border: 1px solid var(--border-dark);
+      box-shadow: 0 4px 20px rgba(125, 211, 252, 0.1);
+    }
+
+    body.light-mode .nav-info {
+      background: var(--overview-light);
+      border-left-color: var(--accent-light);
+      border-color: var(--border-light);
+    }
+
+    .nav-info strong {
+      color: var(--accent-dark);
+    }
+
+    body.light-mode .nav-info strong {
+      color: var(--accent-light);
+    }
+
+    /* ENHANCED DETAILS/SUMMARY */
+    details {
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--code-dark);
+    }
+
+    body.light-mode details {
+      border-color: var(--border-light);
+      background: var(--code-light);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--accent-dark);
+      padding: 1.2rem;
+      background: var(--header-dark);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    body.light-mode summary {
+      color: var(--accent-light);
+      background: var(--header-light);
+    }
+
+    summary::marker {
+      display: none;
+    }
+
+    summary::before {
+      content: '\f054';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      transition: transform 0.2s;
+    }
+
+    details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    summary:hover {
+      background: var(--section-dark);
+    }
+
+    body.light-mode summary:hover {
+      background: var(--section-light);
+    }
+
+    details[open] summary {
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    body.light-mode details[open] summary {
+      border-bottom-color: var(--border-light);
+    }
+
+    details > *:not(summary) {
+      padding: 1.2rem;
+    }
+
+    /* PROGRESS INDICATOR */
+    .reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-dark), var(--phase-dark));
+      z-index: 3000;
+      transition: width 0.1s ease;
+    }
+
+    body.light-mode .reading-progress {
+      background: linear-gradient(90deg, var(--accent-light), var(--phase-light));
+    }
+
+    /* SEARCH */
+    .search-container {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    body.light-mode .search-container {
+      border-bottom-color: var(--border-light);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--code-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      color: var(--text-dark);
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .search-input {
+      background: var(--code-light);
+      border-color: var(--border-light);
+      color: var(--text-light);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent-dark);
+      box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.1);
+    }
+
+    body.light-mode .search-input:focus {
+      border-color: var(--accent-light);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .sidebar-open .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .floating-controls {
+        right: 16px;
+        bottom: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+        padding-top: 4rem;
+      }
+
+      .sidebar-nav {
+        width: 100%;
+        left: -100%;
+      }
+
+      .fab {
+        width: 48px;
+        height: 48px;
+      }
+
+      .diagram-minimap {
+        display: none;
+      }
+    }
+
+    /* PRINT STYLES */
+    @media print {
+      .sidebar-nav,
+      .floating-controls,
+      .menu-toggle,
+      .dark-mode-toggle,
+      .diagram-toolbar,
+      .diagram-minimap {
+        display: none !important;
+      }
+
+      .main-content {
+        margin-left: 0 !important;
+        padding: 1rem !important;
+        width: 100% !important;
+      }
+    }
+
+    /* LOADING ANIMATION */
+    .diagram-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--accent-dark);
+      font-weight: 500;
+    }
+
+    body.light-mode .diagram-loading {
+      color: var(--accent-light);
+    }
+
+    .diagram-loading::before {
+      content: '';
+      width: 24px;
+      height: 24px;
+      border: 3px solid transparent;
+      border-top-color: var(--accent-dark);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    body.light-mode .diagram-loading::before {
+      border-top-color: var(--accent-light);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* TOOLTIP */
+    .diagram-tooltip {
+      position: fixed;
+      background: var(--header-dark);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-dark);
+      font-size: 0.9rem;
+      z-index: 10001;
+      max-width: 300px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    body.light-mode .diagram-tooltip {
+      background: var(--header-light);
+      border-color: var(--border-light);
+      color: var(--text-light);
+    }
+
+    .diagram-tooltip.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body class="stackedit">
+  <!-- Reading Progress Bar -->
+  <div class="reading-progress"></div>
+
+  <!-- Menu Toggle -->
+  <button class="menu-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Dark Mode Toggle -->
+  <button class="dark-mode-toggle" onclick="toggleDarkMode()">
+    <i class="fas fa-sun"></i>
+  </button>
+
+  <!-- Intelligent Sidebar Navigation -->
+  <nav class="sidebar-nav" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">
+        <i class="fas fa-compass"></i> Navigation
+      </div>
+      <button class="close-sidebar" onclick="toggleSidebar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search sections..." onkeyup="searchNavigation(this.value)">
+    </div>
+
+    <div id="nav-content">
+      <!-- Generated by JavaScript -->
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" id="breadcrumb">
+      <span class="breadcrumb-item active">
+        <i class="fas fa-home"></i> Document
+      </span>
+    </nav>
+
+    <div class="stackedit__html">
+      <h1 id="product-vision-document-marketprism-v50-the-unified-strategic-intelligence-platform"><strong>Product Vision Document: MarketPrism v5.0 - The Unified Strategic Intelligence Platform</strong><a class="headerlink" href="#product-vision-document-marketprism-v50-the-unified-strategic-intelligence-platform" title="Link to this section">&para;</a></h1>
+<div class="nav-info">
+<strong>🧭 Navigation:</strong> Click on any phase box in the overview below to jump directly to its detailed diagram. 
+This modular approach keeps each section focused and readable while maintaining complete workflow coverage.
+</div>
+
+<h2 id="the-vision-the-moat-and-the-data-universe"><strong>The Vision, The Moat, and The Data Universe</strong><a class="headerlink" href="#the-vision-the-moat-and-the-data-universe" title="Link to this section">&para;</a></h2>
+<h3 id="1-executive-vision-from-data-to-dominance"><strong>1. Executive Vision: From Data to Dominance</strong><a class="headerlink" href="#1-executive-vision-from-data-to-dominance" title="Link to this section">&para;</a></h3>
+<p>In the modern enterprise, the winner is not the company with the most data, but the one that can achieve <strong>decision velocity</strong>. This requires transforming a chaotic ocean of disconnected internal and external data into a single, coherent stream of predictive, actionable intelligence.</p>
+<p>Current tools fail this test. Business Intelligence (BI) platforms are rearview mirrors, showing what has already happened. Web research agents are surface-level, summarizing public information without deep context.</p>
+<p><strong>MarketPrism is a fundamentally new category of software: a Strategic Intelligence Platform.</strong></p>
+<p>Its purpose is not just to answer questions, but to provide a validated, multi-source, and predictive understanding of any market, competitor, or trend. It achieves this by unifying four critical pillars of intelligence into a single, orchestrated workflow:</p>
+<ol>
+<li><strong>Entity Resolution:</strong> What is the specific "thing" we are talking about?</li>
+<li><strong>Quantitative Analysis:</strong> How is its public salience changing over time and across geography?</li>
+<li><strong>Qualitative Context:</strong> Why is it changing? What is the narrative surrounding it?</li>
+<li><strong>Domain-Specific Validation:</strong> How does this information align with verifiable, proprietary data sources?</li>
+</ol>
+<p>By synthesizing these pillars, MarketPrism delivers not just a report, but a <strong>360-degree, high-confidence intelligence briefing</strong> that empowers strategic decision-making, from product development to market entry and competitive response.</p>
+<h3 id="2-the-architectural-trinity-the-core-engines"><strong>2. The Architectural Trinity: The Core Engines</strong><a class="headerlink" href="#2-the-architectural-trinity-the-core-engines" title="Link to this section">&para;</a></h3>
+<ol>
+<li><strong>The GKG (Google Knowledge Graph) MCP Server - The "What &amp; Who" Engine:</strong> Provides definitive, structured data about real-world entities.</li>
+<li><strong>The Google Trends MCP Server - The "When &amp; Where" Engine:</strong> Provides quantitative time-series and geographic data on public interest.</li>
+<li><strong>The Omni-Researcher MCP Server - The "Why &amp; How" Engine:</strong> The master orchestrator, deep-web researcher, and final synthesis brain.</li>
+</ol>
+<h3 id="3-the-data-universe-the-unbeatable-moat"><strong>3. The Data Universe: The Unbeatable Moat</strong><a class="headerlink" href="#3-the-data-universe-the-unbeatable-moat" title="Link to this section">&para;</a></h3>
+<p>This is the critical section my previous analysis missed. The power of MarketPrism does not just come from its engines, but from the <strong>unparalleled diversity of data it can synthesize.</strong> This is our deepest, most defensible moat.</p>
+<p>The platform is designed with a <strong>pluggable data-source architecture</strong>. The "Specialized Data Agents" are not an afterthought; they are a core component. This allows MarketPrism to triangulate truth from sources that no single competitor can access.</p>
+<h4 id="31-market-financial-intelligence-data-sources"><strong>3.1. Market &amp; Financial Intelligence Data Sources</strong><a class="headerlink" href="#31-market-financial-intelligence-data-sources" title="Link to this section">&para;</a></h4>
+<ul>
+<li><strong>Purpose:</strong> To provide a quantitative, verifiable backbone of financial and market performance data.</li>
+<li><strong>Key Sources:</strong><ul>
+<li><strong>Statista &amp; IBISWorld:</strong> Provide top-down market sizing, industry reports, and competitor market share data.</li>
+<li><strong>Euromonitor Passport:</strong> Delivers global market data, consumer analytics, and economic forecasts.</li>
+<li><strong>Alpha Vantage / Bloomberg API:</strong> Provides real-time and historical financial data, stock performance, and company financials for public entities.</li>
+</ul>
+</li>
+<li><strong>Intelligence Value:</strong> Grounds the "public interest" data from Google Trends in the hard reality of financial performance and validated market reports. Allows an agent to answer questions like, <em>"Why is public interest in 'Company X' declining even though their reported revenue (from Alpha Vantage) has increased?"</em></li>
+</ul>
+<h4 id="32-audience-psychographic-data-sources"><strong>3.2. Audience &amp; Psychographic Data Sources</strong><a class="headerlink" href="#32-audience-psychographic-data-sources" title="Link to this section">&para;</a></h4>
+<ul>
+<li><strong>Purpose:</strong> To understand the <em>people</em> behind the trends—their demographics, behaviors, and motivations.</li>
+<li><strong>Key Sources:</strong><ul>
+<li><strong>Nielsen &amp; Kantar Media:</strong> Provide industry-standard audience measurement for media consumption, including streaming viewership and detailed demographic breakdowns.</li>
+<li><strong>GWI (Global Web Index):</strong> Delivers deep psychographic insights—what audiences think, feel, and value.</li>
+<li><strong>Social Listening Platforms (Keyhole, Brandwatch):</strong> Provide real-time, raw sentiment analysis, brand mention tracking, and identification of key influencers and conversation themes.</li>
+</ul>
+</li>
+<li><strong>Intelligence Value:</strong> Transforms abstract trends into human-centric insights. Answers questions like, <em>"Is the rising interest in 'Sustainable Fashion' driven by Gen-Z on TikTok (from Social Listening &amp; Nielsen) or by high-income older demographics (from GWI)?"</em></li>
+</ul>
+<h4 id="33-industry-specific-primary-data-sources"><strong>3.3. Industry-Specific &amp; Primary Data Sources</strong><a class="headerlink" href="#33-industry-specific-primary-data-sources" title="Link to this section">&para;</a></h4>
+<ul>
+<li><strong>Purpose:</strong> To provide deep, vertical-specific context that is unavailable in general web search.</li>
+<li><strong>Key Sources:</strong><ul>
+<li><strong>Streaming &amp; Entertainment (Streams Charts, Luminate, IMDb):</strong> Provides minute-level viewership data for Twitch/YouTube, music streaming consumption data that powers the Billboard charts, and authoritative film/TV financial data.</li>
+<li><strong>Web Scraping &amp; Data Collection (WebScrapingAPI):</strong> A powerful, configurable tool for targeted extraction from websites that are not covered by the standard Omni-Researcher crawl (e.g., specific e-commerce sites, forums, or partner portals).</li>
+<li><strong>Primary Research Platforms (SurveyMonkey, Attest):</strong> The ultimate source of truth. The platform can be extended to <strong>initiate its own primary research</strong> by programmatically deploying surveys to millions of consumers to validate a hypothesis generated by the other data sources.</li>
+</ul>
+</li>
+<li><strong>Intelligence Value:</strong> This is the highest level of intelligence. The platform can now answer questions like: <em>"I see a rising trend for the game 'X' on Google Trends. Cross-reference this with Twitch viewership data (from Streams Charts). If both are high, deploy a survey (via Attest) to 1,000 gamers in the 18-25 demographic in the 'US' and 'DE' geos to ask them </em>why<em> they are watching it."</em></li>
+</ul>
+<hr />
+<h2 id="the-agentic-workflow-system-architecture"><strong>The Agentic Workflow &amp; System Architecture</strong><a class="headerlink" href="#the-agentic-workflow-system-architecture" title="Link to this section">&para;</a></h2>
+<h3 id="4-the-agentic-workflow-an-18-agent-intelligence-assembly-line"><strong>4. The Agentic Workflow: An 18-Agent Intelligence Assembly Line</strong><a class="headerlink" href="#4-the-agentic-workflow-an-18-agent-intelligence-assembly-line" title="Link to this section">&para;</a></h3>
+<p>MarketPrism's core innovation lies in its "Intelligence Assembly Line," a multi-stage workflow executed by a team of over 18 specialized AI agents. This is not a single, monolithic agent but a dynamic, orchestrated system where each agent performs a specific, high-value task before handing off its structured output to the next agent in the chain. This ensures maximum quality, efficiency, and traceability at every step of the analysis.</p>
+<p>The workflow is divided into five distinct phases, from initial query validation to final report delivery.</p>
+<h4 id="complete-meta-flow"><strong>Complete Meta Flow</strong><a class="headerlink" href="#complete-meta-flow" title="Link to this section">&para;</a></h4>
+<div class="mermaid">graph TD
+    %% ============================================================================
+    %% LEGEND AND STYLING
+    %% ============================================================================
+    classDef userInput fill:#FFC7A8,stroke:#D67E4B,stroke-width:2px,font-weight:bold;
+    classDef agent fill:#D5E8D4,stroke:#82B366,stroke-width:2px,font-weight:bold;
+    classDef mcp fill:#DAE8FC,stroke:#6C8EBF,stroke-width:2px;
+    classDef data fill:#FFE6CC,stroke:#D79B00,stroke-width:2px;
+    classDef intelligence fill:#E1D5E7,stroke:#9673A6,stroke-width:2px,font-weight:bold;
+    classDef decision fill:#F8CECC,stroke:#B85450,stroke-width:2px;
+    classDef workflow fill:#E6E6E6,stroke:#666666,stroke-width:2px;
+    classDef feedback fill:#D5E8D4,stroke:#82B366,stroke-width:2px,stroke-dasharray: 5 5;
+    classDef error fill:#FFD2CF,stroke:#D64541,stroke-width:2px;
+    classDef infra stroke:#333,stroke-width:2px,stroke-dasharray: 2 2,fill:#f2f2f2;
+
+    %% ============================================================================
+    %% PHASE 1: INGESTION &amp; STRATEGIC PLANNING
+    %% ============================================================================
+    subgraph "Phase 1: Ingestion &amp; Strategic Planning"
+        direction TB
+        A{{User Input:&lt;br/&gt;JTBD, Raw Query, Analysis Depth}}:::userInput --&gt; B([Initialize Workflow Context v2.1])
+        B --&gt; C([Memory Persistence Check])
+        C --&gt; D([Master Orchestrator &amp; Planner Agent v2.1])
+        D --&gt; E{Initial Plan Valid?}:::decision
+        E -- "No" --&gt; ERR1([Error Handler: Invalid Plan])
+        E -- "Yes" --&gt; F([Update Context with Execution Plan])
+        F --&gt; G{Dynamic or Standard Mode?}:::decision
+    end
+
+    %% ============================================================================
+    %% PHASE 2: DYNAMIC SUB-AGENT EXECUTION (for complex research)
+    %% ============================================================================
+    subgraph "Path A: Dynamic Multi-Agent Research"
+        direction TB
+        G -- "Dynamic Mode" --&gt; DYN_A([Dynamic Subagent Manager])
+        DYN_A -- "Query Complexity Analysis" --&gt; DYN_B([Create 3-5 Subagent Configs])
+        DYN_B --&gt; DYN_C[(Sub-Agent Blueprints)]:::data
+        DYN_C --&gt; DYN_D([Parallel Sub-Agent Spawning])
+
+        subgraph "Concurrent Sub-Agent Execution Loop"
+            DYN_D --&gt; DYN_E([Sub-Agent #1: Objective A])
+            DYN_D --&gt; DYN_F([Sub-Agent #2: Objective B])
+            DYN_D --&gt; DYN_G([Sub-Agent #3: Objective C])
+            DYN_D --&gt; DYN_H([Sub-Agent #4: Objective D])
+            DYN_D --&gt; DYN_I([Sub-Agent #5: Objective E])
+
+            DYN_E &amp; DYN_F &amp; DYN_G &amp; DYN_H &amp; DYN_I --&gt; DYN_J([Subagent Execution Loop])
+            DYN_J --&gt; DYN_K{Interleaved Thinking After Each Tool}:::decision
+            DYN_K -- "Analyze Tool Output,&lt;br/&gt;Update Plan" --&gt; DYN_L([Selects Next Tool])
+            DYN_L --&gt; DYN_M["/GKG, Trends, or Omni-Researcher MCP/"]:::mcp
+            DYN_M --&gt; DYN_K
+        end
+
+        DYN_K -- "Objective Complete" --&gt; DYN_N([Result Aggregation])
+        DYN_N --&gt; DYN_O([Citation Agent Processing])
+        DYN_O -- "Adds Provenance to Findings" --&gt; DYN_P((Synthesized &amp; Cited Sub-Reports)):::intelligence
+        DYN_P --&gt; |"Jump to Final Report Assembly"| REPORT_ASSEMBLY
+    end
+
+    %% ============================================================================
+    %% PHASE 3: STANDARD PIPELINE - SEMANTIC &amp; ENTITY RESOLUTION
+    %% ============================================================================
+    subgraph "Path B: Standard Pipeline Execution"
+        direction TB
+        G -- "Standard Mode" --&gt; H1([JTBD Validator Agent])
+        H1 --&gt; H2([Update Context with JTBD Validation])
+        H2 --&gt; H3{JTBD Fully Valid?}:::decision
+        H3 -- "No" --&gt; ERR2([Error Handler: Invalid JTBD])
+        H3 -- "Yes" --&gt; H4([Semantic Intelligence Agent v2.1])
+        H4 --&gt; H5([Update Context with Semantic Intel])
+        H5 --&gt; H6{Semantic Intel Completed?}:::decision
+        H6 -- "No" --&gt; ERR3([Error Handler: Semantic Failed])
+        H6 -- "Yes" --&gt; H7[(Semantic Network: Synonyms, Competitors, Concepts)]:::data
+        H7 --&gt; H8([Network Discovery Agent v2.0])
+        H8 --&gt; H9([Update Context with Network Discovery])
+        H9 --&gt; H10{KG Resolution Candidates Exist?}:::decision
+        H10 -- "No" --&gt; XVAL_AGENT
+        H10 -- "Yes" --&gt; H11([Prepare KG API Call Configurations])
+        H11 --&gt; H12[(Prioritized List of Entities for KG Resolution)]:::data
+
+        subgraph "KG Resolution Loop"
+            H12 --&gt; H13([Loop Over KG Calls])
+            H13 --&gt; H14([KG Resolution Planning Agent])
+            H14 --&gt; H15([KG API Parameterizer])
+            H15 --&gt; H16([KG API Execution Engine])
+            H16 --&gt; H17["/GKG MCP Service/"]:::mcp
+            H17 --&gt; H18([Aggregate KG API Results])
+            H18 --&gt; H19{KG API Results Exist?}:::decision
+            H19 -- "No" --&gt; XVAL_AGENT
+            H19 -- "Yes" --&gt; H20([Entity Selection &amp; Mapping Agent])
+            H20 --&gt; H21([Update Context with Entity Map])
+        end
+        H21 --&gt; H22((Definitive Entity Map: 'Apple' -&gt; /m/04svj)):::intelligence
+        H22 --&gt; XVAL_AGENT
+    end
+
+    %% ============================================================================
+    %% PHASE 4: CROSS-VALIDATION &amp; PATTERN INTELLIGENCE
+    %% ============================================================================
+    subgraph "Phase 4: Cross-Validation &amp; Pattern Intelligence Generation"
+        direction TB
+        XVAL_AGENT([Cross Validation Agent]) --&gt; I1([Update Context with Cross Validation Plan])
+        I1 --&gt; I2{Cross Validation Planned?}:::decision
+        I2 -- "No" --&gt; ERR4([Error Handler: CrossVal Failed])
+        I2 -- "Yes" --&gt; I3([Pattern Intelligence Agent v2.1])
+
+        subgraph "Pattern Intelligence Sub-Components"
+            I3 --&gt; I3A([Seasonal Pattern Detection])
+            I3 --&gt; I3B([Geographic Pattern Analysis])
+            I3 --&gt; I3C([Competitive Pattern Mapping])
+            I3 --&gt; I3D([Trend Velocity Analysis])
+            I3 --&gt; I3E([Viral Propagation Modeling])
+            I3A &amp; I3B &amp; I3C &amp; I3D &amp; I3E --&gt; I3F([Pattern Synthesis])
+        end
+
+        I3F --&gt; I4([Update Context with Pattern Intel])
+        I4 --&gt; I5{Pattern Intel Hypothesized?}:::decision
+        I5 -- "No" --&gt; ERR5([Error Handler: Pattern Intel Failed])
+        I5 --&gt; I6((Anticipatory Intelligence:&lt;br/&gt;Predicted Patterns &amp; Hypotheses)):::intelligence
+        I6 --&gt; I7([Strategic Term Set Builder Agent v2.0])
+
+        subgraph "Strategic Term Set Building"
+            I7 --&gt; I7A([Primary Analysis Set Building])
+            I7 --&gt; I7B([Competitive Comparison Set])
+            I7 --&gt; I7C([Pattern Validation Sets])
+            I7 --&gt; I7D([Geographic Analysis Sets])
+            I7A &amp; I7B &amp; I7C &amp; I7D --&gt; I7E([Optimize for API Limits])
+        end
+
+        I7E --&gt; I8([Update Context with Strategic Term Sets])
+        I8 --&gt; I9{Strategic Term Sets Built?}:::decision
+        I9 -- "No" --&gt; ERR6([Error Handler: Term Sets Failed])
+        I9 -- "Yes" --&gt; I10[(Optimized Query Sets for Each Data Source)]:::data
+    end
+
+    %% ============================================================================
+    %% PHASE 5: ADVANCED PARAMETER CONFIGURATION &amp; API EXECUTION
+    %% ============================================================================
+    subgraph "Phase 5: Advanced Parameter Configuration &amp; Parallel Execution"
+        direction TB
+        I10 --&gt; J1([Advanced Parameter Agent v2.0])
+
+        subgraph "Advanced Parameter Configuration"
+            J1 --&gt; J1A([Multi-Geo Splitting Logic])
+            J1 --&gt; J1B([Fallback Strategy Generation])
+            J1 --&gt; J1C([Cost Estimation])
+            J1 --&gt; J1D([Execution Order Optimization])
+            J1A &amp; J1B &amp; J1C &amp; J1D --&gt; J1E([API Call Matrix Generation])
+        end
+
+        J1E --&gt; J2([Update Context with API Call Configs])
+        J2 --&gt; J3{API Calls Configured?}:::decision
+        J3 -- "No" --&gt; ERR7([Error Handler: API Config Failed])
+        J3 -- "Yes" --&gt; J4[(Final API Call Matrix)]:::data
+        J4 --&gt; J5([Prepare Loop Input Data])
+        J5 --&gt; J6([Format Items for Loop])
+        J6 --&gt; J7([Loop Over API Call Matrix])
+        J7 --&gt; J8([Parallel API Execution Engine v2.0])
+
+        subgraph "Parallel Data Collection with Monitoring"
+            J8 --&gt; J8A([API Call Execution with Circuit Breaker])
+            J8A --&gt; J8B([Quality Monitoring in Real-Time])
+            J8B --&gt; J8C([Fallback Execution if Needed])
+            J8C --&gt; J8D["/Trends MCP Service/"]:::mcp
+            J8C --&gt; J8E["/Omni-Researcher MCP Service/"]:::mcp
+            J8C --&gt; J8F["/GKG MCP Service/"]:::mcp
+            J8C --&gt; J8G["/Specialized Data APIs (Statista, etc)/"]:::mcp
+        end
+
+        J8D &amp; J8E &amp; J8F &amp; J8G --&gt; J9([Aggregate API Call Results])
+        J9 --&gt; J10([Update Context with Results])
+        J10 --&gt; J11{API Calls Executed?}:::decision
+        J11 -- "No" --&gt; ERR8([Error Handler: API Execution Failed])
+        J11 -- "Yes" --&gt; J12[(Aggregated Multi-Modal Data)]:::data
+    end
+
+    %% ============================================================================
+    %% PHASE 6: DATA VALIDATION &amp; MULTI-DIMENSIONAL ANALYSIS
+    %% ============================================================================
+    subgraph "Phase 6: Data Validation &amp; Multi-Dimensional Analysis"
+        direction TB
+        J12 --&gt; K1([Advanced Data Validator Agent v2.0])
+
+        subgraph "Data Validation Components"
+            K1 --&gt; K1A([Quality Score Calculation])
+            K1 --&gt; K1B([Anomaly Detection])
+            K1 --&gt; K1C([Completeness Check])
+            K1 --&gt; K1D([Consistency Verification])
+            K1A &amp; K1B &amp; K1C &amp; K1D --&gt; K1E([Remediation Actions])
+        end
+
+        K1E --&gt; K2([Update Context with Data Validation])
+        K2 --&gt; K3{Data Valid? Quality &gt; 0.85?}:::decision
+        K3 -- "No" --&gt; ERR9([Error Handler: Data Invalid])
+        K3 -- "Yes" --&gt; K4([Multi-Dimensional Analysis Agent v2.0])
+
+        subgraph "Multi-Dimensional Analysis Engines"
+            K4 --&gt; K4A([Trend Analysis Engine])
+            K4 --&gt; K4B([Competitive Intelligence Engine])
+            K4 --&gt; K4C([Ecosystem Mapping Engine])
+            K4 --&gt; K4D([Predictive Analytics Engine])
+            K4 --&gt; K4E([Sentiment Analysis Engine])
+            K4 --&gt; K4F([Behavioral Analysis Engine])
+            K4A &amp; K4B &amp; K4C &amp; K4D &amp; K4E &amp; K4F --&gt; K4G([Cross-Dimensional Correlation])
+        end
+
+        K4G --&gt; K5([Update Context with Analysis])
+        K5 --&gt; K6((Synthesized Analytical Insights)):::intelligence
+    end
+
+    %% ============================================================================
+    %% PHASE 7: STRATEGIC INTELLIGENCE &amp; MARKETPLACE CONTEXT
+    %% ============================================================================
+    subgraph "Phase 7: Strategic Intelligence &amp; Marketplace Context"
+        direction TB
+        K6 --&gt; L1([Strategic Intelligence Agent v2.0])
+
+        subgraph "Strategic Intelligence Components"
+            L1 --&gt; L1A([Market Opportunity Identification])
+            L1 --&gt; L1B([Competitive Advantage Analysis])
+            L1 --&gt; L1C([Risk Assessment Engine])
+            L1 --&gt; L1D([Growth Strategy Engine])
+            L1 --&gt; L1E([Innovation Opportunity Finder])
+            L1 --&gt; L1F([Scenario Planning])
+            L1 --&gt; L1G([ROI Calculations])
+            L1A &amp; L1B &amp; L1C &amp; L1D &amp; L1E &amp; L1F &amp; L1G --&gt; L1H([Strategic Synthesis])
+        end
+
+        L1H --&gt; L2([Update Context with Strategic Intel])
+        L2 --&gt; L3((Strategic Opportunities &amp; Risks)):::intelligence
+        L3 --&gt; L4([Marketplace Context Engine Agent v2.0])
+
+        subgraph "Marketplace Context Components"
+            L4 --&gt; L4A([Platform-Specific Strategy Generation])
+            L4 --&gt; L4B([Cross-Platform Synergy Analysis])
+            L4 --&gt; L4C([Optimization Roadmap Creation])
+            L4 --&gt; L4D([Revenue Projections by Platform])
+            L4A &amp; L4B &amp; L4C &amp; L4D --&gt; L4E([Marketplace Intelligence Synthesis])
+        end
+
+        L4E --&gt; L5([Update Context with Marketplace Intel])
+        L5 --&gt; L6((Actionable Marketplace Strategies)):::intelligence
+    end
+
+    %% ============================================================================
+    %% PHASE 8: REPORT ASSEMBLY &amp; FINAL OUTPUT
+    %% ============================================================================
+    subgraph "Phase 8: Advanced Report Assembly"
+        direction TB
+        L6 --&gt; REPORT_ASSEMBLY([Advanced Report Assembler Agent v2.0])
+
+        subgraph "Report Assembly Components"
+            REPORT_ASSEMBLY --&gt; M1([Executive Briefing Generation])
+            REPORT_ASSEMBLY --&gt; M2([Strategic Narrative Creation])
+            REPORT_ASSEMBLY --&gt; M3([Data Visualization Engine])
+            REPORT_ASSEMBLY --&gt; M4([Marketplace Playbook Compilation])
+            REPORT_ASSEMBLY --&gt; M5([Technical Appendix Generation])
+            REPORT_ASSEMBLY --&gt; M6([Interactive Element Building])
+            M1 &amp; M2 &amp; M3 &amp; M4 &amp; M5 &amp; M6 --&gt; M7([Final Report Assembly])
+        end
+
+        M7 --&gt; M8([Update Context with Report])
+        M8 --&gt; M9(["Final MarketPrism Intelligence Report&lt;br/&gt;Format: PDF, Dashboard, API Response"]):::intelligence
+    end
+
+    %% ============================================================================
+    %% PHASE 9: DELIVERY &amp; CONTINUOUS LEARNING
+    %% ============================================================================
+    subgraph "Phase 9: Delivery &amp; Continuous Learning"
+        direction TB
+        M9 --&gt; N1([Delivery &amp; Learning Agent v2.0])
+
+        subgraph "Delivery Components"
+            N1 --&gt; N1A([Multi-Channel Delivery])
+            N1 --&gt; N1B([Performance Tracking])
+            N1 --&gt; N1C([Learning Model Updates])
+            N1 --&gt; N1D([Feedback Collection])
+        end
+
+        subgraph "Delivery Channels"
+            N1A --&gt; OUT1{{User Interface}}
+            N1A --&gt; OUT2{{Slack / Email}}
+            N1A --&gt; OUT3{{API Response}}
+            N1A --&gt; OUT4{{Dashboard}}
+        end
+
+        subgraph "Self-Improvement Loop"
+            N1D --&gt; FBACK&gt;Feedback Loop]
+            FBACK --&gt; LEARN_ENGINE&gt;Learning Engine v2.0]
+            LEARN_ENGINE --&gt; N2([Tool Testing &amp; Optimization Agent v2.1])
+
+            subgraph "Tool Optimization Components"
+                N2 --&gt; N2A([Test Underperforming Tools])
+                N2 --&gt; N2B([Rewrite Tool Descriptions])
+                N2 --&gt; N2C([Update Tool Registry])
+            end
+
+            N2A &amp; N2B &amp; N2C --&gt; N3([Final Output])
+            LEARN_ENGINE -.-&gt; D
+        end
+    end
+
+    %% ============================================================================
+    %% ERROR HANDLING &amp; RECOVERY
+    %% ============================================================================
+    subgraph "Error Handling &amp; Recovery System"
+        direction TB
+        ERR1 &amp; ERR2 &amp; ERR3 &amp; ERR4 &amp; ERR5 &amp; ERR6 &amp; ERR7 &amp; ERR8 &amp; ERR9 --&gt; ERROR_HANDLER([Error Handler &amp; Recovery Agent v2.0])
+
+        subgraph "Error Processing Components"
+            ERROR_HANDLER --&gt; ERR_A([Error Classification])
+            ERROR_HANDLER --&gt; ERR_B([Recovery Strategy Selection])
+            ERROR_HANDLER --&gt; ERR_C([Learning from Error])
+            ERR_A &amp; ERR_B &amp; ERR_C --&gt; ERR_D([Error Report Generation])
+        end
+
+        ERR_D --&gt; RECOVERY([Execute Recovery Strategy])
+        RECOVERY --&gt; LEARN_ENGINE
+        RECOVERY --&gt; M9
+    end
+
+    %% ============================================================================
+    %% CORE INFRASTRUCTURE SYSTEMS (Always Active)
+    %% ============================================================================
+    subgraph "Core Infrastructure Systems (Always Active)"
+        direction LR
+        CACHE[(Intelligent Cache v2)]:::infra
+        PROV[(Provenance Tracker v2)]:::infra  
+        PERF[(Performance Monitor v2)]:::infra
+
+        %% Infrastructure connections to all major agents
+        B &amp; DYN_A &amp; H1 &amp; H4 &amp; H8 &amp; H14 &amp; H20 &amp; XVAL_AGENT &amp; I3 &amp; I7 &amp; J1 &amp; J8 &amp; K1 &amp; K4 &amp; L1 &amp; L4 &amp; REPORT_ASSEMBLY &amp; N1 &amp; ERROR_HANDLER -.-&gt; CACHE
+        B &amp; DYN_A &amp; H1 &amp; H4 &amp; H8 &amp; H14 &amp; H20 &amp; XVAL_AGENT &amp; I3 &amp; I7 &amp; J1 &amp; J8 &amp; K1 &amp; K4 &amp; L1 &amp; L4 &amp; REPORT_ASSEMBLY &amp; N1 &amp; ERROR_HANDLER -.-&gt; PROV
+        B &amp; DYN_A &amp; H1 &amp; H4 &amp; H8 &amp; H14 &amp; H20 &amp; XVAL_AGENT &amp; I3 &amp; I7 &amp; J1 &amp; J8 &amp; K1 &amp; K4 &amp; L1 &amp; L4 &amp; REPORT_ASSEMBLY &amp; N1 &amp; ERROR_HANDLER -.-&gt; PERF
+    end</div>
+<hr />
+<h3 id="5-detailed-agent-specifications-n8n-implementation-blueprints"><strong>5. Detailed Agent Specifications &amp; N8N Implementation Blueprints</strong><a class="headerlink" href="#5-detailed-agent-specifications-n8n-implementation-blueprints" title="Link to this section">&para;</a></h3>
+<p>This section provides the detailed specifications for each of the 18+ core agents, including their purpose, key enhancements for v5.0, and a pragmatic N8N implementation plan using agent nodes as ML proxies.</p>
+<h4 id="phase-1-query-deconstruction-validation"><strong>Phase 1: Query Deconstruction &amp; Validation</strong><a class="headerlink" href="#phase-1-query-deconstruction-validation" title="Link to this section">&para;</a></h4>
+<p><em>The goal of this phase is to validate the user's request and transform a simple query into a rich set of semantically related terms, ensuring the subsequent research is comprehensive and on-target.</em></p>
+<p><strong>1. Master Orchestrator Agent v2.1</strong>
+*   <strong>Purpose:</strong> The central intelligence hub. It deconstructs the initial user query, determines the required "Job-to-be-Done" (JTBD), and plans the entire workflow, including the dynamic creation of sub-agents for complex research tasks.
+*   <strong>v5.0 Enhancements:</strong> Dynamic sub-agent spawning, advanced memory management with a 180k token threshold, and interleaved thinking coordination.
+*   <strong>N8N Implementation:</strong> A Code Node that analyzes the input and outputs a detailed <code>execution_plan</code> JSON object that controls the subsequent Switch and Agent nodes.</p>
+<p><strong>2. JTBD Validator Agent v2.0</strong>
+*   <strong>Purpose:</strong> Ensures the user's request is valid and optimized. It validates all parameters against the requirements of the selected JTBD.
+*   <strong>v5.0 Enhancements:</strong> ML-powered parameter suggestion (e.g., "For a competitive analysis, you provided 2 brands; consider adding a third for better market context"), real-time compatibility checks, and automatic parameter enrichment (e.g., automatically adding the correct Google Trends category ID for the term "automotive").
+*   <strong>N8N Implementation:</strong> An Agent Node with a system prompt focused on validation rules. It receives the user's parameters and returns a <code>{ "is_fully_valid": true/false, "validated_parameters": {...}, "optimization_suggestions": [...] }</code> object.</p>
+<p><strong>3. Semantic Intelligence Agent v2.1</strong>
+*   <strong>Purpose:</strong> Expands the core query into a rich semantic network.
+*   <strong>v5.0 Enhancements:</strong> It now uses its LLM to simulate multiple NLP models to generate morphological variations (e.g., "agent" -&gt; "agentic"), industry-specific terms (e.g., "agent" in a real estate context -&gt; "realtor"), competitor auto-discovery, and multi-language expansion.
+*   <strong>N8N Implementation:</strong> An Agent Node that takes the primary keywords and context, and outputs a <code>semantic_network</code> JSON object containing lists of new, scored, and categorized search terms.</p>
+<h4 id="phase-2-entity-discovery-resolution"><strong>Phase 2: Entity Discovery &amp; Resolution</strong><a class="headerlink" href="#phase-2-entity-discovery-resolution" title="Link to this section">&para;</a></h4>
+<p><em>The goal of this phase is to anchor the research to real-world entities by converting ambiguous strings from the semantic network into unique, validated identifiers from the Google Knowledge Graph.</em></p>
+<p><strong>4. Network Discovery Agent v2.0</strong>
+*   <strong>Purpose:</strong> Strategically plans the entity resolution process. It analyzes all the terms from the semantic network and prioritizes which ones require a call to the Knowledge Graph, optimizing for both relevance and API efficiency.
+*   <strong>N8N Implementation:</strong> An Agent Node that receives the <code>semantic_network</code> and outputs a <code>resolution_plan</code> containing a prioritized list of candidate terms.</p>
+<p><strong>5. KG Resolution Planning Agent (NEW)</strong>
+*   <strong>Purpose:</strong> Orchestrates the Knowledge Graph API calls. It takes the resolution plan and optimizes it into efficient batches.
+*   <strong>N8N Implementation:</strong> A Code Node that receives the <code>resolution_plan</code> and outputs a list of structured API call configurations.</p>
+<p><strong>6. KG API Parameterizer (NEW)</strong>
+*   <strong>Purpose:</strong> A crucial utility agent that converts the high-level plan into the exact, syntax-perfect API parameters required by the <code>/GKG MCP Server/</code>.
+*   <strong>N8N Implementation:</strong> A Code Node that receives the output from the planning agent and transforms it into the final <code>mcp_tool_parameters</code>.</p>
+<p><strong>7. KG API Execution Engine (NEW)</strong>
+*   <strong>Purpose:</strong> Executes the Knowledge Graph API calls with robust error handling and retries.
+*   <strong>N8N Implementation:</strong> A Loop Node that iterates over the API call configurations, with a nested HTTP Request Node to call the GKG MCP Server.</p>
+<p><strong>8. Entity Selection &amp; Mapping Agent (NEW)</strong>
+*   <strong>Purpose:</strong> The final step in the resolution pipeline. It takes the (often multiple) results from the KG API for a given term and intelligently selects the single best entity. For example, for the query "Apple," it would correctly select the "Corporation" entity over the "Fruit" entity based on the overall research context.
+*   <strong>N8N Implementation:</strong> An Agent Node that receives the raw KG API results and outputs a final, clean <code>entity_resolution_map</code> linking the original search terms to their definitive KG IDs (e.g., <code>{"Apple": "/m/04svj"}</code>).</p>
+<h4 id="phase-3-4-and-5-intelligence-generation-analysis-and-reporting"><strong>Phase 3, 4, and 5: Intelligence Generation, Analysis, and Reporting</strong><a class="headerlink" href="#phase-3-4-and-5-intelligence-generation-analysis-and-reporting" title="Link to this section">&para;</a></h4>
+<p><em>The remaining phases and agents from the PRD are executed sequentially, each building upon the structured output of the previous one. They are implemented in N8N as a chain of specialized Agent Nodes.</em></p>
+<p><strong>9. Pattern Intelligence Agent v2.1:</strong> Takes the resolved entities and queries the <code>/Trends MCP Server/</code> to detect seasonal, geographic, and velocity patterns.
+<strong>10. Strategic Term Set Builder v2.0:</strong> Uses the entity map and detected patterns to construct optimized, multi-term queries for deep comparative analysis.
+<strong>11. Advanced Parameter Agent v2.0:</strong> Prepares the final, complex API calls for the deep analysis phase.
+<strong>12. Parallel API Execution Engine v2.0:</strong> Executes the deep analysis calls across all configured data sources in a controlled, concurrent manner.
+<strong>13. Advanced Data Validator v2.0:</strong> Checks all aggregated data for quality, consistency, and completeness.
+<strong>14. Multi-Dimensional Analysis Agent v2.0:</strong> The core synthesis engine. It correlates the data from all sources (Trends, GKG, Web, Social, etc.) to find higher-order insights.
+<strong>15. Strategic Intelligence Agent v2.0:</strong> Transforms the analytical insights into C-suite level strategic recommendations (e.g., market entry opportunities, competitive threats).
+<strong>16. Marketplace Context Engine v2.0:</strong> (For e-commerce) Tailors the strategic recommendations into platform-specific playbooks (e.g., "Amazon Listing Optimization Strategy," "YouTube Content Strategy").
+<strong>17. Citation Agent v2.1 (NEW):</strong> A crucial final agent that processes the entire report, ensuring every factual claim is properly attributed to its source data, providing a full audit trail.
+<strong>18. Advanced Report Assembler v2.0:</strong> The final agent in the chain. It takes all the structured outputs from the previous agents and assembles them into the final, multi-format intelligence report (PDF, interactive dashboard, JSON).</p>
+<hr />
+<h2 id="production-architecture-devops-and-quality-assurance"><strong>Production Architecture, DevOps, and Quality Assurance</strong><a class="headerlink" href="#production-architecture-devops-and-quality-assurance" title="Link to this section">&para;</a></h2>
+<h3 id="infra"><strong>6. Production Deployment &amp; Infrastructure Architecture (v4.5)</strong><a class="headerlink" href="#infra" title="Link to this section">&para;</a></h3>
+<p>The MarketPrism platform is designed for high availability, scalability, and security. It is deployed as a suite of containerized microservices orchestrated by Docker Compose, making it portable to any modern cloud or on-premise environment.</p>
+<h4 id="61-definitive-docker-compose-architecture"><strong>6.1. Definitive Docker Compose Architecture</strong><a class="headerlink" href="#61-definitive-docker-compose-architecture" title="Link to this section">&para;</a></h4>
+<ul>
+<li><strong>Core Application Cluster (3x <code>omni-researcher</code>):</strong> A high-availability cluster of the main application servers, load-balanced by Caddy. This ensures redundancy and responsive request handling.</li>
+<li><strong>Search Federation Cluster (3x <code>searxng</code>):</strong> A dedicated, private cluster for federated web search, providing resilient and private access to public web data. Each instance has its own isolated Redis cache for maximum performance.</li>
+<li><strong>Content Extraction Services (<code>firecrawl-api</code>, <code>firecrawl-worker</code>, <code>playwright-service</code>):</strong> The official, three-part architecture for the Firecrawl service, providing a robust, queue-based system for handling demanding web scraping and JavaScript rendering tasks.</li>
+<li><strong>Core Datastores:</strong><ul>
+<li><strong>PostgreSQL:</strong> The primary database for storing long-term research results, knowledge graphs, and audit logs.</li>
+<li><strong>Valkey/Redis Cluster:</strong> A high-performance, multi-instance cache layer for session management, job queueing (for Firecrawl), and caching results from all MCP servers.</li>
+</ul>
+</li>
+<li><strong>Observability Stack:</strong><ul>
+<li><strong>Prometheus:</strong> For time-series metrics collection from all services.</li>
+<li><strong>Grafana:</strong> For building real-time performance and health monitoring dashboards.</li>
+</ul>
+</li>
+<li><strong>Reverse Proxy &amp; Load Balancer (<code>caddy</code>):</strong> The single, hardened entry point for all incoming requests, providing SSL, load balancing, and routing.</li>
+</ul>
+<h4 id="62-infrastructure-as-code-iac-portability"><strong>6.2. Infrastructure as Code (IaC) &amp; Portability</strong><a class="headerlink" href="#62-infrastructure-as-code-iac-portability" title="Link to this section">&para;</a></h4>
+<p>While deployed via Docker Compose for simplicity, the entire architecture is designed to be defined using <strong>Terraform</strong>. This allows for one-click, reproducible deployments into any major cloud provider (AWS, GCP, Azure) within a customer's private VPC, fulfilling our core promise of data sovereignty.</p>
+<h3 id="7-cicd-devops-strategy"><strong>7. CI/CD &amp; DevOps Strategy</strong><a class="headerlink" href="#7-cicd-devops-strategy" title="Link to this section">&para;</a></h3>
+<p>A platform of this sophistication demands a mature DevOps lifecycle to ensure continuous quality, security, and rapid feature delivery.</p>
+<ul>
+<li><strong>Source Control:</strong> Git (e.g., on GitHub or GitLab).</li>
+<li><strong>CI/CD Pipeline:</strong> A multi-stage pipeline (e.g., using GitHub Actions or GitLab CI) that automates the following process for every code change:<ol>
+<li><strong>Test:</strong> Automatically runs a comprehensive suite of unit, integration, and end-to-end tests.</li>
+<li><strong>Security Scan:</strong> Performs static code analysis, dependency vulnerability scanning, and container image scanning.</li>
+<li><strong>Build:</strong> Builds and versions the new <code>omni-researcher</code> Docker image and pushes it to a private container registry.</li>
+<li><strong>Deploy to Staging:</strong> Automatically deploys the new version to an identical staging environment for final integration testing.</li>
+<li><strong>Deploy to Production:</strong> A manual-approval gate allows for a one-click, zero-downtime blue/green or canary deployment to the production environment.</li>
+</ol>
+</li>
+</ul>
+<h3 id="8-the-testing-evaluation-framework-v21"><strong>8. The Testing &amp; Evaluation Framework (v2.1)</strong><a class="headerlink" href="#8-the-testing-evaluation-framework-v21" title="Link to this section">&para;</a></h3>
+<p>To guarantee the 10/10 quality score our brand promises, we will implement a revolutionary, multi-layered testing framework that goes far beyond traditional software QA.</p>
+<h4 id="81-the-tool-testing-agent"><strong>8.1. The <code>Tool Testing Agent</code></strong><a class="headerlink" href="#81-the-tool-testing-agent" title="Link to this section">&para;</a></h4>
+<ul>
+<li><strong>Purpose:</strong> A dedicated internal agent whose only job is to continuously test the other agents and tools.</li>
+<li><strong>Function:</strong> For any given tool (e.g., <code>omni_search</code>), this agent will:<ol>
+<li>Generate 20-50 diverse test cases (basic usage, edge cases, error conditions).</li>
+<li>Execute the tool for each test case.</li>
+<li>Analyze the results for correctness, quality, and performance.</li>
+<li><strong>If it detects failure patterns</strong>, it will use an LLM to <strong>automatically rewrite the tool's description</strong> to be clearer and more robust.</li>
+<li>It re-runs the tests with the new description and measures the performance improvement.</li>
+</ol>
+</li>
+<li><strong>Value:</strong> This creates a <strong>self-optimizing system</strong> where the tools' usability and reliability improve automatically over time, targeting a <strong>40% reduction in agent misuse errors</strong>.</li>
+</ul>
+<h4 id="82-the-llm-as-judge-evaluation-suite"><strong>8.2. The LLM-as-Judge Evaluation Suite</strong><a class="headerlink" href="#82-the-llm-as-judge-evaluation-suite" title="Link to this section">&para;</a></h4>
+<ul>
+<li><strong>Purpose:</strong> To provide an objective, scalable, and nuanced assessment of the final intelligence report's quality.</li>
+<li><strong>Function:</strong> For critical test cases, the final report is sent to a separate, high-power LLM (e.g., GPT-4o or Claude 3 Opus) acting as a "judge." The judge is given a strict rubric to score the report on:<ul>
+<li>Factual Accuracy</li>
+<li>Citation Quality &amp; Provenance</li>
+<li>Completeness against the user's query</li>
+<li>Source Quality and Authority</li>
+<li>Actionability of Insights</li>
+</ul>
+</li>
+<li><strong>Value:</strong> This moves quality assurance from simple pass/fail checks to a sophisticated, multi-dimensional evaluation that mirrors human expert judgment, allowing us to quantifiably track and improve the "intelligence" of our output.</li>
+</ul>
+<hr />
+<h2 id="go-to-market-strategy-competitive-moat-and-vision-conclusion"><strong>Go-to-Market Strategy, Competitive Moat, and Vision Conclusion</strong><a class="headerlink" href="#go-to-market-strategy-competitive-moat-and-vision-conclusion" title="Link to this section">&para;</a></h2>
+<h3 id="9-go-to-market-gtm-commercialization-strategy"><strong>9. Go-to-Market (GTM) &amp; Commercialization Strategy</strong><a class="headerlink" href="#9-go-to-market-gtm-commercialization-strategy" title="Link to this section">&para;</a></h3>
+<p>The MarketPrism platform will be commercialized via a high-value, enterprise-focused subscription model. We are not competing for the low-margin consumer market; we are providing a mission-critical intelligence asset for sophisticated organizations.</p>
+<h4 id="91-target-customer-profile-icp"><strong>9.1. Target Customer Profile (ICP)</strong><a class="headerlink" href="#91-target-customer-profile-icp" title="Link to this section">&para;</a></h4>
+<p>Our Ideal Customer Profile consists of technically mature organizations within data-intensive and regulated industries where decision velocity and data privacy are non-negotiable.</p>
+<ul>
+<li><strong>Primary Verticals:</strong><ol>
+<li><strong>Financial Services:</strong> Hedge funds, investment banks, and private equity firms requiring real-time market and competitive intelligence.</li>
+<li><strong>Management Consulting:</strong> Strategy consulting firms needing to rapidly produce comprehensive market analyses for their clients.</li>
+<li><strong>Corporate Strategy &amp; M&amp;A:</strong> Large enterprises performing due diligence, competitive landscaping, and market entry analysis.</li>
+<li><strong>Pharmaceutical &amp; Life Sciences:</strong> R&amp;D departments tracking clinical trials, competitor drug pipelines, and scientific trends.</li>
+</ol>
+</li>
+<li><strong>Key Persona:</strong> The Head of Research, Director of Strategy, or Chief Data/AI Officer.</li>
+</ul>
+<h4 id="92-deployment-pricing-model"><strong>9.2. Deployment &amp; Pricing Model</strong><a class="headerlink" href="#92-deployment-pricing-model" title="Link to this section">&para;</a></h4>
+<p>We will offer two distinct deployment models to capture the entire spectrum of the enterprise market:</p>
+<ol>
+<li>
+<p><strong>Private Cloud / On-Premise Subscription (The "Control" Tier):</strong></p>
+<ul>
+<li><strong>Model:</strong> We deliver the complete, containerized MarketPrism platform (via private registry access and deployment scripts) for the customer to run on their own infrastructure (VPC or on-premise).</li>
+<li><strong>Pricing:</strong> Annual license based on vCPU allocation or number of agent instances. (e.g., Starts at <strong>$100,000/year</strong> for a baseline 16-vCPU deployment).</li>
+<li><strong>Target:</strong> Fortune 500, defense, and financial institutions with absolute data residency and control requirements.</li>
+</ul>
+</li>
+<li>
+<p><strong>Managed, Single-Tenant SaaS (The "Convenience" Tier):</strong></p>
+<ul>
+<li><strong>Model:</strong> We deploy a completely isolated, dedicated instance of the entire MarketPrism stack for each customer within our managed cloud environment.</li>
+<li><strong>Pricing:</strong> Premium, all-inclusive annual subscription that bundles infrastructure, management, and software license. (e.g., Starts at <strong>$150,000/year</strong>).</li>
+<li><strong>Target:</strong> Mid-to-large enterprises that demand the security of a single-tenant architecture but prefer a managed, hassle-free solution.</li>
+</ul>
+</li>
+</ol>
+<h3 id="10-competitive-positioning-the-unbeatable-moat"><strong>10. Competitive Positioning &amp; The Unbeatable Moat</strong><a class="headerlink" href="#10-competitive-positioning-the-unbeatable-moat" title="Link to this section">&para;</a></h3>
+<p>MarketPrism is not an iteration; it is a category creator. We are defining the <strong>"Intelligent Market Discovery Platform"</strong> space.</p>
+<h4 id="101-the-competitive-positioning-matrix"><strong>10.1. The Competitive Positioning Matrix</strong><a class="headerlink" href="#101-the-competitive-positioning-matrix" title="Link to this section">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>High Innovation ┊ ★ MarketPrism (The Intelligence Platform)
+                ┊
+                ┊   SaaS Research Apps (Perplexity Enterprise)
+                ┊
+Low Innovation  ┊     Component APIs (Tavily)
+                └────────────────────────────────────────────────
+                Low Value (Data)         High Value (Synthesized Intelligence)
+</code></pre></div>
+<h4 id="102-the-definitive-moat"><strong>10.2. The Definitive Moat</strong><a class="headerlink" href="#102-the-definitive-moat" title="Link to this section">&para;</a></h4>
+<p>Our competitive advantage is not a single feature, but a <strong>synthesis of three architectural pillars</strong> that our competitors are not designed to replicate:</p>
+<ol>
+<li><strong>Multi-Source Data Triangulation:</strong> MarketPrism is the only platform designed from the ground up to <strong>synthesize</strong> disparate data types: structured entity data (from GKG), quantitative time-series data (from Trends), and qualitative content data (from the web and vertical-specific sources). This allows it to validate findings and generate high-confidence insights that single-source systems cannot.</li>
+<li><strong>Absolute Data Sovereignty:</strong> By offering a self-hosted and single-tenant model, we provide an <strong>architectural guarantee</strong> of data privacy. This makes us the only viable choice for the most valuable enterprise customers in regulated industries. A contractual promise from a multi-tenant SaaS can never compete with this.</li>
+<li><strong>Customizable Intelligence Logic:</strong> Our competitors provide a black-box algorithm. Our platform's open agent architecture allows enterprises to <strong>encode their own proprietary analytical frameworks</strong> and connect their own internal data sources, creating a research tool that becomes a unique, inimitable competitive asset.</li>
+</ol>
+<h3 id="11-vision-conclusion-the-future-of-automated-strategy"><strong>11. Vision Conclusion: The Future of Automated Strategy</strong><a class="headerlink" href="#11-vision-conclusion-the-future-of-automated-strategy" title="Link to this section">&para;</a></h3>
+<p>The world is drowning in data. The critical bottleneck for every modern enterprise is the transformation of that data into clear, predictive, and actionable strategic intelligence.</p>
+<p>MarketPrism solves this problem.</p>
+<p>We have moved beyond the simple "ask a question, get a summary" paradigm of first-generation AI tools. We have built an engine that mimics the workflow of an elite team of human research analysts—deconstructing problems, gathering multi-modal data, validating sources, synthesizing findings, and delivering a high-level strategic briefing.</p>
+<p>By unifying the <strong>"What"</strong> (GKG), the <strong>"When &amp; Where"</strong> (Trends), the <strong>"Why &amp; How"</strong> (Omni-Researcher), and the <strong>"With What Proof"</strong> (Specialized Data Sources), MarketPrism provides a 360-degree view of any market landscape with unprecedented speed and depth.</p>
+<p>The platform is complete. The architecture is sound. The market need is clear. The time to build the future of automated strategic intelligence is now.</p>
+    </div>
+  </main>
+
+  <!-- Floating Action Buttons -->
+  <div class="floating-controls">
+    <button class="fab secondary" onclick="scrollToTop()" title="Back to Top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+    <button class="fab secondary" onclick="toggleFullscreen()" title="Toggle Fullscreen">
+      <i class="fas fa-expand"></i>
+    </button>
+    <button class="fab" onclick="toggleSidebar()" title="Toggle Navigation">
+      <i class="fas fa-compass"></i>
+    </button>
+  </div>
+
+  <!-- Tooltip for diagrams -->
+  <div class="diagram-tooltip" id="diagramTooltip"></div>
+
+  <script>
+    // GLOBAL STATE
+    let diagramData = {};
+    let currentSubgraph = null;
+    let minimapEnabled = true;
+
+    // THEME MANAGEMENT
+    function toggleDarkMode() {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      localStorage.setItem('lightMode', isLight);
+      document.querySelector('.dark-mode-toggle i').className = isLight ? 'fas fa-moon' : 'fas fa-sun';
+      
+      // Reinitialize mermaid with new theme
+      if (typeof mermaid !== 'undefined') {
+        setTimeout(() => {
+          initializeMermaid();
+        }, 100);
+      }
+    }
+
+    // SIDEBAR MANAGEMENT
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const body = document.body;
+      sidebar.classList.toggle('open');
+      body.classList.toggle('sidebar-open');
+    }
+
+    // READING PROGRESS
+    function updateReadingProgress() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.querySelector('.reading-progress').style.width = scrolled + '%';
+    }
+
+    // SCROLL TO TOP
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // FULLSCREEN TOGGLE
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // INTELLIGENT NAVIGATION GENERATION
+    function generateIntelligentNavigation() {
+      const navContent = document.getElementById('nav-content');
+      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      
+      const sections = {
+        overview: { title: 'Overview & Vision', items: [], icon: 'fas fa-eye' },
+        architecture: { title: 'Architecture & Flow', items: [], icon: 'fas fa-project-diagram' },
+        implementation: { title: 'Implementation & Details', items: [], icon: 'fas fa-cogs' },
+        business: { title: 'Business & Strategy', items: [], icon: 'fas fa-chart-line' },
+        general: { title: 'General Content', items: [], icon: 'fas fa-file-alt' }
+      };
+
+      headings.forEach((heading, index) => {
+        if (!heading.id) {
+          const text = heading.textContent.toLowerCase();
+          heading.id = text
+            .replace(/[^a-z0-9\s]/gi, '')
+            .replace(/\s+/g, '-')
+            .substring(0, 50) || `section-${index}`;
+        }
+
+        const text = heading.textContent.toLowerCase();
+        const item = {
+          id: heading.id,
+          title: heading.textContent.replace(/[🚀🤖🔍🧠⚡📊🎯📑]/g, '').trim(),
+          level: parseInt(heading.tagName.substring(1))
+        };
+
+        // Categorization logic
+        if (text.includes('vision') || text.includes('overview') || text.includes('executive') || 
+            text.includes('introduction') || text.includes('moat')) {
+          sections.overview.items.push(item);
+        } else if (text.includes('architecture') || text.includes('workflow') || text.includes('agentic') ||
+                   text.includes('phase') || text.includes('flow') || text.includes('agent') ||
+                   text.includes('engine') || text.includes('system')) {
+          sections.architecture.items.push(item);
+        } else if (text.includes('production') || text.includes('deployment') || text.includes('testing') ||
+                   text.includes('devops') || text.includes('infrastructure') || text.includes('specification') ||
+                   text.includes('implementation') || text.includes('detail')) {
+          sections.implementation.items.push(item);
+        } else if (text.includes('market') || text.includes('strategy') || text.includes('competitive') ||
+                   text.includes('business') || text.includes('gtm') || text.includes('go-to-market') ||
+                   text.includes('commercialization') || text.includes('positioning')) {
+          sections.business.items.push(item);
+        } else {
+          sections.general.items.push(item);
+        }
+      });
+
+      // Generate navigation HTML
+      Object.entries(sections).forEach(([key, section]) => {
+        if (section.items.length > 0) {
+          const sectionDiv = document.createElement('div');
+          sectionDiv.className = 'nav-section';
+          
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'nav-section-title';
+          titleDiv.innerHTML = `
+            <span><i class="${section.icon}"></i> ${section.title}</span>
+            <i class="fas fa-chevron-down"></i>
+          `;
+          titleDiv.onclick = () => toggleNavSection(sectionDiv);
+          
+          const itemsDiv = document.createElement('div');
+          itemsDiv.className = 'nav-items';
+          
+          section.items.forEach(item => {
+            const link = document.createElement('a');
+            link.href = `#${item.id}`;
+            link.className = 'nav-item';
+            link.textContent = item.title;
+            link.style.paddingLeft = `${1.5 + (item.level - 1) * 0.5}rem`;
+            link.onclick = (e) => {
+              e.preventDefault();
+              navigateToSection(item.id);
+            };
+            itemsDiv.appendChild(link);
+          });
+          
+          sectionDiv.appendChild(titleDiv);
+          sectionDiv.appendChild(itemsDiv);
+          navContent.appendChild(sectionDiv);
+        }
+      });
+    }
+
+    // TOGGLE NAVIGATION SECTION
+    function toggleNavSection(section) {
+      section.classList.toggle('collapsed');
+    }
+
+    // NAVIGATE TO SECTION
+    function navigateToSection(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        updateActiveNavItem(id);
+        updateBreadcrumb(element);
+      }
+    }
+
+    // UPDATE ACTIVE NAVIGATION ITEM
+    function updateActiveNavItem(activeId) {
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === `#${activeId}`) {
+          item.classList.add('active');
+        }
+      });
+    }
+
+    // UPDATE BREADCRUMB
+    function updateBreadcrumb(element) {
+      const breadcrumb = document.getElementById('breadcrumb');
+      breadcrumb.innerHTML = `
+        <span class="breadcrumb-item">
+          <i class="fas fa-home"></i> Document
+        </span>
+        <span class="breadcrumb-separator">
+          <i class="fas fa-chevron-right"></i>
+        </span>
+        <span class="breadcrumb-item active">
+          ${element.textContent.replace(/[🚀🤖🔍🧠⚡📊🎯📑]/g, '').trim()}
+        </span>
+      `;
+    }
+
+    // SEARCH NAVIGATION
+    function searchNavigation(query) {
+      const navItems = document.querySelectorAll('.nav-item');
+      const sections = document.querySelectorAll('.nav-section');
+      
+      if (!query.trim()) {
+        navItems.forEach(item => item.style.display = 'block');
+        sections.forEach(section => section.style.display = 'block');
+        return;
+      }
+
+      const searchTerm = query.toLowerCase();
+
+      sections.forEach(section => {
+        const items = section.querySelectorAll('.nav-item');
+        let sectionHasVisible = false;
+
+        items.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          if (text.includes(searchTerm)) {
+            item.style.display = 'block';
+            sectionHasVisible = true;
+            
+            // Highlight search term
+            const regex = new RegExp(`(${query})`, 'gi');
+            item.innerHTML = item.textContent.replace(regex, '<mark>$1</mark>');
+          } else {
+            item.style.display = 'none';
+            item.innerHTML = item.textContent;
+          }
+        });
+
+        section.style.display = sectionHasVisible ? 'block' : 'none';
+        if (sectionHasVisible) {
+          section.classList.remove('collapsed');
+        }
+      });
+    }
+
+    // INTERSECTION OBSERVER FOR AUTO-HIGHLIGHTING
+    function setupIntersectionObserver() {
+      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6[id]');
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            updateActiveNavItem(entry.target.id);
+            updateBreadcrumb(entry.target);
+          }
+        });
+      }, {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+      });
+
+      headings.forEach(heading => observer.observe(heading));
+    }
+
+    // FIX MERMAID SYNTAX
+    function fixMermaidSyntax(source) {
+      const lines = source.split('\n');
+      const classDefLines = [];
+      const otherLines = [];
+      
+      for (const line of lines) {
+        if (line.trim().startsWith('classDef ')) {
+          classDefLines.push(line);
+        } else {
+          otherLines.push(line);
+        }
+      }
+      
+      if (classDefLines.length > 0) {
+        return [...otherLines, ...classDefLines].join('\n');
+      }
+      return source;
+    }
+
+    // PARSE MERMAID DIAGRAM
+    function parseMermaidDiagram(source) {
+      const subgraphs = [];
+      const lines = source.split('\n');
+      let currentSubgraph = null;
+      let inSubgraph = false;
+      let mainFlow = { title: 'Main Flow', content: [], nodes: [], connections: [] };
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        
+        // Detect subgraph start
+        const subgraphMatch = trimmed.match(/subgraph\s+(?:"([^"]+)"|(\w+))/);
+        if (subgraphMatch) {
+          if (currentSubgraph && inSubgraph) {
+            subgraphs.push(currentSubgraph);
+          }
+          currentSubgraph = {
+            title: subgraphMatch[1] || subgraphMatch[2],
+            content: [line],
+            nodes: [],
+            connections: []
+          };
+          inSubgraph = true;
+          continue;
+        }
+        
+        // Detect subgraph end
+        if (trimmed === 'end' && inSubgraph) {
+          if (currentSubgraph) {
+            currentSubgraph.content.push(line);
+            subgraphs.push(currentSubgraph);
+          }
+          currentSubgraph = null;
+          inSubgraph = false;
+          continue;
+        }
+        
+        // Add content to current context
+        if (inSubgraph && currentSubgraph) {
+          currentSubgraph.content.push(line);
+          
+          // Extract nodes
+          const nodeMatch = trimmed.match(/(\w+)(?:\[|\(|\{|\>\|)/);
+          if (nodeMatch && !trimmed.includes('-->') && !trimmed.includes('-.->')) {
+            currentSubgraph.nodes.push(nodeMatch[1]);
+          }
+          
+          // Extract connections
+          if (trimmed.includes('-->') || trimmed.includes('-.->')) {
+            currentSubgraph.connections.push(trimmed);
+          }
+        } else {
+          mainFlow.content.push(line);
+          
+          // Extract main flow nodes and connections
+          const nodeMatch = trimmed.match(/(\w+)(?:\[|\(|\{|\>\|)/);
+          if (nodeMatch && !trimmed.includes('-->') && !trimmed.includes('-.->')) {
+            mainFlow.nodes.push(nodeMatch[1]);
+          }
+          
+          if (trimmed.includes('-->') || trimmed.includes('-.->')) {
+            mainFlow.connections.push(trimmed);
+          }
+        }
+      }
+      
+      // If there's a final subgraph without end
+      if (currentSubgraph && inSubgraph) {
+        subgraphs.push(currentSubgraph);
+      }
+      
+      return { mainFlow, subgraphs };
+    }
+
+    // ENHANCED MERMAID INITIALIZATION
+    function initializeMermaid() {
+      document.querySelectorAll('.mermaid').forEach((element, index) => {
+        if (element.closest('.diagram-container')) return;
+
+        console.log(`🚀 Setting up Mermaid diagram ${index + 1}`);
+
+        // Store original source
+        if (!element.dataset.originalSource) {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = element.innerHTML;
+          element.dataset.originalSource = (tempDiv.textContent || '').trim();
+        }
+
+        // Create container
+        const container = document.createElement('div');
+        container.className = 'diagram-container';
+        container.id = `diagram-container-${index}`;
+        
+        // Add loading indicator
+        const loading = document.createElement('div');
+        loading.className = 'diagram-loading';
+        loading.innerHTML = 'Rendering diagram...';
+        element.appendChild(loading);
+        
+        // Create toolbar
+        const toolbar = document.createElement('div');
+        toolbar.className = 'diagram-toolbar';
+        toolbar.innerHTML = `
+          <button class="diagram-btn" onclick="downloadDiagram(${index})" title="Download SVG">
+            <i class="fas fa-download"></i> Download
+          </button>
+          <button class="diagram-btn" onclick="toggleDiagramSearch(${index})" title="Search in Diagram">
+            <i class="fas fa-search"></i> Search
+          </button>
+          <button class="diagram-btn" onclick="toggleMinimap(${index})" title="Toggle Minimap">
+            <i class="fas fa-map"></i> Minimap
+          </button>
+          <button class="diagram-btn" onclick="zoomDiagram(${index}, 'in')" title="Zoom In">
+            <i class="fas fa-search-plus"></i>
+          </button>
+          <button class="diagram-btn" onclick="zoomDiagram(${index}, 'out')" title="Zoom Out">
+            <i class="fas fa-search-minus"></i>
+          </button>
+          <button class="diagram-btn" onclick="zoomDiagram(${index}, 'reset')" title="Reset Zoom">
+            <i class="fas fa-compress-arrows-alt"></i>
+          </button>
+          <button class="diagram-btn" onclick="toggleDiagramFullscreen(${index})" title="Fullscreen">
+            <i class="fas fa-expand-arrows-alt"></i>
+          </button>
+          <button class="diagram-btn" onclick="showDiagramBreakdown(${index})" title="Subgraph Viewer">
+            <i class="fas fa-sitemap"></i> Breakdown
+          </button>
+        `;
+        
+        // Create search box
+        const searchBox = document.createElement('div');
+        searchBox.className = 'diagram-search';
+        searchBox.id = `diagram-search-${index}`;
+        searchBox.innerHTML = `
+          <input type="text" class="diagram-search-input" placeholder="Search nodes..." 
+                 onkeyup="searchInDiagram(${index}, this.value)" />
+        `;
+        
+        // Create minimap
+        const minimap = document.createElement('div');
+        minimap.className = 'diagram-minimap';
+        minimap.id = `diagram-minimap-${index}`;
+        minimap.style.display = minimapEnabled ? 'block' : 'none';
+        minimap.innerHTML = '<div class="minimap-viewport"></div>';
+        
+        element.parentNode.insertBefore(container, element);
+        container.appendChild(element);
+        container.appendChild(toolbar);
+        container.appendChild(searchBox);
+        container.appendChild(minimap);
+        
+        // Parse and store diagram data
+        const source = element.dataset.originalSource;
+        diagramData[index] = parseMermaidDiagram(source);
+        
+        // Render diagram
+        renderMermaidDiagram(element, index);
+      });
+    }
+
+    // RENDER MERMAID DIAGRAM
+    function renderMermaidDiagram(element, index) {
+      const source = element.dataset.originalSource;
+      if (!source) return;
+      
+      const isLightMode = document.body.classList.contains('light-mode');
+      const themeConfig = isLightMode ? {
+        primaryColor: '#f8fafc',
+        primaryBorderColor: '#0ea5e9',
+        primaryTextColor: '#1e293b',
+        lineColor: '#1e293b',
+        textColor: '#1e293b',
+        secondaryColor: '#e2e8f0',
+        tertiaryColor: '#cbd5e1',
+        background: '#ffffff',
+        mainBkg: '#f8fafc',
+        secondBkg: '#f1f5f9'
+      } : {
+        primaryColor: '#1e293b',
+        primaryBorderColor: '#7dd3fc',
+        primaryTextColor: '#f8fafc',
+        lineColor: '#f8fafc',
+        textColor: '#f8fafc',
+        secondaryColor: '#334155',
+        tertiaryColor: '#475569',
+        background: '#0f172a',
+        mainBkg: '#1e293b',
+        secondBkg: '#334155'
+      };
+
+      mermaid.initialize({
+        theme: 'base',
+        themeVariables: themeConfig,
+        startOnLoad: false,
+        securityLevel: 'loose'
+      });
+
+      const id = `mermaid-diagram-${index}`;
+      element.id = `diagram-${index}`;
+      
+      const fixedSource = fixMermaidSyntax(source);
+      
+      mermaid.render(id, fixedSource)
+        .then(({ svg }) => {
+          // Remove loading indicator
+          const loading = element.querySelector('.diagram-loading');
+          if (loading) loading.remove();
+          
+          element.innerHTML = svg;
+          addDiagramInteractivity(element, index);
+          updateMinimap(index);
+        })
+        .catch(error => {
+          console.error(`❌ Failed to render diagram ${index}:`, error);
+          element.innerHTML = `<div style="color: #ef4444; padding: 1.5rem;">
+            <strong>Error rendering diagram:</strong> ${error.message}
+          </div>`;
+        });
+    }
+
+    // ADD DIAGRAM INTERACTIVITY
+    function addDiagramInteractivity(element, index) {
+      const svg = element.querySelector('svg');
+      if (!svg) return;
+      
+      // Make diagram draggable when zoomed
+      let isDragging = false;
+      let startX, startY, scrollLeft, scrollTop;
+      
+      element.addEventListener('mousedown', (e) => {
+        if (e.target === svg || svg.contains(e.target)) {
+          isDragging = true;
+          element.style.cursor = 'grabbing';
+          startX = e.pageX - element.offsetLeft;
+          startY = e.pageY - element.offsetTop;
+          scrollLeft = element.scrollLeft;
+          scrollTop = element.scrollTop;
+        }
+      });
+      
+      element.addEventListener('mouseleave', () => {
+        isDragging = false;
+        element.style.cursor = 'grab';
+      });
+      
+      element.addEventListener('mouseup', () => {
+        isDragging = false;
+        element.style.cursor = 'grab';
+      });
+      
+      element.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - element.offsetLeft;
+        const y = e.pageY - element.offsetTop;
+        const walkX = (x - startX) * 2;
+        const walkY = (y - startY) * 2;
+        element.scrollLeft = scrollLeft - walkX;
+        element.scrollTop = scrollTop - walkY;
+      });
+      
+      // Add click handlers to nodes
+      const nodes = element.querySelectorAll('.node, .cluster');
+      nodes.forEach(node => {
+        node.style.cursor = 'pointer';
+        
+        // Add hover effect
+        node.addEventListener('mouseenter', (e) => {
+          showTooltip(e, node);
+        });
+        
+        node.addEventListener('mouseleave', () => {
+          hideTooltip();
+        });
+        
+        // Add click handler
+        node.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const nodeId = node.id || node.querySelector('text')?.textContent;
+          console.log('Clicked node:', nodeId);
+          
+          // Highlight connected nodes
+          highlightConnectedNodes(element, node);
+        });
+      });
+    }
+
+    // SHOW TOOLTIP
+    function showTooltip(event, node) {
+      const tooltip = document.getElementById('diagramTooltip');
+      const text = node.querySelector('text')?.textContent || 'Node';
+      
+      tooltip.innerHTML = `
+        <strong>${text}</strong><br>
+        <small>Click to highlight connections</small>
+      `;
+      
+      tooltip.style.left = event.pageX + 10 + 'px';
+      tooltip.style.top = event.pageY - 30 + 'px';
+      tooltip.classList.add('visible');
+    }
+
+    // HIDE TOOLTIP
+    function hideTooltip() {
+      const tooltip = document.getElementById('diagramTooltip');
+      tooltip.classList.remove('visible');
+    }
+
+    // HIGHLIGHT CONNECTED NODES
+    function highlightConnectedNodes(element, clickedNode) {
+      // Remove existing highlights
+      element.querySelectorAll('.highlight').forEach(el => {
+        el.classList.remove('highlight');
+      });
+      
+      // Add highlight to clicked node
+      clickedNode.classList.add('highlight');
+      
+      // Find and highlight connected nodes (this is simplified - in real implementation
+      // you'd parse the connections from the diagram data)
+      const nodeText = clickedNode.querySelector('text')?.textContent;
+      if (nodeText) {
+        element.querySelectorAll('.node').forEach(node => {
+          const text = node.querySelector('text')?.textContent;
+          if (text && text !== nodeText) {
+            // This is where you'd check if nodes are connected
+            // For now, we'll just highlight nodes with similar text
+            if (text.toLowerCase().includes(nodeText.toLowerCase().split(' ')[0])) {
+              node.classList.add('highlight');
+            }
+          }
+        });
+      }
+    }
+
+    // TOGGLE DIAGRAM FULLSCREEN
+    function toggleDiagramFullscreen(index) {
+      const container = document.getElementById(`diagram-container-${index}`);
+      if (!container) return;
+
+      const isFullscreen = container.classList.contains('fullscreen');
+
+      if (!isFullscreen) {
+        container.classList.add('fullscreen');
+        document.body.style.overflow = 'hidden';
+
+        const exitBtn = document.createElement('button');
+        exitBtn.className = 'exit-fullscreen-btn';
+        exitBtn.innerHTML = '<i class="fas fa-times"></i> Exit Fullscreen';
+        exitBtn.onclick = () => toggleDiagramFullscreen(index);
+        exitBtn.id = `exit-fullscreen-${index}`;
+        document.body.appendChild(exitBtn);
+      } else {
+        container.classList.remove('fullscreen');
+        document.body.style.overflow = '';
+        const exitBtn = document.getElementById(`exit-fullscreen-${index}`);
+        if (exitBtn) exitBtn.remove();
+      }
+    }
+
+    // SHOW DIAGRAM BREAKDOWN
+    function showDiagramBreakdown(index) {
+      const data = diagramData[index];
+      if (!data) return;
+      
+      const modal = document.createElement('div');
+      modal.className = 'diagram-breakdown-modal';
+      
+      const content = document.createElement('div');
+      content.className = 'diagram-breakdown-content';
+      
+      content.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+          <h2 style="margin: 0; color: var(--accent-dark);">
+            <i class="fas fa-sitemap"></i> Diagram Breakdown
+          </h2>
+          <button onclick="this.closest('.diagram-breakdown-modal').remove()" 
+                  style="background: none; border: none; color: var(--text-dark); font-size: 1.5rem; cursor: pointer;">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        ${data.subgraphs.length > 0 ? `
+          <div class="subgraph-viewer">
+            <h3 style="margin-top: 0;">Interactive Subgraph Viewer</h3>
+            <div class="subgraph-selector">
+              <button class="subgraph-btn active" onclick="showSubgraph(${index}, -1, this)">
+                Full Diagram
+              </button>
+              ${data.subgraphs.map((subgraph, i) => `
+                <button class="subgraph-btn" onclick="showSubgraph(${index}, ${i}, this)">
+                  ${subgraph.title}
+                </button>
+              `).join('')}
+            </div>
+            <div class="subgraph-content" id="subgraph-content-${index}">
+              <div class="diagram-loading">Loading subgraph...</div>
+            </div>
+          </div>
+        ` : ''}
+        
+        <div style="margin-top: 2rem;">
+          <h3>Diagram Structure Analysis</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            ${data.subgraphs.length > 0 ? data.subgraphs.map((subgraph, i) => `
+              <div style="background: var(--section-dark); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent-dark);">
+                <h4 style="margin-top: 0; color: var(--accent-dark);">
+                  <i class="fas fa-layer-group"></i> ${subgraph.title}
+                </h4>
+                <div style="font-size: 0.9rem; opacity: 0.9;">
+                  <strong>Nodes:</strong> ${subgraph.nodes.length}<br>
+                  <strong>Connections:</strong> ${subgraph.connections.length}
+                </div>
+                <div style="margin-top: 1rem;">
+                  <strong>Key Components:</strong>
+                  <div style="margin-top: 0.5rem;">
+                    ${subgraph.nodes.slice(0, 5).map(node => `
+                      <div style="background: var(--code-dark); padding: 0.5rem; margin: 0.5rem 0; border-radius: 4px; font-size: 0.85rem;">
+                        ${node}
+                      </div>
+                    `).join('')}
+                    ${subgraph.nodes.length > 5 ? `
+                      <div style="opacity: 0.7; font-size: 0.8rem;">
+                        ...and ${subgraph.nodes.length - 5} more nodes
+                      </div>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            `).join('') : `
+              <div style="background: var(--section-dark); padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--accent-dark);">
+                <h4 style="margin-top: 0; color: var(--accent-dark);">
+                  <i class="fas fa-layer-group"></i> Main Flow
+                </h4>
+                <div style="font-size: 0.9rem; opacity: 0.9;">
+                  <strong>Total Nodes:</strong> ${data.mainFlow.nodes.length}<br>
+                  <strong>Total Connections:</strong> ${data.mainFlow.connections.length}
+                </div>
+              </div>
+            `}
+          </div>
+        </div>
+        
+        <div style="margin-top: 2rem; text-align: center;">
+          <button onclick="this.closest('.diagram-breakdown-modal').remove()" 
+                  style="background: var(--accent-dark); color: white; border: none; padding: 0.75rem 2rem; border-radius: 6px; cursor: pointer; font-weight: 600;">
+            Close Breakdown
+          </button>
+        </div>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      // Initialize with full diagram
+      if (data.subgraphs.length > 0) {
+        showSubgraph(index, -1, content.querySelector('.subgraph-btn'));
+      }
+      
+      // Close on backdrop click
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
+    }
+
+    // SHOW SUBGRAPH
+    function showSubgraph(diagramIndex, subgraphIndex, button) {
+      const data = diagramData[diagramIndex];
+      if (!data) return;
+      
+      // Update button states
+      document.querySelectorAll('.subgraph-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      button.classList.add('active');
+      
+      const contentDiv = document.getElementById(`subgraph-content-${diagramIndex}`);
+      if (!contentDiv) return;
+      
+      let sourceToRender;
+      
+      if (subgraphIndex === -1) {
+        // Show full diagram
+        sourceToRender = document.getElementById(`diagram-${diagramIndex}`).dataset.originalSource;
+      } else {
+        // Show specific subgraph
+        const subgraph = data.subgraphs[subgraphIndex];
+        if (!subgraph) return;
+        
+        // Reconstruct a minimal diagram with just this subgraph
+        const graphType = data.mainFlow.content[0]?.includes('graph') ? 'graph TD' : 'flowchart TD';
+        
+        // Get all class definitions from the original
+        const originalSource = document.getElementById(`diagram-${diagramIndex}`).dataset.originalSource;
+        const classDefLines = originalSource.split('\n').filter(line => line.trim().startsWith('classDef'));
+        
+        sourceToRender = [
+          graphType,
+          ...subgraph.content,
+          ...classDefLines
+        ].join('\n');
+      }
+      
+      // Create a temporary mermaid div
+      const tempDiv = document.createElement('div');
+      tempDiv.className = 'mermaid';
+      tempDiv.style.width = '100%';
+      tempDiv.style.height = '100%';
+      contentDiv.innerHTML = '';
+      contentDiv.appendChild(tempDiv);
+      
+      // Render the subgraph
+      const isLightMode = document.body.classList.contains('light-mode');
+      const themeConfig = isLightMode ? {
+        primaryColor: '#f8fafc',
+        primaryBorderColor: '#0ea5e9',
+        primaryTextColor: '#1e293b',
+        lineColor: '#1e293b',
+        textColor: '#1e293b',
+        secondaryColor: '#e2e8f0',
+        tertiaryColor: '#cbd5e1',
+        background: '#ffffff',
+        mainBkg: '#f8fafc',
+        secondBkg: '#f1f5f9'
+      } : {
+        primaryColor: '#1e293b',
+        primaryBorderColor: '#7dd3fc',
+        primaryTextColor: '#f8fafc',
+        lineColor: '#f8fafc',
+        textColor: '#f8fafc',
+        secondaryColor: '#334155',
+        tertiaryColor: '#475569',
+        background: '#0f172a',
+        mainBkg: '#1e293b',
+        secondBkg: '#334155'
+      };
+
+      mermaid.initialize({
+        theme: 'base',
+        themeVariables: themeConfig,
+        startOnLoad: false,
+        securityLevel: 'loose'
+      });
+
+      const id = `subgraph-diagram-${diagramIndex}-${subgraphIndex}`;
+      
+      mermaid.render(id, sourceToRender)
+        .then(({ svg }) => {
+          tempDiv.innerHTML = svg;
+          
+          // Make SVG responsive
+          const svgElement = tempDiv.querySelector('svg');
+          if (svgElement) {
+            svgElement.style.maxWidth = '100%';
+            svgElement.style.height = 'auto';
+          }
+        })
+        .catch(error => {
+          console.error('Failed to render subgraph:', error);
+          contentDiv.innerHTML = `<div style="color: #ef4444; padding: 1rem;">
+            Failed to render subgraph: ${error.message}
+          </div>`;
+        });
+    }
+
+    // DOWNLOAD DIAGRAM
+    function downloadDiagram(index) {
+      const element = document.getElementById(`diagram-${index}`);
+      const svg = element.querySelector('svg');
+      if (svg) {
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const svgBlob = new Blob([svgData], {type: 'image/svg+xml;charset=utf-8'});
+        const svgUrl = URL.createObjectURL(svgBlob);
+        
+        const downloadLink = document.createElement('a');
+        downloadLink.href = svgUrl;
+        downloadLink.download = `diagram-${index + 1}.svg`;
+        downloadLink.click();
+        
+        URL.revokeObjectURL(svgUrl);
+      }
+    }
+
+    // ZOOM DIAGRAM
+    function zoomDiagram(index, action) {
+      const element = document.getElementById(`diagram-${index}`);
+      const svg = element.querySelector('svg');
+      if (!svg) return;
+
+      let currentScale = parseFloat(svg.dataset.scale || '1');
+      
+      switch(action) {
+        case 'in':
+          currentScale = Math.min(currentScale * 1.2, 3);
+          break;
+        case 'out':
+          currentScale = Math.max(currentScale * 0.8, 0.5);
+          break;
+        case 'reset':
+          currentScale = 1;
+          break;
+      }
+      
+      svg.style.transform = `scale(${currentScale})`;
+      svg.style.transformOrigin = 'top left';
+      svg.dataset.scale = currentScale;
+      
+      // Update minimap
+      updateMinimap(index);
+    }
+
+    // TOGGLE DIAGRAM SEARCH
+    function toggleDiagramSearch(index) {
+      const searchBox = document.getElementById(`diagram-search-${index}`);
+      if (searchBox) {
+        searchBox.classList.toggle('active');
+        if (searchBox.classList.contains('active')) {
+          searchBox.querySelector('input').focus();
+        }
+      }
+    }
+
+    // SEARCH IN DIAGRAM
+    function searchInDiagram(index, query) {
+      const element = document.getElementById(`diagram-${index}`);
+      if (!element) return;
+      
+      // Remove existing highlights
+      element.querySelectorAll('.highlight').forEach(el => {
+        el.classList.remove('highlight');
+      });
+      
+      if (!query.trim()) return;
+      
+      const searchTerm = query.toLowerCase();
+      const nodes = element.querySelectorAll('.node, .cluster');
+      
+      nodes.forEach(node => {
+        const text = node.querySelector('text')?.textContent || '';
+        if (text.toLowerCase().includes(searchTerm)) {
+          node.classList.add('highlight');
+          
+          // Scroll to first match
+          if (!element.dataset.scrolledToFirst) {
+            node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            element.dataset.scrolledToFirst = 'true';
+          }
+        }
+      });
+      
+      // Reset scroll flag when search is cleared
+      if (!query.trim()) {
+        delete element.dataset.scrolledToFirst;
+      }
+    }
+
+    // TOGGLE MINIMAP
+    function toggleMinimap(index) {
+      const minimap = document.getElementById(`diagram-minimap-${index}`);
+      if (minimap) {
+        minimapEnabled = !minimapEnabled;
+        minimap.style.display = minimapEnabled ? 'block' : 'none';
+        if (minimapEnabled) {
+          updateMinimap(index);
+        }
+      }
+    }
+
+    // UPDATE MINIMAP
+    function updateMinimap(index) {
+      if (!minimapEnabled) return;
+      
+      const element = document.getElementById(`diagram-${index}`);
+      const minimap = document.getElementById(`diagram-minimap-${index}`);
+      if (!element || !minimap) return;
+      
+      const svg = element.querySelector('svg');
+      if (!svg) return;
+      
+      // Clone and scale down the SVG for minimap
+      const clonedSvg = svg.cloneNode(true);
+      clonedSvg.style.width = '100%';
+      clonedSvg.style.height = '100%';
+      clonedSvg.style.transform = 'scale(0.15)';
+      clonedSvg.style.transformOrigin = 'top left';
+      
+      // Update minimap content
+      minimap.innerHTML = '';
+      minimap.appendChild(clonedSvg);
+      
+      // Add viewport indicator
+      const viewport = document.createElement('div');
+      viewport.className = 'minimap-viewport';
+      
+      // Calculate viewport dimensions
+      const scale = parseFloat(svg.dataset.scale || '1');
+      const viewportWidth = (element.clientWidth / (svg.clientWidth * scale)) * 100;
+      const viewportHeight = (element.clientHeight / (svg.clientHeight * scale)) * 100;
+      
+      viewport.style.width = Math.min(viewportWidth, 100) + '%';
+      viewport.style.height = Math.min(viewportHeight, 100) + '%';
+      
+      // Calculate viewport position
+      const scrollLeft = element.scrollLeft / (element.scrollWidth - element.clientWidth);
+      const scrollTop = element.scrollTop / (element.scrollHeight - element.clientHeight);
+      
+      viewport.style.left = (scrollLeft * (100 - viewportWidth)) + '%';
+      viewport.style.top = (scrollTop * (100 - viewportHeight)) + '%';
+      
+      minimap.appendChild(viewport);
+      
+      // Make minimap clickable
+      minimap.onclick = (e) => {
+        const rect = minimap.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        element.scrollLeft = x * (element.scrollWidth - element.clientWidth);
+        element.scrollTop = y * (element.scrollHeight - element.clientHeight);
+      };
+    }
+
+    // AUTO-DETECT WORKFLOW SECTIONS
+    function autoDetectSections() {
+      document.querySelectorAll('h2, h3').forEach(heading => {
+        const text = heading.textContent.toLowerCase();
+        const section = heading.closest('div') || heading.parentElement;
+        
+        if (text.includes('overview') || text.includes('table of contents') || text.includes('vision')) {
+          section.classList.add('overview-section');
+        } else if (text.includes('phase') || text.includes('workflow') || text.includes('architecture')) {
+          section.classList.add('phase-section');
+          if (!heading.querySelector('.phase-icon')) {
+            const icon = document.createElement('div');
+            icon.className = 'phase-icon';
+            heading.insertBefore(icon, heading.firstChild);
+          }
+        } else if (text.includes('error') || text.includes('support') || text.includes('infrastructure')) {
+          section.classList.add('support-section');
+        }
+      });
+    }
+
+    // KEYBOARD SHORTCUTS
+    function setupKeyboardShortcuts() {
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey) {
+          switch(e.key) {
+            case 'k':
+              e.preventDefault();
+              document.querySelector('.search-input').focus();
+              break;
+            case 'b':
+              e.preventDefault();
+              toggleSidebar();
+              break;
+            case 'd':
+              e.preventDefault();
+              toggleDarkMode();
+              break;
+            case 'f':
+              if (!e.shiftKey) {
+                e.preventDefault();
+                toggleFullscreen();
+              }
+              break;
+          }
+        }
+        
+        if (e.key === 'Escape') {
+          const sidebar = document.getElementById('sidebar');
+          if (sidebar.classList.contains('open')) {
+            toggleSidebar();
+          }
+          
+          // Close any open modals
+          document.querySelectorAll('.diagram-breakdown-modal').forEach(modal => {
+            modal.remove();
+          });
+          
+          // Exit fullscreen diagrams
+          document.querySelectorAll('.diagram-container.fullscreen').forEach((container, index) => {
+            toggleDiagramFullscreen(index);
+          });
+        }
+      });
+    }
+
+    // DEBOUNCE UTILITY
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    // MAIN INITIALIZATION
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('🚀 Initializing Enhanced Document Viewer...');
+
+      // Store original mermaid sources before any modifications
+      document.querySelectorAll('.mermaid').forEach(el => {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = el.innerHTML;
+        el.dataset.originalSource = (tempDiv.textContent || '').trim();
+      });
+
+      // Theme initialization
+      const savedLightMode = localStorage.getItem('lightMode') === 'true';
+      if (savedLightMode) {
+        document.body.classList.add('light-mode');
+        document.querySelector('.dark-mode-toggle i').className = 'fas fa-moon';
+      }
+
+      // Initialize all features
+      generateIntelligentNavigation();
+      autoDetectSections();
+      setupIntersectionObserver();
+      setupKeyboardShortcuts();
+      
+      // Initialize Mermaid
+      initializeMermaid();
+
+      // Setup scroll listeners
+      window.addEventListener('scroll', updateReadingProgress);
+      window.addEventListener('scroll', debounce(() => {
+        // Update minimaps on scroll
+        document.querySelectorAll('.diagram-container').forEach((container, index) => {
+          updateMinimap(index);
+        });
+      }, 100));
+      
+      updateReadingProgress();
+
+      // Mobile table responsiveness
+      const updateDataLabels = () => {
+        const cells = document.querySelectorAll('td');
+        cells.forEach(cell => {
+          const header = cell.closest('table')?.querySelectorAll('th')[cell.cellIndex];
+          if (header) cell.setAttribute('data-label', header.textContent);
+        });
+      };
+      
+      updateDataLabels();
+      new MutationObserver(updateDataLabels).observe(document.body, { 
+        subtree: true, 
+        childList: true 
+      });
+
+      // Close sidebar on link click (mobile)
+      document.addEventListener('click', (e) => {
+        if (e.target.matches('.nav-item')) {
+          if (window.innerWidth <= 1024) {
+            setTimeout(() => toggleSidebar(), 300);
+          }
+        }
+      });
+
+      // Handle fullscreen changes
+      document.addEventListener('fullscreenchange', () => {
+        const icon = document.querySelector('.floating-controls .fab:nth-child(2) i');
+        icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+      });
+
+      // Performance monitoring
+      if ('PerformanceObserver' in window) {
+        try {
+          const perfObserver = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              if (entry.entryType === 'navigation') {
+                console.log(`📊 Page load time: ${Math.round(entry.loadEventEnd - entry.loadEventStart)}ms`);
+              }
+            }
+          });
+          perfObserver.observe({entryTypes: ['navigation']});
+        } catch (e) {
+          console.log('Performance monitoring not available');
+        }
+      }
+
+      console.log('✅ Enhanced Document Viewer initialized successfully!');
+      console.log('💡 Features: Subgraph viewer, diagram search, minimap, enhanced interactivity');
+      console.log('⌨️ Shortcuts: Ctrl+K (search), Ctrl+B (sidebar), Ctrl+D (dark mode), Ctrl+F (fullscreen)');
+    });
+  </script>
+</body>
+</html>
