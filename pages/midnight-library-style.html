@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Academia • 12-Color System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. THE 12-COLOR TOKEN SET --- */
+        :root {
+            /* Dark Foundations */
+            --anchor-black:    #000000;
+            --deep-base:       #110a09;
+            --neutral-base:    #121010;
+            
+            /* Warmth & Shadows */
+            --red-black:       #1a0805;
+            --panel-dark:      #1a1715;
+            --primary-surface: #261a17; /* The Starred Color */
+            
+            /* Surfaces & Accents */
+            --wood-brown:      #36241d;
+            --muted-clay:      #4f3a30;
+            --mid-tone:        #8c6d5d;
+            
+            /* Highlights */
+            --vintage-paper:   #cba889; /* Main Action Color */
+            --pale-cream:      #e6dccf;
+            --reading-white:   #f6f3ee;
+        }
+
+        /* --- 2. GLOBAL RESET & VIBE --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--deep-base);
+            color: var(--reading-white);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Film Grain Overlay */
+        .grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* --- 3. HERO SECTION --- */
+        header {
+            text-align: center;
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        /* Candlelight Glow Effect */
+        header::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; height: 400px;
+            background: radial-gradient(circle, var(--red-black) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.8;
+            filter: blur(40px);
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: var(--vintage-paper);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--mid-tone);
+            font-size: 1.1rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+        }
+
+        /* --- 4. COLOR PALETTE GRID --- */
+        .section-title {
+            border-bottom: 1px solid var(--panel-dark);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            color: var(--mid-tone);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 6rem;
+        }
+
+        .swatch-card {
+            background: var(--neutral-base);
+            border: 1px solid var(--panel-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .swatch-card:hover { transform: translateY(-5px); border-color: var(--muted-clay); }
+
+        .color-preview {
+            height: 100px;
+            width: 100%;
+        }
+
+        .color-info {
+            padding: 1rem;
+        }
+
+        .hex-code {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--mid-tone);
+            margin-top: 4px;
+        }
+
+        .token-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--reading-white);
+        }
+
+        /* Text color adjustment for light swatches */
+        .light-bg .token-name { color: var(--deep-base); }
+        .light-bg .hex-code { color: var(--wood-brown); opacity: 0.8; }
+
+        /* --- 5. UI COMPONENTS SHOWCASE --- */
+        .ui-playground {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .ui-playground { grid-template-columns: 1fr; }
+        }
+
+        /* Mock App Card */
+        .app-card {
+            background-color: var(--primary-surface);
+            border: 1px solid var(--panel-dark);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .app-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            background: var(--red-black);
+            color: var(--vintage-paper);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            border: 1px solid var(--wood-brown);
+        }
+
+        .app-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .app-text { color: var(--mid-tone); font-size: 0.95rem; margin-bottom: 2rem; }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--vintage-paper);
+            color: var(--deep-base);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--pale-cream);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--muted-clay);
+            color: var(--mid-tone);
+            margin-left: 10px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--vintage-paper);
+            color: var(--vintage-paper);
+        }
+
+        /* Typography & Elements */
+        .typo-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--panel-dark);
+        }
+
+        .stat h4 { font-size: 2rem; color: var(--vintage-paper); line-height: 1; }
+        .stat span { font-size: 0.8rem; color: var(--muted-clay); text-transform: uppercase; letter-spacing: 1px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Film Grain Texture -->
+    <div class="grain"></div>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <header>
+            <h1>The Midnight Library</h1>
+            <p class="subtitle">A consolidated 12-color design system</p>
+        </header>
+
+        <!-- Color Palette Grid -->
+        <h2 class="section-title">01. The Token Set</h2>
+        <section class="palette-grid">
+            <!-- 1. Anchor Black -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--anchor-black);"></div>
+                <div class="color-info">
+                    <div class="token-name">Anchor Black</div>
+                    <span class="hex-code">#000000</span>
+                </div>
+            </div>
+            <!-- 2. Deep Warm Base -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--deep-base);"></div>
+                <div class="color-info">
+                    <div class="token-name">Deep Base</div>
+                    <span class="hex-code">#110a09</span>
+                </div>
+            </div>
+            <!-- 3. Neutral Base -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--neutral-base);"></div>
+                <div class="color-info">
+                    <div class="token-name">Neutral Base</div>
+                    <span class="hex-code">#121010</span>
+                </div>
+            </div>
+            <!-- 4. Red-Black -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--red-black);"></div>
+                <div class="color-info">
+                    <div class="token-name">Red Black</div>
+                    <span class="hex-code">#1a0805</span>
+                </div>
+            </div>
+            <!-- 5. Panel Dark -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--panel-dark);"></div>
+                <div class="color-info">
+                    <div class="token-name">Panel Dark</div>
+                    <span class="hex-code">#1a1715</span>
+                </div>
+            </div>
+            <!-- 6. Primary Surface -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--primary-surface);"></div>
+                <div class="color-info">
+                    <div class="token-name">Primary Surface</div>
+                    <span class="hex-code">#261a17</span>
+                </div>
+            </div>
+            <!-- 7. Wood Brown -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--wood-brown);"></div>
+                <div class="color-info">
+                    <div class="token-name">Wood Brown</div>
+                    <span class="hex-code">#36241d</span>
+                </div>
+            </div>
+            <!-- 8. Muted Clay -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--muted-clay);"></div>
+                <div class="color-info">
+                    <div class="token-name">Muted Clay</div>
+                    <span class="hex-code">#4f3a30</span>
+                </div>
+            </div>
+            <!-- 9. Mid-Tone Bridge -->
+            <div class="swatch-card">
+                <div class="color-preview" style="background-color: var(--mid-tone);"></div>
+                <div class="color-info">
+                    <div class="token-name">Mid-Tone</div>
+                    <span class="hex-code">#8c6d5d</span>
+                </div>
+            </div>
+             <!-- 10. Vintage Paper -->
+             <div class="swatch-card light-bg">
+                <div class="color-preview" style="background-color: var(--vintage-paper);"></div>
+                <div class="color-info">
+                    <div class="token-name">Vintage Paper</div>
+                    <span class="hex-code">#cba889</span>
+                </div>
+            </div>
+             <!-- 11. Pale Cream -->
+             <div class="swatch-card light-bg">
+                <div class="color-preview" style="background-color: var(--pale-cream);"></div>
+                <div class="color-info">
+                    <div class="token-name">Pale Cream</div>
+                    <span class="hex-code">#e6dccf</span>
+                </div>
+            </div>
+             <!-- 12. Reading White -->
+             <div class="swatch-card light-bg">
+                <div class="color-preview" style="background-color: var(--reading-white);"></div>
+                <div class="color-info">
+                    <div class="token-name">Reading White</div>
+                    <span class="hex-code">#f6f3ee</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI Showcase -->
+        <h2 class="section-title">02. Interface Application</h2>
+        <section class="ui-playground">
+            
+            <!-- Component 1: Card -->
+            <div class="app-card">
+                <div class="app-card-header">
+                    <span style="color: var(--muted-clay)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    </span>
+                    <span class="badge">Mood: Warm</span>
+                </div>
+                <h3 class="app-title">Analog Memories</h3>
+                <p class="app-text">
+                    This card uses the <span style="color:var(--vintage-paper)">#261a17</span> surface color to separate from the deep background, creating a layered, depth-of-field effect.
+                </p>
+                <div class="actions">
+                    <button class="btn btn-primary">Explore</button>
+                    <button class="btn btn-secondary">Details</button>
+                </div>
+            </div>
+
+            <!-- Component 2: Typography & Stats -->
+            <div class="typo-box">
+                <div>
+                    <h3 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--reading-white);">Timeless Typography</h3>
+                    <p style="color: var(--mid-tone);">
+                        Headers utilize <em>Cormorant Garamond</em> in "Vintage Paper" (#cba889) or White, while body text remains legible in "Reading White" (#f6f3ee) against the dark noise texture.
+                    </p>
+                </div>
+                
+                <div class="stat-row">
+                    <div class="stat">
+                        <h4>12</h4>
+                        <span>Colors</span>
+                    </div>
+                    <div class="stat">
+                        <h4>4.5:1</h4>
+                        <span>Contrast</span>
+                    </div>
+                    <div class="stat">
+                        <h4>100%</h4>
+                        <span>Vibe</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</body>
+</html>
