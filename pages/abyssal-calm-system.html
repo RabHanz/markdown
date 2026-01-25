@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abyssal Calm • Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ══════════════════════════════════════════════════════════════════════════════
+           I. THE 12-COLOR SYSTEM — OCEAN DEPTHS
+           ══════════════════════════════════════════════════════════════════════════════ */
+        :root {
+            /* THE ABYSS (Canvas) */
+            --void:            #050a12;
+            --deep-ocean:      #0a1525;
+            --midnight-sea:    #0f1d30;
+            
+            /* THE CURRENT (Structure) */
+            --twilight-zone:   #142940;
+            --reef-shadow:     #1a3652;
+            --tidal-surface:   #1f4266;
+            --shallow-water:   #2a5580;
+            
+            /* THE SHIMMER (Utility) */
+            --sea-glass:       #4a7c9b;
+            --foam:            #7ba3b8;
+            
+            /* BIOLUMINESCENCE (Accent) */
+            --aquamarine:      #5ce1c5;
+            --seafoam:         #98f5e1;
+            --pearl:           #e8f4f0;
+
+            --font-display: 'Fraunces', Georgia, serif;
+            --font-body: 'Outfit', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease-flow: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           II. RESET & BASE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: var(--deep-ocean);
+            color: var(--pearl);
+            font-family: var(--font-body);
+            font-weight: 300;
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--aquamarine); color: var(--void); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--deep-ocean); }
+        ::-webkit-scrollbar-thumb { background: var(--reef-shadow); border-radius: 3px; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           III. INIT OVERLAY (Descent Gate)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #init-overlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: var(--void);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.5s ease, visibility 1.5s;
+        }
+        #init-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .init-brand {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            color: var(--aquamarine);
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .init-sub {
+            font-size: 0.8rem;
+            color: var(--sea-glass);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 3rem;
+        }
+
+        /* Ripple Button */
+        .init-btn {
+            padding: 20px 60px;
+            background: transparent;
+            border: 1px solid var(--reef-shadow);
+            color: var(--aquamarine);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.6s var(--ease-flow);
+            position: relative;
+            overflow: hidden;
+        }
+        .init-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: radial-gradient(circle, var(--aquamarine) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s var(--ease-flow), height 0.6s var(--ease-flow);
+            z-index: -1;
+        }
+        .init-btn:hover { color: var(--void); border-color: var(--aquamarine); }
+        .init-btn:hover::before { width: 400px; height: 400px; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IV. ATMOSPHERE (Caustics + Particles)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .atmosphere {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Caustic Light Pattern */
+        .caustics {
+            position: absolute; inset: 0;
+            opacity: 0.03;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(92, 225, 197, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 30%, rgba(92, 225, 197, 0.2) 0%, transparent 40%),
+                radial-gradient(ellipse at 40% 80%, rgba(92, 225, 197, 0.25) 0%, transparent 45%);
+            animation: causticShift 20s ease-in-out infinite;
+        }
+        @keyframes causticShift {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.03; }
+            50% { transform: scale(1.1) rotate(3deg); opacity: 0.05; }
+        }
+
+        /* Floating Particles (Plankton) */
+        .particles {
+            position: absolute; inset: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: var(--aquamarine);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp 15s ease-in-out infinite;
+        }
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 25%; animation-delay: 3s; }
+        .particle:nth-child(3) { left: 45%; animation-delay: 6s; }
+        .particle:nth-child(4) { left: 65%; animation-delay: 9s; }
+        .particle:nth-child(5) { left: 85%; animation-delay: 12s; }
+        .particle:nth-child(6) { left: 35%; animation-delay: 2s; }
+        .particle:nth-child(7) { left: 75%; animation-delay: 7s; }
+        .particle:nth-child(8) { left: 55%; animation-delay: 4s; }
+
+        @keyframes floatUp {
+            0% { bottom: -20px; opacity: 0; transform: translateX(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { bottom: 110%; opacity: 0; transform: translateX(30px); }
+        }
+
+        /* Gentle Wave Overlay */
+        .wave-overlay {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 200%; height: 200px;
+            background: linear-gradient(to top, var(--deep-ocean) 0%, transparent 100%);
+            opacity: 0.5;
+            animation: waveShift 25s ease-in-out infinite;
+        }
+        @keyframes waveShift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-25%); }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           V. CURSOR SYSTEM
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .cursor-dot {
+            width: 10px; height: 10px;
+            background: var(--aquamarine);
+            position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 100000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s var(--ease-flow), box-shadow 0.2s;
+            box-shadow: 0 0 20px var(--aquamarine), 0 0 40px rgba(92, 225, 197, 0.3);
+        }
+
+        .cursor-glow {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(92, 225, 197, 0.04) 0%, transparent 50%);
+            position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-label {
+            position: fixed; pointer-events: none; z-index: 100001;
+            background: var(--aquamarine); color: var(--void);
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 0.65rem; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1px;
+            opacity: 0; transform: translate(15px, 15px);
+            transition: opacity 0.3s;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VI. AUDIO TOGGLE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .audio-toggle {
+            position: fixed; bottom: 40px; left: 40px; z-index: 1000;
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 24px;
+            background: rgba(15, 29, 48, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--reef-shadow);
+            border-radius: 100px;
+            color: var(--foam);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.4s var(--ease-flow);
+        }
+        .audio-toggle:hover { border-color: var(--aquamarine); color: var(--aquamarine); }
+        .audio-toggle.playing { border-color: var(--aquamarine); }
+
+        .wave-icon {
+            display: flex; align-items: flex-end; gap: 3px; height: 16px;
+        }
+        .wave-bar {
+            width: 3px;
+            background: currentColor;
+            border-radius: 2px;
+            transition: height 0.3s var(--ease-flow);
+        }
+        .wave-bar:nth-child(1) { height: 30%; }
+        .wave-bar:nth-child(2) { height: 60%; }
+        .wave-bar:nth-child(3) { height: 100%; }
+        .wave-bar:nth-child(4) { height: 60%; }
+        .wave-bar:nth-child(5) { height: 30%; }
+
+        .audio-toggle.playing .wave-bar { animation: waveAnim 1.2s ease-in-out infinite; }
+        .audio-toggle.playing .wave-bar:nth-child(1) { animation-delay: 0s; }
+        .audio-toggle.playing .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+        .audio-toggle.playing .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+        .audio-toggle.playing .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+        .audio-toggle.playing .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+        @keyframes waveAnim {
+            0%, 100% { height: 30%; }
+            50% { height: 100%; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VII. LAYOUT
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            position: relative;
+            z-index: 10;
+        }
+        @media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+        section {
+            padding: 12rem 0;
+            border-top: 1px solid rgba(92, 225, 197, 0.08);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VIII. TYPOGRAPHY
+           ══════════════════════════════════════════════════════════════════════════════ */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 9rem);
+            font-weight: 300;
+            line-height: 0.9;
+            color: var(--pearl);
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: var(--pearl);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--aquamarine);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            padding: 8px 16px;
+            background: rgba(92, 225, 197, 0.08);
+            border-radius: 100px;
+        }
+
+        p { color: var(--foam); max-width: 55ch; margin-bottom: 1.5rem; }
+        p strong, .highlight { color: var(--aquamarine); }
+
+        .scramble { display: inline-block; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IX. HERO
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 30%; left: 20%;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(92, 225, 197, 0.08) 0%, transparent 50%);
+            filter: blur(60px);
+            z-index: -1;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .hero-title-wrap {
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: var(--pearl);
+            max-width: 500px;
+            margin-top: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-stats {
+            display: flex; gap: 5rem;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--reef-shadow);
+        }
+        .stat-item h4 {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--aquamarine);
+            line-height: 1;
+        }
+        .stat-item span {
+            font-size: 0.7rem;
+            color: var(--sea-glass);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 4rem; left: 0;
+            display: flex; align-items: center; gap: 20px;
+            color: var(--sea-glass);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .scroll-bubble {
+            width: 30px; height: 50px;
+            border: 1px solid var(--reef-shadow);
+            border-radius: 20px;
+            position: relative;
+        }
+        .scroll-bubble::after {
+            content: '';
+            position: absolute;
+            top: 8px; left: 50%;
+            width: 6px; height: 6px;
+            background: var(--aquamarine);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            animation: scrollBubble 2s ease-in-out infinite;
+        }
+        @keyframes scrollBubble {
+            0%, 100% { top: 8px; opacity: 1; }
+            100% { top: 32px; opacity: 0; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           X. COLOR DECK (Fluid Expansion)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .color-deck {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--reef-shadow);
+            margin: 3rem 0;
+            background: var(--midnight-sea);
+        }
+
+        .color-card {
+            flex: 1 1 100px;
+            min-width: 80px;
+            height: 300px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            transition: flex 0.6s var(--ease-flow);
+            overflow: hidden;
+        }
+        .color-card:hover { flex: 1 1 200px; }
+
+        .color-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5, 10, 18, 0.7) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .color-card:hover::before { opacity: 1; }
+
+        .color-name {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 400;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s var(--ease-flow);
+            position: relative; z-index: 2;
+        }
+        .color-card:hover .color-name { transform: translateY(0); opacity: 1; }
+
+        .color-hex {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            opacity: 0.5;
+            margin-top: 6px;
+            position: relative; z-index: 2;
+        }
+
+        .color-role {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0;
+            margin-top: 10px;
+            position: relative; z-index: 2;
+            transition: opacity 0.4s 0.1s;
+        }
+        .color-card:hover .color-role { opacity: 0.4; }
+
+        .color-card.dark { color: var(--pearl); }
+        .color-card.light { color: var(--void); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XI. TYPOGRAPHY PLAYGROUND
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .type-playground {
+            background: var(--tidal-surface);
+            border: 1px solid var(--reef-shadow);
+            border-radius: 24px;
+            padding: 3.5rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .type-playground::before {
+            content: '';
+            position: absolute;
+            top: -50%; right: -20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(92, 225, 197, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .type-controls {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--reef-shadow);
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .control-label {
+            font-size: 0.6rem;
+            color: var(--sea-glass);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .control-value {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            color: var(--aquamarine);
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 220px;
+            height: 4px;
+            background: var(--reef-shadow);
+            border-radius: 4px;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px; height: 20px;
+            background: var(--aquamarine);
+            border-radius: 50%;
+            cursor: none;
+            box-shadow: 0 0 20px var(--aquamarine);
+            transition: transform 0.2s;
+        }
+        .range-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        .type-specimen {
+            font-family: var(--font-body);
+            font-size: 3.5rem;
+            line-height: 1.2;
+            color: var(--pearl);
+            transition: font-weight 0.15s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .type-quote {
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--reef-shadow);
+            position: relative;
+            z-index: 2;
+        }
+        .type-quote blockquote {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--pearl);
+            line-height: 1.5;
+        }
+        .type-quote cite {
+            display: block;
+            margin-top: 1.5rem;
+            font-style: normal;
+            font-size: 0.8rem;
+            color: var(--sea-glass);
+            letter-spacing: 1px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XII. UI COMPONENTS
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .component-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        @media (max-width: 900px) { .component-grid { grid-template-columns: 1fr; } }
+
+        .component-card {
+            background: var(--tidal-surface);
+            border: 1px solid var(--reef-shadow);
+            border-radius: 20px;
+            padding: 3rem;
+            transition: transform 0.4s var(--ease-flow), box-shadow 0.4s;
+        }
+        .component-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(5, 10, 18, 0.5);
+        }
+
+        .component-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--aquamarine);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .btn {
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: none;
+            transition: all 0.4s var(--ease-flow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--seafoam) 0%, var(--aquamarine) 100%);
+            color: var(--void);
+            box-shadow: 0 8px 30px rgba(92, 225, 197, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(92, 225, 197, 0.4);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--reef-shadow);
+            color: var(--foam);
+        }
+        .btn-ghost:hover {
+            border-color: var(--aquamarine);
+            color: var(--aquamarine);
+            background: rgba(92, 225, 197, 0.05);
+        }
+
+        /* Inputs */
+        .input-group { margin-bottom: 1.5rem; }
+        .input-label {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--sea-glass);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 16px 22px;
+            background: var(--midnight-sea);
+            border: 1px solid var(--reef-shadow);
+            border-radius: 12px;
+            color: var(--pearl);
+            font-family: var(--font-body);
+            font-weight: 300;
+            transition: all 0.3s;
+        }
+        .input-field::placeholder { color: var(--sea-glass); }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--aquamarine);
+            box-shadow: 0 0 0 4px rgba(92, 225, 197, 0.1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIII. MOODBOARD
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 150px;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+
+        .mood-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+
+        .mood-item:nth-child(1) { grid-column: span 7; grid-row: span 3; }
+        .mood-item:nth-child(2) { grid-column: span 5; grid-row: span 2; }
+        .mood-item:nth-child(3) { grid-column: span 5; grid-row: span 2; }
+        .mood-item:nth-child(4) { grid-column: span 4; grid-row: span 2; }
+        .mood-item:nth-child(5) { grid-column: span 4; grid-row: span 2; }
+        .mood-item:nth-child(6) { grid-column: span 4; grid-row: span 2; }
+
+        @media (max-width: 768px) {
+            .mood-grid { grid-template-columns: 1fr 1fr; }
+            .mood-item { grid-column: span 1 !important; grid-row: span 1 !important; height: 200px; }
+        }
+
+        .mood-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: saturate(0.8) brightness(0.9);
+            transition: transform 0.8s var(--ease-flow), filter 0.6s;
+        }
+        .mood-item:hover .mood-img {
+            transform: scale(1.08);
+            filter: saturate(1.1) brightness(1);
+        }
+
+        /* Blue overlay */
+        .mood-item::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(92, 225, 197, 0.1) 0%, rgba(10, 21, 37, 0.4) 100%);
+            mix-blend-mode: color;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+        .mood-item:hover::after { opacity: 0.3; }
+
+        /* Lightbox */
+        #lightbox {
+            position: fixed; inset: 0;
+            background: rgba(5, 10, 18, 0.95);
+            backdrop-filter: blur(30px);
+            z-index: 50000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        #lightbox.active { opacity: 1; pointer-events: auto; }
+
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border-radius: 16px;
+            box-shadow: 0 0 100px rgba(92, 225, 197, 0.2);
+            transform: scale(0.9);
+            transition: transform 0.6s var(--ease-flow);
+        }
+        #lightbox.active img { transform: scale(1); }
+
+        .lightbox-hint {
+            position: absolute;
+            bottom: 3rem;
+            color: var(--sea-glass);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIV. CODE BLOCK
+           ══════════════════════════════════════════════════════════════════════════════ */
+        pre {
+            background: var(--void);
+            border: 1px solid var(--reef-shadow);
+            border-radius: 16px;
+            padding: 2.5rem;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 2;
+            color: var(--foam);
+            margin: 2rem 0;
+        }
+        .token-comment { color: var(--sea-glass); font-style: italic; }
+        .token-prop { color: var(--foam); }
+        .token-val { color: var(--aquamarine); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XV. SCROLL REVEAL
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s var(--ease-flow), transform 1.2s var(--ease-flow);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVI. TOAST
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #toast {
+            position: fixed;
+            bottom: 40px; right: 40px;
+            background: var(--aquamarine);
+            color: var(--void);
+            padding: 16px 32px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 60000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s var(--ease-flow);
+        }
+        #toast.visible { transform: translateY(0); opacity: 1; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVII. FOOTER
+           ══════════════════════════════════════════════════════════════════════════════ */
+        footer {
+            padding: 8rem 0;
+            text-align: center;
+            border-top: 1px solid var(--reef-shadow);
+        }
+        .footer-brand {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--aquamarine);
+            margin-bottom: 1rem;
+        }
+        .footer-meta {
+            font-size: 0.7rem;
+            color: var(--sea-glass);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INIT OVERLAY -->
+    <div id="init-overlay">
+        <h1 class="init-brand">Abyssal Calm</h1>
+        <p class="init-sub">Design System v1.0</p>
+        <button class="init-btn" id="initBtn">Descend</button>
+    </div>
+
+    <!-- ATMOSPHERE -->
+    <div class="atmosphere">
+        <div class="caustics"></div>
+        <div class="particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="wave-overlay"></div>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="cursor-label" id="cursorLabel"></div>
+
+    <!-- AUDIO TOGGLE -->
+    <div class="audio-toggle" id="audioToggle">
+        <div class="wave-icon">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+        <span id="audioLabel">Waves Off</span>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox">
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-hint">Click anywhere to surface</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="hero">
+            <div class="hero-glow"></div>
+            
+            <span class="section-label reveal">Design System</span>
+            
+            <div class="hero-title-wrap">
+                <h1 class="reveal reveal-delay-1">
+                    <span class="scramble" data-text="Abyssal">Abyssal</span>
+                </h1>
+            </div>
+            <div class="hero-title-wrap">
+                <h1 class="reveal reveal-delay-2" style="color: var(--aquamarine);">
+                    <span class="scramble" data-text="Calm">Calm</span>
+                </h1>
+            </div>
+            
+            <p class="hero-sub reveal reveal-delay-3">
+                A design language inspired by the <span class="highlight">deep ocean</span> — 
+                where silence reigns and bioluminescent life creates its own light. 
+                Serene, focused, infinitely peaceful.
+            </p>
+
+            <div class="hero-stats reveal">
+                <div class="stat-item">
+                    <h4>12</h4>
+                    <span>Depth Tokens</span>
+                </div>
+                <div class="stat-item">
+                    <h4>∿</h4>
+                    <span>Flow Motion</span>
+                </div>
+                <div class="stat-item">
+                    <h4>◯</h4>
+                    <span>Soft Radii</span>
+                </div>
+            </div>
+
+            <div class="scroll-hint reveal">
+                <div class="scroll-bubble"></div>
+                <span>Dive Deeper</span>
+            </div>
+        </header>
+
+        <!-- 01. COLORS -->
+        <section id="colors">
+            <span class="section-label reveal">01. The Depths</span>
+            <h2 class="reveal">Color Spectrum</h2>
+            <p class="reveal">From the void of the abyss to the glow of bioluminescence. Hover to expand. Click to copy.</p>
+
+            <div class="color-deck reveal">
+                <div class="color-card dark" style="background: #050a12;" data-hex="#050a12">
+                    <span class="color-name">Void</span>
+                    <span class="color-hex">#050a12</span>
+                    <span class="color-role">True Black</span>
+                </div>
+                <div class="color-card dark" style="background: #0a1525;" data-hex="#0a1525">
+                    <span class="color-name">Deep Ocean</span>
+                    <span class="color-hex">#0a1525</span>
+                    <span class="color-role">Main Background</span>
+                </div>
+                <div class="color-card dark" style="background: #0f1d30;" data-hex="#0f1d30">
+                    <span class="color-name">Midnight Sea</span>
+                    <span class="color-hex">#0f1d30</span>
+                    <span class="color-role">Panels</span>
+                </div>
+                <div class="color-card dark" style="background: #142940;" data-hex="#142940">
+                    <span class="color-name">Twilight Zone</span>
+                    <span class="color-hex">#142940</span>
+                    <span class="color-role">Deep Surfaces</span>
+                </div>
+                <div class="color-card dark" style="background: #1a3652;" data-hex="#1a3652">
+                    <span class="color-name">Reef Shadow</span>
+                    <span class="color-hex">#1a3652</span>
+                    <span class="color-role">Borders</span>
+                </div>
+                <div class="color-card dark" style="background: #1f4266;" data-hex="#1f4266">
+                    <span class="color-name">Tidal Surface</span>
+                    <span class="color-hex">#1f4266</span>
+                    <span class="color-role">Card Background</span>
+                </div>
+                <div class="color-card dark" style="background: #2a5580;" data-hex="#2a5580">
+                    <span class="color-name">Shallow Water</span>
+                    <span class="color-hex">#2a5580</span>
+                    <span class="color-role">Hover States</span>
+                </div>
+                <div class="color-card dark" style="background: #4a7c9b;" data-hex="#4a7c9b">
+                    <span class="color-name">Sea Glass</span>
+                    <span class="color-hex">#4a7c9b</span>
+                    <span class="color-role">Inactive</span>
+                </div>
+                <div class="color-card dark" style="background: #7ba3b8;" data-hex="#7ba3b8">
+                    <span class="color-name">Foam</span>
+                    <span class="color-hex">#7ba3b8</span>
+                    <span class="color-role">Secondary Text</span>
+                </div>
+                <div class="color-card light" style="background: #5ce1c5;" data-hex="#5ce1c5">
+                    <span class="color-name">Aquamarine</span>
+                    <span class="color-hex">#5ce1c5</span>
+                    <span class="color-role">Primary Action</span>
+                </div>
+                <div class="color-card light" style="background: #98f5e1;" data-hex="#98f5e1">
+                    <span class="color-name">Seafoam</span>
+                    <span class="color-hex">#98f5e1</span>
+                    <span class="color-role">Highlight</span>
+                </div>
+                <div class="color-card light" style="background: #e8f4f0;" data-hex="#e8f4f0">
+                    <span class="color-name">Pearl</span>
+                    <span class="color-hex">#e8f4f0</span>
+                    <span class="color-role">Body Text</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. TYPOGRAPHY -->
+        <section id="typography">
+            <span class="section-label reveal">02. The Current</span>
+            <h2 class="reveal">Fluid Typography</h2>
+            <p class="reveal">Elegant display meets geometric clarity. Drag to feel the weight shift like tides.</p>
+
+            <div class="type-playground reveal">
+                <div class="type-controls">
+                    <div class="control-group">
+                        <span class="control-label">Family</span>
+                        <span class="control-value" style="font-family: var(--font-body);">Outfit</span>
+                    </div>
+                    <div class="control-group">
+                        <span class="control-label">Weight</span>
+                        <span class="control-value" id="weightValue">300</span>
+                    </div>
+                    <input type="range" min="200" max="600" value="300" class="range-slider" id="weightSlider">
+                </div>
+
+                <div class="type-specimen" id="typeSpecimen">
+                    Still waters run deep.
+                </div>
+
+                <div class="type-quote">
+                    <blockquote>
+                        "The cure for anything is <span class="highlight">salt water</span> — sweat, tears, or the sea."
+                    </blockquote>
+                    <cite>— Fraunces, Display</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. COMPONENTS -->
+        <section id="components">
+            <span class="section-label reveal">03. The Reef</span>
+            <h2 class="reveal">UI Elements</h2>
+            <p class="reveal">Soft curves, gentle glows. Every interaction should feel like <strong>floating</strong>.</p>
+
+            <div class="component-grid reveal">
+                <div class="component-card">
+                    <div class="component-title">Buttons</div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary">Dive In</button>
+                        <button class="btn btn-ghost">Surface</button>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">Form Input</div>
+                    <div class="input-group">
+                        <label class="input-label">Vessel Name</label>
+                        <input type="text" class="input-field" placeholder="e.g. The Silent Deep...">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. MOODBOARD -->
+        <section id="moodboard">
+            <span class="section-label reveal">04. The Vista</span>
+            <h2 class="reveal">Visual Archive</h2>
+            <p class="reveal">Imagery receives a <strong>blue-shift overlay</strong> and subtle desaturation. Click to expand.</p>
+
+            <div class="mood-grid reveal">
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1200&q=80" class="mood-img" alt="Ocean">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Beach">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1559825481-12a05cc00344?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Underwater">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Water Surface">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1484291470158-b8f8d608850d?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Jellyfish">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Waves">
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. CODE -->
+        <section id="code">
+            <span class="section-label reveal">05. Implementation</span>
+            <h2 class="reveal">Token Set</h2>
+            <p class="reveal">Copy these CSS variables to create your own ocean of calm.</p>
+
+            <pre class="reveal"><span class="token-comment">/* Abyssal Calm — Design Tokens */</span>
+:root {
+  <span class="token-comment">/* The Abyss */</span>
+  <span class="token-prop">--void:</span>            <span class="token-val">#050a12;</span>
+  <span class="token-prop">--deep-ocean:</span>      <span class="token-val">#0a1525;</span>
+  <span class="token-prop">--midnight-sea:</span>    <span class="token-val">#0f1d30;</span>
+  
+  <span class="token-comment">/* The Current */</span>
+  <span class="token-prop">--twilight-zone:</span>   <span class="token-val">#142940;</span>
+  <span class="token-prop">--reef-shadow:</span>     <span class="token-val">#1a3652;</span>
+  <span class="token-prop">--tidal-surface:</span>   <span class="token-val">#1f4266;</span>
+  <span class="token-prop">--shallow-water:</span>   <span class="token-val">#2a5580;</span>
+  
+  <span class="token-comment">/* The Shimmer */</span>
+  <span class="token-prop">--sea-glass:</span>       <span class="token-val">#4a7c9b;</span>
+  <span class="token-prop">--foam:</span>            <span class="token-val">#7ba3b8;</span>
+  
+  <span class="token-comment">/* Bioluminescence */</span>
+  <span class="token-prop">--aquamarine:</span>      <span class="token-val">#5ce1c5;</span>
+  <span class="token-prop">--seafoam:</span>         <span class="token-val">#98f5e1;</span>
+  <span class="token-prop">--pearl:</span>           <span class="token-val">#e8f4f0;</span>
+}</pre>
+        </section>
+
+        <footer>
+            <div class="footer-brand">Abyssal Calm</div>
+            <div class="footer-meta">Design System v1.0 • Deep Ocean</div>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // I. INIT & AUDIO CONTEXT
+        // ═══════════════════════════════════════════════════════════════════════════
+        let audioCtx, gainNode, isAudioPlaying = false;
+
+        document.getElementById('initBtn').addEventListener('click', () => {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            document.getElementById('init-overlay').classList.add('hidden');
+            setTimeout(triggerScramble, 600);
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // II. SCRAMBLE TEXT
+        // ═══════════════════════════════════════════════════════════════════════════
+        function triggerScramble() {
+            const chars = '~≈∿○◦·.。';
+            document.querySelectorAll('.scramble').forEach(el => {
+                const finalText = el.dataset.text;
+                let iteration = 0;
+                
+                const interval = setInterval(() => {
+                    el.innerText = finalText
+                        .split('')
+                        .map((char, idx) => {
+                            if (idx < iteration) return finalText[idx];
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        })
+                        .join('');
+                    
+                    if (iteration >= finalText.length) clearInterval(interval);
+                    iteration += 1/4;
+                }, 40);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // III. CURSOR
+        // ═══════════════════════════════════════════════════════════════════════════
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorGlow = document.getElementById('cursorGlow');
+        const cursorLabel = document.getElementById('cursorLabel');
+
+        document.addEventListener('mousemove', e => {
+            const x = e.clientX, y = e.clientY;
+            
+            cursorDot.style.left = x + 'px';
+            cursorDot.style.top = y + 'px';
+            
+            cursorGlow.animate({
+                left: x + 'px',
+                top: y + 'px'
+            }, { duration: 1000, fill: 'forwards' });
+            
+            cursorLabel.style.left = x + 'px';
+            cursorLabel.style.top = y + 'px';
+        });
+
+        function setCursorHover(selector, label, scale = 1.5) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorDot.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                    if (label) {
+                        cursorLabel.innerText = label;
+                        cursorLabel.style.opacity = '1';
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorLabel.style.opacity = '0';
+                });
+            });
+        }
+
+        setCursorHover('.color-card', 'Copy', 0);
+        setCursorHover('.mood-item', 'Expand', 2);
+        setCursorHover('.range-slider', 'Drag', 2);
+        setCursorHover('.btn', null, 2);
+        setCursorHover('.audio-toggle', 'Toggle', 1.5);
+        setCursorHover('.input-field', null, 0);
+        setCursorHover('.init-btn', 'Descend', 2);
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // IV. COLOR COPY
+        // ═══════════════════════════════════════════════════════════════════════════
+        document.querySelectorAll('.color-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const hex = card.dataset.hex;
+                navigator.clipboard.writeText(hex);
+                
+                const toast = document.getElementById('toast');
+                toast.innerText = `${hex} copied`;
+                toast.classList.add('visible');
+                
+                cursorLabel.innerText = 'Copied!';
+                
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                    cursorLabel.innerText = 'Copy';
+                }, 1500);
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // V. TYPOGRAPHY SLIDER
+        // ═══════════════════════════════════════════════════════════════════════════
+        const weightSlider = document.getElementById('weightSlider');
+        const weightValue = document.getElementById('weightValue');
+        const typeSpecimen = document.getElementById('typeSpecimen');
+
+        weightSlider.addEventListener('input', e => {
+            const val = e.target.value;
+            weightValue.innerText = val;
+            typeSpecimen.style.fontWeight = val;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // VI. LIGHTBOX
+        // ═══════════════════════════════════════════════════════════════════════════
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.mood-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // VII. OCEAN WAVES AUDIO (Pink Noise + Filter)
+        // ═══════════════════════════════════════════════════════════════════════════
+        const audioToggle = document.getElementById('audioToggle');
+        const audioLabel = document.getElementById('audioLabel');
+
+        function createOceanSound() {
+            // Create pink noise (ocean-like)
+            const bufferSize = audioCtx.sampleRate * 4;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                data[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
+                b6 = white * 0.115926;
+            }
+
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+
+            // Low-pass filter for muffled underwater effect
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 300;
+            filter.Q.value = 1;
+
+            // Subtle modulation for wave rhythm
+            const lfo = audioCtx.createOscillator();
+            const lfoGain = audioCtx.createGain();
+            lfo.frequency.value = 0.1; // Very slow
+            lfoGain.gain.value = 50;
+            lfo.connect(lfoGain);
+            lfoGain.connect(filter.frequency);
+            lfo.start();
+
+            gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0;
+
+            source.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start(0);
+        }
+
+        audioToggle.addEventListener('click', () => {
+            if (!audioCtx) return;
+            
+            if (!gainNode) createOceanSound();
+            
+            if (isAudioPlaying) {
+                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.8);
+                audioToggle.classList.remove('playing');
+                audioLabel.innerText = 'Waves Off';
+            } else {
+                gainNode.gain.setTargetAtTime(0.15, audioCtx.currentTime, 0.5);
+                audioToggle.classList.add('playing');
+                audioLabel.innerText = 'Waves On';
+            }
+            isAudioPlaying = !isAudioPlaying;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // VIII. SCROLL REVEAL
+        // ═══════════════════════════════════════════════════════════════════════════
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-50px' });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>

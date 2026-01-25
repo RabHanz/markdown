@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOID_SIGNAL • Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ══════════════════════════════════════════════════════════════════════════════
+           I. THE 12-COLOR SYSTEM — CORRUPTED SIGNAL
+           ══════════════════════════════════════════════════════════════════════════════ */
+        :root {
+            /* VOID (Canvas) */
+            --true-black:      #000000;
+            --static-dark:     #0a0a0c;
+            --noise-base:      #101014;
+            
+            /* INTERFERENCE (Structure) */
+            --scan-line:       #18181c;
+            --dead-pixel:      #1f1f24;
+            --crt-surface:     #27272e;
+            --phosphor-dim:    #35353e;
+            
+            /* DECAY (Utility) */
+            --tracking-error:  #55555f;
+            --signal-weak:     #88889a;
+            
+            /* TRANSMISSION (Accent) */
+            --glitch-magenta:  #ff2d6a;
+            --data-cyan:       #00f0ff;
+            --terminal-white:  #e8e8f0;
+
+            /* CHROMATIC ABERRATION */
+            --chroma-red:      #ff0040;
+            --chroma-green:    #00ff88;
+            --chroma-blue:     #0080ff;
+
+            --font-display: 'Instrument Serif', Georgia, serif;
+            --font-body: 'Space Grotesk', -apple-system, sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --ease-glitch: cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           II. RESET & BASE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: var(--static-dark);
+            color: var(--terminal-white);
+            font-family: var(--font-body);
+            font-weight: 400;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--glitch-magenta); color: var(--true-black); }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--true-black); }
+        ::-webkit-scrollbar-thumb { background: var(--glitch-magenta); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           III. INIT OVERLAY (Signal Acquisition)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #init-overlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: var(--true-black);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 0.1s steps(5), visibility 0.5s;
+        }
+        #init-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .init-brand {
+            font-family: var(--font-mono);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--terminal-white);
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+        .init-brand::before,
+        .init-brand::after {
+            content: 'VOID_SIGNAL';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        .init-brand::before {
+            color: var(--chroma-red);
+            animation: glitchText 3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+        }
+        .init-brand::after {
+            color: var(--chroma-blue);
+            animation: glitchText 3s infinite reverse;
+            clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+        }
+        @keyframes glitchText {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-3px, 1px); }
+            94% { transform: translate(3px, -1px); }
+            96% { transform: translate(-2px, 0); }
+        }
+
+        .init-sub {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--signal-weak);
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+        }
+        .init-sub span {
+            color: var(--data-cyan);
+            animation: blink 1s steps(1) infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .init-btn {
+            padding: 16px 50px;
+            background: transparent;
+            border: 1px solid var(--dead-pixel);
+            color: var(--terminal-white);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: all 0.1s;
+            position: relative;
+            overflow: hidden;
+        }
+        .init-btn:hover {
+            background: var(--terminal-white);
+            color: var(--true-black);
+            border-color: var(--terminal-white);
+            animation: buttonGlitch 0.3s steps(2) infinite;
+        }
+        @keyframes buttonGlitch {
+            0% { transform: translate(0); }
+            25% { transform: translate(-2px, 1px); }
+            50% { transform: translate(2px, -1px); }
+            75% { transform: translate(-1px, -1px); }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IV. ATMOSPHERE (Scan Lines + Static + CRT)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .atmosphere {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Scan Lines */
+        .scanlines {
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 1px,
+                rgba(0, 0, 0, 0.3) 1px,
+                rgba(0, 0, 0, 0.3) 2px
+            );
+            opacity: 0.15;
+        }
+
+        /* Static Noise */
+        .static {
+            position: absolute; inset: 0;
+            opacity: 0.03;
+            animation: staticNoise 0.1s steps(10) infinite;
+        }
+        @keyframes staticNoise {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* CRT Vignette */
+        .crt-vignette {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%);
+            pointer-events: none;
+        }
+
+        /* Occasional Full-Screen Glitch */
+        .screen-glitch {
+            position: absolute; inset: 0;
+            background: var(--glitch-magenta);
+            opacity: 0;
+            mix-blend-mode: overlay;
+            animation: screenGlitch 8s steps(1) infinite;
+        }
+        @keyframes screenGlitch {
+            0%, 97%, 100% { opacity: 0; }
+            97.5% { opacity: 0.1; }
+            98% { opacity: 0; }
+            98.5% { opacity: 0.15; transform: translateX(-5px); }
+            99% { opacity: 0; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           V. CURSOR SYSTEM
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .cursor-dot {
+            width: 12px; height: 12px;
+            background: var(--terminal-white);
+            position: fixed;
+            pointer-events: none; z-index: 100000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.05s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 8px; height: 8px;
+            background: var(--glitch-magenta);
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0.5;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-label {
+            position: fixed; pointer-events: none; z-index: 100001;
+            background: var(--terminal-white); color: var(--true-black);
+            padding: 4px 10px;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0; transform: translate(15px, 15px);
+            transition: opacity 0.1s;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VI. AUDIO TOGGLE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .audio-toggle {
+            position: fixed; bottom: 30px; left: 30px; z-index: 1000;
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 18px;
+            background: var(--noise-base);
+            border: 1px solid var(--dead-pixel);
+            color: var(--signal-weak);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.1s;
+        }
+        .audio-toggle:hover { border-color: var(--terminal-white); color: var(--terminal-white); }
+        .audio-toggle.playing { border-color: var(--data-cyan); color: var(--data-cyan); }
+
+        .signal-bars {
+            display: flex; gap: 2px; height: 12px; align-items: flex-end;
+        }
+        .sig-bar {
+            width: 3px;
+            background: currentColor;
+            transition: height 0.1s steps(3);
+        }
+        .sig-bar:nth-child(1) { height: 25%; }
+        .sig-bar:nth-child(2) { height: 50%; }
+        .sig-bar:nth-child(3) { height: 75%; }
+        .sig-bar:nth-child(4) { height: 100%; }
+
+        .audio-toggle.playing .sig-bar {
+            animation: signalPulse 0.5s steps(2) infinite;
+        }
+        .audio-toggle.playing .sig-bar:nth-child(2) { animation-delay: 0.1s; }
+        .audio-toggle.playing .sig-bar:nth-child(3) { animation-delay: 0.2s; }
+        .audio-toggle.playing .sig-bar:nth-child(4) { animation-delay: 0.3s; }
+        @keyframes signalPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VII. LAYOUT
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            position: relative;
+            z-index: 10;
+        }
+        @media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+        section {
+            padding: 10rem 0;
+            border-top: 1px solid var(--dead-pixel);
+            position: relative;
+        }
+
+        /* Section Corruption Effect */
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glitch-magenta), var(--data-cyan), transparent);
+            opacity: 0.5;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VIII. TYPOGRAPHY
+           ══════════════════════════════════════════════════════════════════════════════ */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 0.85;
+            color: var(--terminal-white);
+            letter-spacing: -0.03em;
+            position: relative;
+        }
+
+        /* Chromatic Aberration on Headlines */
+        .chromatic {
+            position: relative;
+        }
+        .chromatic::before,
+        .chromatic::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .chromatic::before {
+            color: var(--chroma-red);
+            clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+            transform: translate(-4px, -2px);
+            animation: chromaShift 4s ease-in-out infinite;
+        }
+        .chromatic::after {
+            color: var(--chroma-blue);
+            clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+            transform: translate(4px, 2px);
+            animation: chromaShift 4s ease-in-out infinite reverse;
+        }
+        @keyframes chromaShift {
+            0%, 100% { transform: translate(-4px, -2px); }
+            50% { transform: translate(-2px, -1px); }
+        }
+
+        h2 {
+            font-family: var(--font-body);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 500;
+            color: var(--terminal-white);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--data-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            padding: 6px 12px;
+            border: 1px solid var(--data-cyan);
+            position: relative;
+        }
+        .section-label::before {
+            content: '>';
+            margin-right: 8px;
+            animation: blink 1s steps(1) infinite;
+        }
+
+        p { color: var(--signal-weak); max-width: 55ch; margin-bottom: 1.5rem; }
+        p strong, .highlight { color: var(--glitch-magenta); }
+        .data { color: var(--data-cyan); font-family: var(--font-mono); }
+
+        .scramble { display: inline-block; }
+        .glitch-text {
+            animation: textGlitch 5s steps(1) infinite;
+        }
+        @keyframes textGlitch {
+            0%, 95%, 100% { opacity: 1; transform: none; }
+            96% { opacity: 0.8; transform: skewX(-5deg); }
+            97% { opacity: 1; transform: skewX(3deg); }
+            98% { opacity: 0.9; transform: none; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IX. HERO
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(var(--dead-pixel) 1px, transparent 1px),
+                linear-gradient(90deg, var(--dead-pixel) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--terminal-white);
+            max-width: 550px;
+            margin-top: 2.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .hero-stats {
+            display: flex; gap: 4rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--dead-pixel);
+        }
+        .stat-item {
+            position: relative;
+        }
+        .stat-item h4 {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--terminal-white);
+            line-height: 1;
+        }
+        .stat-item span {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--tracking-error);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .stat-item .unit {
+            font-size: 1rem;
+            color: var(--data-cyan);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 3rem; left: 0;
+            display: flex; align-items: center; gap: 15px;
+            font-family: var(--font-mono);
+            color: var(--tracking-error);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .scroll-arrow {
+            width: 20px; height: 40px;
+            border: 1px solid var(--dead-pixel);
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+        .scroll-arrow::after {
+            content: '▼';
+            font-size: 8px;
+            color: var(--glitch-magenta);
+            position: absolute;
+            animation: scrollPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%, 100% { top: 8px; opacity: 1; }
+            100% { top: 24px; opacity: 0; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           X. COLOR DECK
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .color-deck {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 2px;
+            margin: 3rem 0;
+            background: var(--dead-pixel);
+            border: 1px solid var(--dead-pixel);
+        }
+
+        .color-card {
+            height: 200px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            transition: all 0.1s;
+            overflow: hidden;
+        }
+        .color-card:hover {
+            z-index: 10;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        /* Glitch effect on hover */
+        .color-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent 50%, rgba(0,0,0,0.3) 50%);
+            background-size: 100% 4px;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+        .color-card:hover::before { opacity: 1; }
+
+        .color-name {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+        .color-hex {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .color-card.dark { color: var(--terminal-white); }
+        .color-card.light { color: var(--true-black); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XI. TYPOGRAPHY PLAYGROUND
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .type-playground {
+            background: var(--noise-base);
+            border: 1px solid var(--dead-pixel);
+            padding: 3rem;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        /* Terminal header bar */
+        .type-playground::before {
+            content: '■ □ □  FONT_INSPECTOR.exe';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            padding: 8px 12px;
+            background: var(--true-black);
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--tracking-error);
+            border-bottom: 1px solid var(--dead-pixel);
+        }
+
+        .type-controls {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed var(--dead-pixel);
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .control-label {
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--tracking-error);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .control-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--data-cyan);
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 180px;
+            height: 2px;
+            background: var(--dead-pixel);
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px; height: 14px;
+            background: var(--terminal-white);
+            cursor: none;
+            transition: transform 0.1s;
+        }
+        .range-slider::-webkit-slider-thumb:hover {
+            background: var(--glitch-magenta);
+            transform: scale(1.3);
+        }
+
+        .type-specimen {
+            font-family: var(--font-body);
+            font-size: 3rem;
+            line-height: 1.2;
+            color: var(--terminal-white);
+            transition: font-weight 0.1s;
+            margin-top: 1rem;
+        }
+
+        .type-quote {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px dashed var(--dead-pixel);
+        }
+        .type-quote blockquote {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-style: italic;
+            color: var(--terminal-white);
+            line-height: 1.4;
+        }
+        .type-quote cite {
+            display: block;
+            margin-top: 1rem;
+            font-style: normal;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--tracking-error);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XII. UI COMPONENTS
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .component-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            margin: 3rem 0;
+            background: var(--dead-pixel);
+        }
+        @media (max-width: 900px) { .component-grid { grid-template-columns: 1fr; } }
+
+        .component-card {
+            background: var(--noise-base);
+            padding: 2.5rem;
+            transition: all 0.1s;
+            position: relative;
+        }
+        .component-card:hover {
+            background: var(--scan-line);
+        }
+        .component-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--glitch-magenta);
+            transition: width 0.3s;
+        }
+        .component-card:hover::after { width: 100%; }
+
+        .component-title {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--data-cyan);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+        }
+        .component-title::before { content: '// '; }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .btn {
+            padding: 14px 28px;
+            font-family: var(--font-mono);
+            font-weight: 400;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            transition: all 0.1s;
+            position: relative;
+        }
+
+        .btn-primary {
+            background: var(--terminal-white);
+            color: var(--true-black);
+        }
+        .btn-primary:hover {
+            background: var(--glitch-magenta);
+            color: var(--terminal-white);
+            animation: buttonGlitch 0.2s steps(2) infinite;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--dead-pixel);
+            color: var(--signal-weak);
+        }
+        .btn-ghost:hover {
+            border-color: var(--data-cyan);
+            color: var(--data-cyan);
+        }
+
+        /* Inputs */
+        .input-group { margin-bottom: 1.5rem; }
+        .input-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            color: var(--tracking-error);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        .input-label::before { content: '> '; color: var(--data-cyan); }
+        
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--true-black);
+            border: 1px solid var(--dead-pixel);
+            color: var(--terminal-white);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.1s;
+        }
+        .input-field::placeholder { color: var(--phosphor-dim); }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--data-cyan);
+            box-shadow: 0 0 0 1px var(--data-cyan), inset 0 0 20px rgba(0, 240, 255, 0.05);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIII. MOODBOARD
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin: 3rem 0;
+            background: var(--dead-pixel);
+        }
+        @media (max-width: 768px) { .mood-grid { grid-template-columns: 1fr 1fr; } }
+
+        .mood-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        .mood-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+            transition: all 0.3s;
+        }
+        .mood-item:hover .mood-img {
+            filter: grayscale(0%) contrast(1.1);
+            transform: scale(1.05);
+        }
+
+        /* RGB Split on hover */
+        .mood-item::before,
+        .mood-item::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: inherit;
+            mix-blend-mode: screen;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .mood-item:hover::before {
+            opacity: 0.5;
+            background: var(--chroma-red);
+            transform: translate(-5px, 0);
+            mix-blend-mode: multiply;
+        }
+        .mood-item:hover::after {
+            opacity: 0.5;
+            background: var(--chroma-blue);
+            transform: translate(5px, 0);
+            mix-blend-mode: multiply;
+        }
+
+        /* Scan line overlay */
+        .mood-item .scan-overlay {
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                transparent 2px,
+                rgba(0, 0, 0, 0.2) 2px,
+                rgba(0, 0, 0, 0.2) 4px
+            );
+            pointer-events: none;
+        }
+
+        /* Lightbox */
+        #lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 50000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        #lightbox.active { opacity: 1; pointer-events: auto; }
+
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            filter: grayscale(100%) contrast(1.1);
+            transform: scale(0.95);
+            transition: transform 0.3s, filter 0.5s;
+        }
+        #lightbox.active img { 
+            transform: scale(1); 
+            filter: grayscale(0%);
+        }
+
+        .lightbox-hint {
+            position: absolute;
+            bottom: 2rem;
+            font-family: var(--font-mono);
+            color: var(--tracking-error);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIV. CODE BLOCK
+           ══════════════════════════════════════════════════════════════════════════════ */
+        pre {
+            background: var(--true-black);
+            border: 1px solid var(--dead-pixel);
+            padding: 2rem;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.8;
+            color: var(--signal-weak);
+            margin: 2rem 0;
+            position: relative;
+        }
+        pre::before {
+            content: 'tokens.css';
+            position: absolute;
+            top: -1px; right: -1px;
+            padding: 4px 10px;
+            background: var(--dead-pixel);
+            font-size: 0.6rem;
+            color: var(--tracking-error);
+        }
+        .token-comment { color: var(--phosphor-dim); }
+        .token-prop { color: var(--signal-weak); }
+        .token-val { color: var(--data-cyan); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XV. SCROLL REVEAL
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s, transform 0.6s;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Glitch-in effect */
+        .reveal-glitch {
+            opacity: 0;
+        }
+        .reveal-glitch.visible {
+            animation: glitchIn 0.5s steps(10) forwards;
+        }
+        @keyframes glitchIn {
+            0% { opacity: 0; transform: translateX(-20px) skewX(-10deg); }
+            20% { opacity: 0.5; transform: translateX(10px) skewX(5deg); }
+            40% { opacity: 0.8; transform: translateX(-5px) skewX(-2deg); }
+            60% { opacity: 0.9; transform: translateX(3px) skewX(1deg); }
+            80% { opacity: 1; transform: translateX(-1px) skewX(0); }
+            100% { opacity: 1; transform: translateX(0) skewX(0); }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVI. TOAST
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #toast {
+            position: fixed;
+            bottom: 30px; right: 30px;
+            background: var(--terminal-white);
+            color: var(--true-black);
+            padding: 12px 24px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 60000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.2s;
+        }
+        #toast.visible { transform: translateY(0); opacity: 1; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVII. FOOTER
+           ══════════════════════════════════════════════════════════════════════════════ */
+        footer {
+            padding: 6rem 0;
+            text-align: center;
+            border-top: 1px solid var(--dead-pixel);
+            position: relative;
+        }
+        .footer-brand {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--terminal-white);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .footer-meta {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--phosphor-dim);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        .footer-meta span { color: var(--data-cyan); }
+    </style>
+</head>
+<body>
+
+    <!-- INIT OVERLAY -->
+    <div id="init-overlay">
+        <h1 class="init-brand">VOID_SIGNAL</h1>
+        <p class="init-sub">ACQUIRING TRANSMISSION<span>_</span></p>
+        <button class="init-btn" id="initBtn">[ CONNECT ]</button>
+    </div>
+
+    <!-- ATMOSPHERE -->
+    <div class="atmosphere">
+        <div class="scanlines"></div>
+        <div class="static" id="static"></div>
+        <div class="crt-vignette"></div>
+        <div class="screen-glitch"></div>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-trail" id="cursorTrail"></div>
+    <div class="cursor-label" id="cursorLabel"></div>
+
+    <!-- AUDIO TOGGLE -->
+    <div class="audio-toggle" id="audioToggle">
+        <div class="signal-bars">
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+            <div class="sig-bar"></div>
+        </div>
+        <span id="audioLabel">SIGNAL_OFF</span>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox">
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-hint">[ ESC ] TO CLOSE</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="hero">
+            <div class="hero-grid"></div>
+            
+            <span class="section-label reveal">SYS.DESIGN</span>
+            
+            <h1 class="reveal reveal-delay-1 chromatic" data-text="Void">
+                <span class="scramble" data-text="Void">Void</span>
+            </h1>
+            <h1 class="reveal reveal-delay-2 glitch-text" style="color: var(--glitch-magenta);">
+                <span class="scramble" data-text="Signal">Signal</span>
+            </h1>
+            
+            <p class="hero-sub reveal reveal-delay-3">
+                A design system born from <span class="highlight">corrupted transmissions</span> and 
+                <span class="data">dead channels</span>. Where data decays into beauty and 
+                glitches become the aesthetic. <span class="highlight">ERROR_IS_ART</span>.
+            </p>
+
+            <div class="hero-stats reveal">
+                <div class="stat-item">
+                    <h4>12<span class="unit">_</span></h4>
+                    <span>COLOR_TOKENS</span>
+                </div>
+                <div class="stat-item">
+                    <h4>0x<span class="unit">FF</span></h4>
+                    <span>SIGNAL_STRENGTH</span>
+                </div>
+                <div class="stat-item">
+                    <h4>404</h4>
+                    <span>STYLE_NOT_FOUND</span>
+                </div>
+            </div>
+
+            <div class="scroll-hint reveal">
+                <div class="scroll-arrow"></div>
+                <span>SCROLL_DOWN</span>
+            </div>
+        </header>
+
+        <!-- 01. COLORS -->
+        <section id="colors">
+            <span class="section-label reveal-glitch">01_PALETTE</span>
+            <h2 class="reveal">Color Matrix</h2>
+            <p class="reveal">From void black to transmission white. Click to copy hex values. <span class="data">//DATA_STREAM</span></p>
+
+            <div class="color-deck reveal">
+                <div class="color-card dark" style="background: #000000;" data-hex="#000000">
+                    <span class="color-name">TRUE_BLACK</span>
+                    <span class="color-hex">#000000</span>
+                </div>
+                <div class="color-card dark" style="background: #0a0a0c;" data-hex="#0a0a0c">
+                    <span class="color-name">STATIC_DARK</span>
+                    <span class="color-hex">#0a0a0c</span>
+                </div>
+                <div class="color-card dark" style="background: #101014;" data-hex="#101014">
+                    <span class="color-name">NOISE_BASE</span>
+                    <span class="color-hex">#101014</span>
+                </div>
+                <div class="color-card dark" style="background: #18181c;" data-hex="#18181c">
+                    <span class="color-name">SCAN_LINE</span>
+                    <span class="color-hex">#18181c</span>
+                </div>
+                <div class="color-card dark" style="background: #1f1f24;" data-hex="#1f1f24">
+                    <span class="color-name">DEAD_PIXEL</span>
+                    <span class="color-hex">#1f1f24</span>
+                </div>
+                <div class="color-card dark" style="background: #27272e;" data-hex="#27272e">
+                    <span class="color-name">CRT_SURFACE</span>
+                    <span class="color-hex">#27272e</span>
+                </div>
+                <div class="color-card dark" style="background: #35353e;" data-hex="#35353e">
+                    <span class="color-name">PHOSPHOR_DIM</span>
+                    <span class="color-hex">#35353e</span>
+                </div>
+                <div class="color-card dark" style="background: #55555f;" data-hex="#55555f">
+                    <span class="color-name">TRACKING_ERR</span>
+                    <span class="color-hex">#55555f</span>
+                </div>
+                <div class="color-card dark" style="background: #88889a;" data-hex="#88889a">
+                    <span class="color-name">SIGNAL_WEAK</span>
+                    <span class="color-hex">#88889a</span>
+                </div>
+                <div class="color-card light" style="background: #ff2d6a;" data-hex="#ff2d6a">
+                    <span class="color-name">GLITCH_MAGENTA</span>
+                    <span class="color-hex">#ff2d6a</span>
+                </div>
+                <div class="color-card light" style="background: #00f0ff;" data-hex="#00f0ff">
+                    <span class="color-name">DATA_CYAN</span>
+                    <span class="color-hex">#00f0ff</span>
+                </div>
+                <div class="color-card light" style="background: #e8e8f0;" data-hex="#e8e8f0">
+                    <span class="color-name">TERMINAL_WHITE</span>
+                    <span class="color-hex">#e8e8f0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. TYPOGRAPHY -->
+        <section id="typography">
+            <span class="section-label reveal-glitch">02_TYPEFACE</span>
+            <h2 class="reveal">Font Inspector</h2>
+            <p class="reveal">The tension between <span class="highlight">elegant decay</span> and <span class="data">machine precision</span>.</p>
+
+            <div class="type-playground reveal">
+                <div class="type-controls">
+                    <div class="control-group">
+                        <span class="control-label">FONT_FAMILY</span>
+                        <span class="control-value">SPACE</span>
+                    </div>
+                    <div class="control-group">
+                        <span class="control-label">WEIGHT</span>
+                        <span class="control-value" id="weightValue">400</span>
+                    </div>
+                    <input type="range" min="300" max="700" value="400" class="range-slider" id="weightSlider">
+                </div>
+
+                <div class="type-specimen" id="typeSpecimen">
+                    ERROR_404: STYLE NOT FOUND
+                </div>
+
+                <div class="type-quote">
+                    <blockquote>
+                        "In the static between channels, <span class="highlight">signals</span> become <span class="data">art</span>."
+                    </blockquote>
+                    <cite>— INSTRUMENT SERIF // DISPLAY</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. COMPONENTS -->
+        <section id="components">
+            <span class="section-label reveal-glitch">03_ELEMENTS</span>
+            <h2 class="reveal">UI Components</h2>
+            <p class="reveal">Sharp edges. Hard contrasts. <span class="highlight">Glitch on interaction</span>.</p>
+
+            <div class="component-grid reveal">
+                <div class="component-card">
+                    <div class="component-title">BUTTONS</div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary">EXECUTE</button>
+                        <button class="btn btn-ghost">ABORT</button>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">INPUT_FIELD</div>
+                    <div class="input-group">
+                        <label class="input-label">USER_ID</label>
+                        <input type="text" class="input-field" placeholder="ENTER_COMMAND...">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. MOODBOARD -->
+        <section id="moodboard">
+            <span class="section-label reveal-glitch">04_VISUAL_DATA</span>
+            <h2 class="reveal">Image Archive</h2>
+            <p class="reveal">All imagery receives <span class="highlight">grayscale + contrast</span> treatment. RGB split on hover.</p>
+
+            <div class="mood-grid reveal">
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Retro">
+                    <div class="scan-overlay"></div>
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Circuit">
+                    <div class="scan-overlay"></div>
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Code">
+                    <div class="scan-overlay"></div>
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="TV">
+                    <div class="scan-overlay"></div>
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1535016120720-40c646be5580?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="VHS">
+                    <div class="scan-overlay"></div>
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Coding">
+                    <div class="scan-overlay"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. CODE -->
+        <section id="code">
+            <span class="section-label reveal-glitch">05_IMPLEMENTATION</span>
+            <h2 class="reveal">Token Export</h2>
+            <p class="reveal">Copy. Paste. <span class="data">Corrupt.</span></p>
+
+            <pre class="reveal"><span class="token-comment">/* VOID_SIGNAL — Design Tokens */</span>
+:root {
+  <span class="token-comment">/* VOID */</span>
+  <span class="token-prop">--true-black:</span>      <span class="token-val">#000000;</span>
+  <span class="token-prop">--static-dark:</span>     <span class="token-val">#0a0a0c;</span>
+  <span class="token-prop">--noise-base:</span>      <span class="token-val">#101014;</span>
+  
+  <span class="token-comment">/* INTERFERENCE */</span>
+  <span class="token-prop">--scan-line:</span>       <span class="token-val">#18181c;</span>
+  <span class="token-prop">--dead-pixel:</span>      <span class="token-val">#1f1f24;</span>
+  <span class="token-prop">--crt-surface:</span>     <span class="token-val">#27272e;</span>
+  <span class="token-prop">--phosphor-dim:</span>    <span class="token-val">#35353e;</span>
+  
+  <span class="token-comment">/* DECAY */</span>
+  <span class="token-prop">--tracking-error:</span>  <span class="token-val">#55555f;</span>
+  <span class="token-prop">--signal-weak:</span>     <span class="token-val">#88889a;</span>
+  
+  <span class="token-comment">/* TRANSMISSION */</span>
+  <span class="token-prop">--glitch-magenta:</span>  <span class="token-val">#ff2d6a;</span>
+  <span class="token-prop">--data-cyan:</span>       <span class="token-val">#00f0ff;</span>
+  <span class="token-prop">--terminal-white:</span>  <span class="token-val">#e8e8f0;</span>
+}</pre>
+        </section>
+
+        <footer>
+            <div class="footer-brand">VOID_SIGNAL</div>
+            <div class="footer-meta">SYSTEM_VERSION <span>1.0.4</span> // TRANSMISSION_COMPLETE</div>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // STATIC NOISE GENERATOR
+        // ═══════════════════════════════════════════════════════════════════════════
+        function generateStaticNoise() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 200;
+            canvas.height = 200;
+            
+            const imageData = ctx.createImageData(200, 200);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                const val = Math.random() * 255;
+                data[i] = val;
+                data[i + 1] = val;
+                data[i + 2] = val;
+                data[i + 3] = 255;
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+            document.getElementById('static').style.backgroundImage = `url(${canvas.toDataURL()})`;
+        }
+        
+        setInterval(generateStaticNoise, 100);
+        generateStaticNoise();
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INIT & AUDIO
+        // ═══════════════════════════════════════════════════════════════════════════
+        let audioCtx, gainNode, isAudioPlaying = false;
+
+        document.getElementById('initBtn').addEventListener('click', () => {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            document.getElementById('init-overlay').classList.add('hidden');
+            setTimeout(triggerScramble, 300);
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCRAMBLE TEXT (Glitchy)
+        // ═══════════════════════════════════════════════════════════════════════════
+        function triggerScramble() {
+            const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`01';
+            document.querySelectorAll('.scramble').forEach(el => {
+                const finalText = el.dataset.text;
+                let iteration = 0;
+                
+                const interval = setInterval(() => {
+                    el.innerText = finalText
+                        .split('')
+                        .map((char, idx) => {
+                            if (idx < iteration) return finalText[idx];
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        })
+                        .join('');
+                    
+                    if (iteration >= finalText.length) clearInterval(interval);
+                    iteration += 1/2;
+                }, 30);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CURSOR
+        // ═══════════════════════════════════════════════════════════════════════════
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorTrail = document.getElementById('cursorTrail');
+        const cursorLabel = document.getElementById('cursorLabel');
+
+        let mouseX = 0, mouseY = 0;
+        let trailX = 0, trailY = 0;
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+            
+            cursorLabel.style.left = mouseX + 'px';
+            cursorLabel.style.top = mouseY + 'px';
+        });
+
+        // Lagging trail
+        function updateTrail() {
+            trailX += (mouseX - trailX) * 0.15;
+            trailY += (mouseY - trailY) * 0.15;
+            
+            cursorTrail.style.left = trailX + 'px';
+            cursorTrail.style.top = trailY + 'px';
+            
+            requestAnimationFrame(updateTrail);
+        }
+        updateTrail();
+
+        function setCursorHover(selector, label, hideTrail = false) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    if (hideTrail) cursorTrail.style.opacity = '0';
+                    if (label) {
+                        cursorLabel.innerText = label;
+                        cursorLabel.style.opacity = '1';
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorTrail.style.opacity = '0.5';
+                    cursorLabel.style.opacity = '0';
+                });
+            });
+        }
+
+        setCursorHover('.color-card', 'COPY', true);
+        setCursorHover('.mood-item', 'VIEW', false);
+        setCursorHover('.btn', 'CLICK', true);
+        setCursorHover('.input-field', null, true);
+        setCursorHover('.init-btn', 'CONNECT', true);
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // COLOR COPY
+        // ═══════════════════════════════════════════════════════════════════════════
+        document.querySelectorAll('.color-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const hex = card.dataset.hex;
+                navigator.clipboard.writeText(hex);
+                
+                const toast = document.getElementById('toast');
+                toast.innerText = `${hex} COPIED`;
+                toast.classList.add('visible');
+                
+                setTimeout(() => toast.classList.remove('visible'), 1500);
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TYPOGRAPHY SLIDER
+        // ═══════════════════════════════════════════════════════════════════════════
+        const weightSlider = document.getElementById('weightSlider');
+        const weightValue = document.getElementById('weightValue');
+        const typeSpecimen = document.getElementById('typeSpecimen');
+
+        weightSlider.addEventListener('input', e => {
+            const val = e.target.value;
+            weightValue.innerText = val;
+            typeSpecimen.style.fontWeight = val;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // LIGHTBOX
+        // ═══════════════════════════════════════════════════════════════════════════
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.mood-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // AUDIO (Digital Static / Interference)
+        // ═══════════════════════════════════════════════════════════════════════════
+        const audioToggle = document.getElementById('audioToggle');
+        const audioLabel = document.getElementById('audioLabel');
+
+        function createInterference() {
+            // White noise
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                // Bitcrushed effect
+                const raw = Math.random() * 2 - 1;
+                data[i] = Math.round(raw * 4) / 4; // Quantize for digital feel
+            }
+
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+
+            // Band-pass for radio interference feel
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 2000;
+            filter.Q.value = 2;
+
+            // LFO for pulsing
+            const lfo = audioCtx.createOscillator();
+            const lfoGain = audioCtx.createGain();
+            lfo.frequency.value = 4;
+            lfoGain.gain.value = 0.3;
+            lfo.connect(lfoGain);
+
+            gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0;
+            lfoGain.connect(gainNode.gain);
+
+            source.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start(0);
+            lfo.start(0);
+        }
+
+        audioToggle.addEventListener('click', () => {
+            if (!audioCtx) return;
+            
+            if (!gainNode) createInterference();
+            
+            if (isAudioPlaying) {
+                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.1);
+                audioToggle.classList.remove('playing');
+                audioLabel.innerText = 'SIGNAL_OFF';
+            } else {
+                gainNode.gain.setTargetAtTime(0.03, audioCtx.currentTime, 0.1);
+                audioToggle.classList.add('playing');
+                audioLabel.innerText = 'SIGNAL_ON';
+            }
+            isAudioPlaying = !isAudioPlaying;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCROLL REVEAL
+        // ═══════════════════════════════════════════════════════════════════════════
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-30px' });
+
+        document.querySelectorAll('.reveal, .reveal-glitch').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
