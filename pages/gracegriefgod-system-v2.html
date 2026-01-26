@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gracegriefgod — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════════════
+       GRACEGRIEFGOD — DESIGN SYSTEM
+       Raw. Fragmented. Vulnerable. Conversational.
+       ═══════════════════════════════════════════════════════════════ */
+
+    :root {
+      /* ─────────────────────────────────────────────────────────────
+         COLOR TOKENS — 12-Color Architecture
+         ───────────────────────────────────────────────────────────── */
+      
+      /* VOID TIER — The Grief, The Darkness, The Depth */
+      --true-void: #181716;
+      --deep-grief: #1f1e1d;
+      --charcoal-rest: #2a2826;
+      
+      /* STRUCTURE TIER — The Room, The Chair, The Waiting */
+      --shadow-floor: #3d3a36;
+      --worn-wood: #504b45;
+      --soft-linen: #6b645c;
+      --faded-cloth: #8a827a;
+      
+      /* UTILITY TIER — The Marks, The Edges */
+      --pencil-mark: #a9a199;
+      --paper-edge: #c4bbb0;
+      
+      /* LIGHT TIER — The Grace, The Held, The Hope */
+      --warm-parchment: #e2d8c9;
+      --soft-cream: #ede6db;
+      --held-light: #f7f4ef;
+      
+      /* ─────────────────────────────────────────────────────────────
+         SEMANTIC ALIASES
+         ───────────────────────────────────────────────────────────── */
+      --canvas-deep: var(--true-void);
+      --canvas-base: var(--deep-grief);
+      --canvas-lifted: var(--charcoal-rest);
+      
+      --text-primary: var(--warm-parchment);
+      --text-secondary: var(--pencil-mark);
+      --text-muted: var(--faded-cloth);
+      
+      --accent-primary: var(--soft-cream);
+      --accent-secondary: var(--paper-edge);
+      --accent-glow: var(--held-light);
+      
+      /* ─────────────────────────────────────────────────────────────
+         TYPOGRAPHY
+         ───────────────────────────────────────────────────────────── */
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Source Serif 4', Georgia, serif;
+      --font-handwritten: 'Caveat', cursive;
+      
+      --weight-light: 300;
+      --weight-regular: 400;
+      --weight-medium: 500;
+      
+      /* ─────────────────────────────────────────────────────────────
+         SPACING — Generous, Breathing
+         ───────────────────────────────────────────────────────────── */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 2rem;
+      --space-lg: 4rem;
+      --space-xl: 8rem;
+      --space-breath: 12rem;
+      
+      /* ─────────────────────────────────────────────────────────────
+         MOTION — Slow, Gentle, Deliberate
+         ───────────────────────────────────────────────────────────── */
+      --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
+      --duration-quick: 200ms;
+      --duration-slow: 600ms;
+      --duration-breath: 4000ms;
+      
+      /* ─────────────────────────────────────────────────────────────
+         BORDERS — Soft, Imperfect
+         ───────────────────────────────────────────────────────────── */
+      --radius-soft: 2px;
+      --radius-gentle: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESET & BASE
+       ═══════════════════════════════════════════════════════════════ */
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 18px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-weight: var(--weight-light);
+      font-optical-sizing: auto;
+      background-color: var(--canvas-deep);
+      color: var(--text-primary);
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    ::selection {
+      background: var(--paper-edge);
+      color: var(--true-void);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       ATMOSPHERIC LAYERS
+       ═══════════════════════════════════════════════════════════════ */
+    
+    /* Paper Texture */
+    #paper-texture {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.03;
+      mix-blend-mode: overlay;
+    }
+
+    /* Soft Vignette — Empty Chair Lighting */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse 80% 60% at 50% 40%,
+        transparent 0%,
+        transparent 40%,
+        rgba(24, 23, 22, 0.3) 70%,
+        rgba(24, 23, 22, 0.7) 100%
+      );
+    }
+
+    /* Held Light — Soft Glow from Above */
+    .held-light {
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(247, 244, 239, 0.04) 0%,
+        rgba(226, 216, 201, 0.02) 40%,
+        transparent 70%
+      );
+      animation: breathe 8s var(--ease-breath) infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       CUSTOM CURSOR — Soft, Unobtrusive
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .cursor-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: var(--warm-parchment);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 10000;
+      opacity: 0.7;
+      transition: transform 0.15s var(--ease-gentle), opacity 0.15s var(--ease-gentle);
+    }
+
+    .cursor-dot.hovering {
+      transform: scale(2);
+      opacity: 1;
+    }
+
+    .cursor-trail {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      pointer-events: none;
+      z-index: 9999;
+      background: radial-gradient(
+        circle at center,
+        rgba(226, 216, 201, 0.03) 0%,
+        transparent 50%
+      );
+      transform: translate(-50%, -50%);
+      transition: transform 0.8s var(--ease-gentle);
+    }
+
+    .cursor-label {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10001;
+      font-family: var(--font-handwritten);
+      font-size: 0.9rem;
+      color: var(--pencil-mark);
+      opacity: 0;
+      transform: translate(15px, -5px);
+      transition: opacity 0.3s var(--ease-gentle);
+      white-space: nowrap;
+    }
+
+    .cursor-label.visible {
+      opacity: 0.8;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       INIT OVERLAY — The Invitation
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .init-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: var(--true-void);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-lg);
+      transition: opacity 1.5s var(--ease-gentle), visibility 1.5s;
+    }
+
+    .init-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .init-brand {
+      font-family: var(--font-display);
+      font-weight: var(--weight-light);
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: var(--warm-parchment);
+      letter-spacing: 0.15em;
+      text-transform: lowercase;
+      opacity: 0;
+      animation: fadeIn 2s var(--ease-gentle) 0.5s forwards;
+    }
+
+    .init-tagline {
+      font-family: var(--font-handwritten);
+      font-size: 1.5rem;
+      color: var(--pencil-mark);
+      opacity: 0;
+      animation: fadeIn 2s var(--ease-gentle) 1.5s forwards;
+    }
+
+    .init-enter {
+      margin-top: var(--space-md);
+      padding: var(--space-sm) var(--space-md);
+      background: transparent;
+      border: 1px solid var(--faded-cloth);
+      color: var(--warm-parchment);
+      font-family: var(--font-handwritten);
+      font-size: 1.2rem;
+      cursor: none;
+      opacity: 0;
+      animation: fadeIn 2s var(--ease-gentle) 2.5s forwards;
+      transition: all var(--duration-slow) var(--ease-gentle);
+    }
+
+    .init-enter:hover {
+      border-color: var(--warm-parchment);
+      background: rgba(226, 216, 201, 0.05);
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       AUDIO TOGGLE — Muted Silence
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .audio-toggle {
+      position: fixed;
+      bottom: var(--space-md);
+      right: var(--space-md);
+      z-index: 100;
+      width: 44px;
+      height: 44px;
+      background: rgba(31, 30, 29, 0.8);
+      border: 1px solid var(--shadow-floor);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      opacity: 0;
+      transition: all var(--duration-slow) var(--ease-gentle);
+    }
+
+    .audio-toggle.visible {
+      opacity: 1;
+    }
+
+    .audio-toggle:hover {
+      border-color: var(--faded-cloth);
+      background: rgba(42, 40, 38, 0.9);
+    }
+
+    .audio-toggle svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--pencil-mark);
+      stroke-width: 1.5;
+      fill: none;
+      transition: stroke var(--duration-quick) var(--ease-gentle);
+    }
+
+    .audio-toggle:hover svg {
+      stroke: var(--warm-parchment);
+    }
+
+    .audio-toggle .muted { display: none; }
+    .audio-toggle.is-muted .unmuted { display: none; }
+    .audio-toggle.is-muted .muted { display: block; }
+
+    /* ═══════════════════════════════════════════════════════════════
+       MAIN CONTAINER
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: var(--space-breath) var(--space-md);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       HERO — The Welcome
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding-bottom: var(--space-xl);
+    }
+
+    .hero-brand {
+      font-family: var(--font-display);
+      font-weight: var(--weight-light);
+      font-size: clamp(3rem, 10vw, 7rem);
+      line-height: 1;
+      letter-spacing: 0.05em;
+      color: var(--warm-parchment);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-handwritten);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--pencil-mark);
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero-philosophy {
+      max-width: 600px;
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 2;
+    }
+
+    .hero-philosophy em {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--warm-parchment);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SECTION STYLING
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .section {
+      margin-bottom: var(--space-breath);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s var(--ease-gentle), transform 1s var(--ease-gentle);
+    }
+
+    .section.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-header {
+      margin-bottom: var(--space-lg);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: var(--weight-light);
+      font-size: 2rem;
+      color: var(--warm-parchment);
+      margin-bottom: var(--space-xs);
+    }
+
+    .section-subtitle {
+      font-family: var(--font-handwritten);
+      font-size: 1.3rem;
+      color: var(--faded-cloth);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       COLOR PALETTE — Torn Paper Cards
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .color-card {
+      position: relative;
+      aspect-ratio: 1;
+      cursor: none;
+      overflow: visible;
+      transition: transform var(--duration-slow) var(--ease-gentle);
+    }
+
+    .color-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .color-swatch {
+      position: absolute;
+      inset: 0;
+      transition: all var(--duration-slow) var(--ease-gentle);
+    }
+
+    /* Torn Paper Effect */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: inherit;
+      clip-path: polygon(
+        0% 50%, 4% 30%, 8% 60%, 12% 20%, 16% 55%, 20% 35%, 24% 70%, 28% 25%, 
+        32% 50%, 36% 40%, 40% 65%, 44% 30%, 48% 55%, 52% 20%, 56% 60%, 60% 35%, 
+        64% 50%, 68% 25%, 72% 65%, 76% 40%, 80% 55%, 84% 30%, 88% 60%, 92% 20%, 
+        96% 50%, 100% 35%, 100% 100%, 0% 100%
+      );
+      opacity: 0.6;
+    }
+
+    .color-info {
+      position: absolute;
+      bottom: var(--space-sm);
+      left: var(--space-sm);
+      right: var(--space-sm);
+    }
+
+    .color-name {
+      font-family: var(--font-handwritten);
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      opacity: 0.7;
+      letter-spacing: 0.05em;
+    }
+
+    /* Text color logic */
+    .color-card[data-tier="void"] .color-info,
+    .color-card[data-tier="structure"] .color-info {
+      color: var(--warm-parchment);
+    }
+
+    .color-card[data-tier="utility"] .color-info,
+    .color-card[data-tier="light"] .color-info {
+      color: var(--true-void);
+    }
+
+    /* Tier Labels */
+    .tier-label {
+      font-family: var(--font-handwritten);
+      font-size: 1.1rem;
+      color: var(--faded-cloth);
+      margin: var(--space-md) 0 var(--space-sm);
+      padding-left: var(--space-xs);
+    }
+
+    .tier-label:first-of-type {
+      margin-top: 0;
+    }
+
+    /* Expanded State */
+    .color-card.expanded .color-swatch {
+      position: fixed;
+      inset: 10vh 10vw;
+      z-index: 500;
+      border-radius: var(--radius-gentle);
+    }
+
+    .color-card.expanded .color-info {
+      position: fixed;
+      bottom: 12vh;
+      left: 12vw;
+      z-index: 501;
+    }
+
+    .color-card.expanded .color-name {
+      font-size: 2rem;
+    }
+
+    .color-card.expanded .color-hex {
+      font-size: 1.2rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TYPOGRAPHY PLAYGROUND
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .typography-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+
+    .type-specimen {
+      padding: var(--space-md);
+      background: rgba(31, 30, 29, 0.5);
+      border-left: 2px solid var(--shadow-floor);
+      transition: border-color var(--duration-slow) var(--ease-gentle);
+    }
+
+    .type-specimen:hover {
+      border-color: var(--faded-cloth);
+    }
+
+    .type-label {
+      font-family: var(--font-handwritten);
+      font-size: 0.9rem;
+      color: var(--faded-cloth);
+      margin-bottom: var(--space-sm);
+    }
+
+    .type-sample-display {
+      font-family: var(--font-display);
+      font-weight: var(--weight-light);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.3;
+      color: var(--warm-parchment);
+    }
+
+    .type-sample-display em {
+      font-style: italic;
+    }
+
+    .type-sample-body {
+      font-family: var(--font-body);
+      font-weight: var(--weight-light);
+      font-size: 1.1rem;
+      line-height: 2;
+      color: var(--text-secondary);
+    }
+
+    .type-sample-handwritten {
+      font-family: var(--font-handwritten);
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--pencil-mark);
+      line-height: 1.6;
+    }
+
+    /* Weight Slider */
+    .weight-control {
+      margin-top: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .weight-control label {
+      font-family: var(--font-handwritten);
+      font-size: 0.9rem;
+      color: var(--faded-cloth);
+    }
+
+    .weight-slider {
+      flex: 1;
+      max-width: 200px;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 2px;
+      background: var(--shadow-floor);
+      border-radius: 1px;
+      cursor: none;
+    }
+
+    .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--warm-parchment);
+      border-radius: 50%;
+      cursor: none;
+      transition: transform 0.2s var(--ease-gentle);
+    }
+
+    .weight-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.3);
+    }
+
+    .weight-value {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--pencil-mark);
+      min-width: 30px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       COMPONENTS — Raw, Honest Elements
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .component-group {
+      padding: var(--space-md);
+      background: rgba(31, 30, 29, 0.3);
+    }
+
+    .component-label {
+      font-family: var(--font-handwritten);
+      font-size: 1rem;
+      color: var(--faded-cloth);
+      margin-bottom: var(--space-md);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-sm) var(--space-md);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: var(--weight-regular);
+      letter-spacing: 0.02em;
+      border: none;
+      cursor: none;
+      transition: all var(--duration-slow) var(--ease-gentle);
+    }
+
+    .btn-primary {
+      background: var(--warm-parchment);
+      color: var(--true-void);
+    }
+
+    .btn-primary:hover {
+      background: var(--soft-cream);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--warm-parchment);
+      border: 1px solid var(--faded-cloth);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--warm-parchment);
+      background: rgba(226, 216, 201, 0.05);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--pencil-mark);
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    .btn-ghost:hover {
+      color: var(--warm-parchment);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+    }
+
+    /* Inputs */
+    .input-field {
+      width: 100%;
+      padding: var(--space-sm);
+      background: rgba(24, 23, 22, 0.8);
+      border: none;
+      border-bottom: 1px solid var(--shadow-floor);
+      color: var(--warm-parchment);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: var(--weight-light);
+      transition: all var(--duration-slow) var(--ease-gentle);
+      cursor: none;
+    }
+
+    .input-field::placeholder {
+      color: var(--faded-cloth);
+      font-style: italic;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-bottom-color: var(--warm-parchment);
+      background: rgba(31, 30, 29, 0.9);
+    }
+
+    .input-group {
+      margin-bottom: var(--space-sm);
+    }
+
+    .input-label {
+      display: block;
+      font-family: var(--font-handwritten);
+      font-size: 0.9rem;
+      color: var(--faded-cloth);
+      margin-bottom: var(--space-xs);
+    }
+
+    /* Textarea */
+    .textarea-field {
+      width: 100%;
+      min-height: 120px;
+      padding: var(--space-sm);
+      background: rgba(24, 23, 22, 0.8);
+      border: 1px solid var(--shadow-floor);
+      color: var(--warm-parchment);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: var(--weight-light);
+      line-height: 1.8;
+      resize: vertical;
+      transition: all var(--duration-slow) var(--ease-gentle);
+      cursor: none;
+    }
+
+    .textarea-field::placeholder {
+      color: var(--faded-cloth);
+      font-style: italic;
+    }
+
+    .textarea-field:focus {
+      outline: none;
+      border-color: var(--faded-cloth);
+      background: rgba(31, 30, 29, 0.9);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SYMBOLISM CARDS — Element Meanings
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .symbolism-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-md);
+    }
+
+    .symbol-card {
+      padding: var(--space-md);
+      background: linear-gradient(
+        135deg,
+        rgba(31, 30, 29, 0.6) 0%,
+        rgba(42, 40, 38, 0.3) 100%
+      );
+      border-left: 2px solid var(--shadow-floor);
+      transition: all var(--duration-slow) var(--ease-gentle);
+    }
+
+    .symbol-card:hover {
+      border-left-color: var(--pencil-mark);
+      transform: translateX(4px);
+    }
+
+    .symbol-icon {
+      font-size: 2rem;
+      margin-bottom: var(--space-sm);
+      opacity: 0.6;
+    }
+
+    .symbol-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--warm-parchment);
+      margin-bottom: var(--space-xs);
+    }
+
+    .symbol-meaning {
+      font-family: var(--font-handwritten);
+      font-size: 1.1rem;
+      color: var(--pencil-mark);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       MOODBOARD — Torn Fragments
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .moodboard {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .mood-item {
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+      transition: transform var(--duration-slow) var(--ease-gentle);
+    }
+
+    .mood-item:hover {
+      transform: scale(1.02);
+      z-index: 10;
+    }
+
+    .mood-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(30%) contrast(0.9) brightness(0.9);
+      transition: filter var(--duration-slow) var(--ease-gentle);
+    }
+
+    .mood-item:hover img {
+      filter: grayscale(10%) contrast(1) brightness(1);
+    }
+
+    /* Torn Edge Overlay */
+    .mood-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 30px rgba(24, 23, 22, 0.5);
+      pointer-events: none;
+    }
+
+    /* Grid Layout */
+    .mood-item:nth-child(1) { grid-column: span 4; grid-row: span 2; aspect-ratio: 4/3; }
+    .mood-item:nth-child(2) { grid-column: span 4; aspect-ratio: 1; }
+    .mood-item:nth-child(3) { grid-column: span 4; aspect-ratio: 1; }
+    .mood-item:nth-child(4) { grid-column: span 3; aspect-ratio: 3/4; }
+    .mood-item:nth-child(5) { grid-column: span 5; aspect-ratio: 16/9; }
+    .mood-item:nth-child(6) { grid-column: span 4; aspect-ratio: 1; }
+    .mood-item:nth-child(7) { grid-column: span 6; aspect-ratio: 2/1; }
+    .mood-item:nth-child(8) { grid-column: span 6; aspect-ratio: 2/1; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 8000;
+      background: rgba(24, 23, 22, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg);
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--duration-slow) var(--ease-gentle);
+      cursor: none;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90vh;
+      object-fit: contain;
+      filter: grayscale(20%);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: var(--space-md);
+      right: var(--space-md);
+      font-family: var(--font-handwritten);
+      font-size: 1.2rem;
+      color: var(--pencil-mark);
+      background: none;
+      border: none;
+      cursor: none;
+      transition: color var(--duration-quick) var(--ease-gentle);
+    }
+
+    .lightbox-close:hover {
+      color: var(--warm-parchment);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       BLANK SPACE SECTION — Intentional Emptiness
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .blank-space {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .blank-space-text {
+      font-family: var(--font-handwritten);
+      font-size: 1.5rem;
+      color: var(--faded-cloth);
+      max-width: 500px;
+      line-height: 1.8;
+      opacity: 0.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOAST NOTIFICATIONS
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .toast-container {
+      position: fixed;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9500;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .toast {
+      padding: var(--space-sm) var(--space-md);
+      background: var(--charcoal-rest);
+      border-left: 2px solid var(--pencil-mark);
+      font-family: var(--font-handwritten);
+      font-size: 1rem;
+      color: var(--warm-parchment);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: toastIn 0.5s var(--ease-gentle) forwards;
+    }
+
+    @keyframes toastIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .toast.removing {
+      animation: toastOut 0.5s var(--ease-gentle) forwards;
+    }
+
+    @keyframes toastOut {
+      to {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════════════════════════════ */
+    
+    .footer {
+      margin-top: var(--space-breath);
+      padding: var(--space-lg) 0;
+      border-top: 1px solid var(--shadow-floor);
+      text-align: center;
+    }
+
+    .footer-text {
+      font-family: var(--font-handwritten);
+      font-size: 1.1rem;
+      color: var(--faded-cloth);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════════════════════════ */
+    
+    @media (max-width: 768px) {
+      html { font-size: 16px; }
+      
+      .container {
+        padding: var(--space-xl) var(--space-sm);
+      }
+      
+      .hero {
+        min-height: 70vh;
+      }
+      
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .moodboard {
+        grid-template-columns: repeat(6, 1fr);
+      }
+      
+      .mood-item:nth-child(1),
+      .mood-item:nth-child(2),
+      .mood-item:nth-child(3) { grid-column: span 3; }
+      .mood-item:nth-child(4),
+      .mood-item:nth-child(5),
+      .mood-item:nth-child(6),
+      .mood-item:nth-child(7),
+      .mood-item:nth-child(8) { grid-column: span 3; aspect-ratio: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Paper Texture Canvas -->
+  <canvas id="paper-texture"></canvas>
+  
+  <!-- Atmospheric Layers -->
+  <div class="vignette"></div>
+  <div class="held-light"></div>
+  
+  <!-- Custom Cursor -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-trail"></div>
+  <div class="cursor-label"></div>
+  
+  <!-- Init Overlay -->
+  <div class="init-overlay" id="initOverlay">
+    <div class="init-brand" id="initBrand">gracegriefgod</div>
+    <div class="init-tagline" id="initTagline">you are welcome here</div>
+    <button class="init-enter" id="initEnter" data-cursor="enter">enter</button>
+  </div>
+  
+  <!-- Audio Toggle -->
+  <button class="audio-toggle is-muted" id="audioToggle" data-cursor="listen">
+    <svg class="unmuted" viewBox="0 0 24 24">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    </svg>
+    <svg class="muted" viewBox="0 0 24 24">
+      <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  </button>
+  
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+  
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" data-cursor="close">close</button>
+    <img src="" alt="" id="lightboxImg">
+  </div>
+  
+  <!-- Main Content -->
+  <main class="container">
+    
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-brand">gracegriefgod</h1>
+      <p class="hero-tagline">raw · fragmented · vulnerable · conversational</p>
+      <p class="hero-philosophy">
+        This is not a polished system.<br>
+        It is a <em>held space</em>—for the unfinished,<br>
+        the torn edges, the words that need to be said<br>
+        even when no one is listening.
+      </p>
+    </section>
+    
+    <!-- Symbolism -->
+    <section class="section" data-reveal>
+      <header class="section-header">
+        <h2 class="section-title">element symbolism</h2>
+        <p class="section-subtitle">what each piece means</p>
+      </header>
+      
+      <div class="symbolism-grid">
+        <div class="symbol-card">
+          <div class="symbol-icon">📄</div>
+          <h3 class="symbol-name">Torn Paper / Unfinished Pages</h3>
+          <p class="symbol-meaning">Raw process, not polished end.</p>
+        </div>
+        <div class="symbol-card">
+          <div class="symbol-icon">✍️</div>
+          <h3 class="symbol-name">Hand Writing / Paper</h3>
+          <p class="symbol-meaning">Holding space for self.</p>
+        </div>
+        <div class="symbol-card">
+          <div class="symbol-icon">🪑</div>
+          <h3 class="symbol-name">Empty Chair / Soft Lighting</h3>
+          <p class="symbol-meaning">Invitation. You are welcome here.</p>
+        </div>
+        <div class="symbol-card">
+          <div class="symbol-icon">〰️</div>
+          <h3 class="symbol-name">Muted Silence / Blank Space</h3>
+          <p class="symbol-meaning">Not everything needs to be heard, but to be said.</p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Color Palette -->
+    <section class="section" data-reveal>
+      <header class="section-header">
+        <h2 class="section-title">color palette</h2>
+        <p class="section-subtitle">twelve tones of grace and grief</p>
+      </header>
+      
+      <p class="tier-label">void tier — the grief, the darkness</p>
+      <div class="palette-grid" style="margin-bottom: var(--space-md);">
+        <div class="color-card" data-tier="void" data-color="#181716" data-cursor="expand">
+          <div class="color-swatch" style="background: #181716;"></div>
+          <div class="color-info">
+            <div class="color-name">true-void</div>
+            <div class="color-hex">#181716</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="void" data-color="#1f1e1d" data-cursor="expand">
+          <div class="color-swatch" style="background: #1f1e1d;"></div>
+          <div class="color-info">
+            <div class="color-name">deep-grief</div>
+            <div class="color-hex">#1f1e1d</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="void" data-color="#2a2826" data-cursor="expand">
+          <div class="color-swatch" style="background: #2a2826;"></div>
+          <div class="color-info">
+            <div class="color-name">charcoal-rest</div>
+            <div class="color-hex">#2a2826</div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="tier-label">structure tier — the room, the waiting</p>
+      <div class="palette-grid" style="margin-bottom: var(--space-md);">
+        <div class="color-card" data-tier="structure" data-color="#3d3a36" data-cursor="expand">
+          <div class="color-swatch" style="background: #3d3a36;"></div>
+          <div class="color-info">
+            <div class="color-name">shadow-floor</div>
+            <div class="color-hex">#3d3a36</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="structure" data-color="#504b45" data-cursor="expand">
+          <div class="color-swatch" style="background: #504b45;"></div>
+          <div class="color-info">
+            <div class="color-name">worn-wood</div>
+            <div class="color-hex">#504b45</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="structure" data-color="#6b645c" data-cursor="expand">
+          <div class="color-swatch" style="background: #6b645c;"></div>
+          <div class="color-info">
+            <div class="color-name">soft-linen</div>
+            <div class="color-hex">#6b645c</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="structure" data-color="#8a827a" data-cursor="expand">
+          <div class="color-swatch" style="background: #8a827a;"></div>
+          <div class="color-info">
+            <div class="color-name">faded-cloth</div>
+            <div class="color-hex">#8a827a</div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="tier-label">utility tier — the marks, the edges</p>
+      <div class="palette-grid" style="margin-bottom: var(--space-md);">
+        <div class="color-card" data-tier="utility" data-color="#a9a199" data-cursor="expand">
+          <div class="color-swatch" style="background: #a9a199;"></div>
+          <div class="color-info">
+            <div class="color-name">pencil-mark</div>
+            <div class="color-hex">#a9a199</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="utility" data-color="#c4bbb0" data-cursor="expand">
+          <div class="color-swatch" style="background: #c4bbb0;"></div>
+          <div class="color-info">
+            <div class="color-name">paper-edge</div>
+            <div class="color-hex">#c4bbb0</div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="tier-label">light tier — the grace, the hope</p>
+      <div class="palette-grid">
+        <div class="color-card" data-tier="light" data-color="#e2d8c9" data-cursor="expand">
+          <div class="color-swatch" style="background: #e2d8c9;"></div>
+          <div class="color-info">
+            <div class="color-name">warm-parchment</div>
+            <div class="color-hex">#e2d8c9</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="light" data-color="#ede6db" data-cursor="expand">
+          <div class="color-swatch" style="background: #ede6db;"></div>
+          <div class="color-info">
+            <div class="color-name">soft-cream</div>
+            <div class="color-hex">#ede6db</div>
+          </div>
+        </div>
+        <div class="color-card" data-tier="light" data-color="#f7f4ef" data-cursor="expand">
+          <div class="color-swatch" style="background: #f7f4ef;"></div>
+          <div class="color-info">
+            <div class="color-name">held-light</div>
+            <div class="color-hex">#f7f4ef</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Typography -->
+    <section class="section" data-reveal>
+      <header class="section-header">
+        <h2 class="section-title">typography</h2>
+        <p class="section-subtitle">voices for different moments</p>
+      </header>
+      
+      <div class="typography-showcase">
+        <div class="type-specimen">
+          <p class="type-label">display — Cormorant (the held breath)</p>
+          <p class="type-sample-display" id="displaySample">
+            Some things are too heavy<br>to carry <em>alone.</em>
+          </p>
+          <div class="weight-control">
+            <label>weight</label>
+            <input type="range" class="weight-slider" id="displayWeight" min="300" max="500" value="300" data-cursor="drag">
+            <span class="weight-value" id="displayWeightValue">300</span>
+          </div>
+        </div>
+        
+        <div class="type-specimen">
+          <p class="type-label">body — Source Serif 4 (the steady voice)</p>
+          <p class="type-sample-body">
+            Grief does not follow a timeline. It arrives unannounced, stays longer than expected, and leaves traces in places you didn't know existed. This space holds room for all of it—the anger, the bargaining, the moments of unexpected lightness, and the long silences in between.
+          </p>
+        </div>
+        
+        <div class="type-specimen">
+          <p class="type-label">handwritten — Caveat (the personal note)</p>
+          <p class="type-sample-handwritten">
+            I don't have the right words yet,<br>
+            but I'm learning to sit with that.
+          </p>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Blank Space -->
+    <section class="section blank-space" data-reveal>
+      <p class="blank-space-text">
+        This space is intentionally left empty.<br><br>
+        Not everything needs to be filled.
+      </p>
+    </section>
+    
+    <!-- Components -->
+    <section class="section" data-reveal>
+      <header class="section-header">
+        <h2 class="section-title">components</h2>
+        <p class="section-subtitle">simple, honest elements</p>
+      </header>
+      
+      <div class="components-grid">
+        <div class="component-group">
+          <p class="component-label">buttons</p>
+          <div class="button-row">
+            <button class="btn btn-primary" data-cursor="click">begin here</button>
+            <button class="btn btn-secondary" data-cursor="click">take your time</button>
+            <button class="btn btn-ghost" data-cursor="click">or not yet</button>
+          </div>
+        </div>
+        
+        <div class="component-group">
+          <p class="component-label">text inputs</p>
+          <div class="input-group">
+            <label class="input-label">what's on your mind?</label>
+            <input type="text" class="input-field" placeholder="whatever you need to say..." data-cursor="write">
+          </div>
+          <div class="input-group">
+            <label class="input-label">longer thoughts</label>
+            <textarea class="textarea-field" placeholder="there's no wrong way to feel..." data-cursor="write"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Moodboard -->
+    <section class="section" data-reveal>
+      <header class="section-header">
+        <h2 class="section-title">moodboard</h2>
+        <p class="section-subtitle">visual fragments</p>
+      </header>
+      
+      <div class="moodboard">
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=800" alt="Open book pages">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600" alt="Handwriting on paper">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1493548578639-b0c241186eb0?w=600" alt="Empty chair by window">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600" alt="Soft morning light">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=800" alt="Stack of worn books">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600" alt="Aged paper texture">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1501139083538-0139583c060f?w=800" alt="Clock and shadows">
+        </div>
+        <div class="mood-item" data-cursor="view">
+          <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=800" alt="Minimal room with light">
+        </div>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">you don't have to have it all figured out</p>
+    </footer>
+    
+  </main>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════════════
+       GRACEGRIEFGOD — INTERACTION LAYER
+       ═══════════════════════════════════════════════════════════════ */
+
+    // ─────────────────────────────────────────────────────────────────
+    // Paper Texture
+    // ─────────────────────────────────────────────────────────────────
+    function generatePaperTexture() {
+      const canvas = document.getElementById('paper-texture');
+      const ctx = canvas.getContext('2d');
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      const imageData = ctx.createImageData(canvas.width, canvas.height);
+      const data = imageData.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        // Very subtle, organic-feeling noise
+        const value = Math.random() * 40 + 200;
+        data[i] = value;
+        data[i + 1] = value * 0.98;
+        data[i + 2] = value * 0.95;
+        data[i + 3] = Math.random() * 30 + 10;
+      }
+      
+      ctx.putImageData(imageData, 0, 0);
+    }
+    
+    generatePaperTexture();
+    window.addEventListener('resize', generatePaperTexture);
+
+    // ─────────────────────────────────────────────────────────────────
+    // Custom Cursor
+    // ─────────────────────────────────────────────────────────────────
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorTrail = document.querySelector('.cursor-trail');
+    const cursorLabel = document.querySelector('.cursor-label');
+    
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+    
+    const cursorLabels = {
+      'enter': 'begin',
+      'expand': 'hold',
+      'click': 'yes',
+      'drag': 'adjust',
+      'write': 'speak',
+      'view': 'see',
+      'close': 'release',
+      'listen': 'sound',
+      'copy': 'keep'
+    };
+    
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+      cursorLabel.style.left = mouseX + 'px';
+      cursorLabel.style.top = mouseY + 'px';
+    });
+    
+    function animateTrail() {
+      trailX += (mouseX - trailX) * 0.08;
+      trailY += (mouseY - trailY) * 0.08;
+      
+      cursorTrail.style.left = trailX + 'px';
+      cursorTrail.style.top = trailY + 'px';
+      
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+    
+    // Cursor interactions
+    document.querySelectorAll('[data-cursor]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        const type = el.dataset.cursor;
+        cursorDot.classList.add('hovering');
+        cursorLabel.textContent = cursorLabels[type] || type;
+        cursorLabel.classList.add('visible');
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        cursorDot.classList.remove('hovering');
+        cursorLabel.classList.remove('visible');
+      });
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Init Overlay with Gentle Scramble
+    // ─────────────────────────────────────────────────────────────────
+    const initOverlay = document.getElementById('initOverlay');
+    const initBrand = document.getElementById('initBrand');
+    const initTagline = document.getElementById('initTagline');
+    const initEnter = document.getElementById('initEnter');
+    const audioToggle = document.getElementById('audioToggle');
+    
+    // Gentle scramble characters (paper/writing themed)
+    const scrambleChars = '.,·…—_  ';
+    
+    function scrambleText(element, finalText, duration = 1500) {
+      const startTime = Date.now();
+      const originalText = finalText;
+      
+      function update() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        let result = '';
+        for (let i = 0; i < originalText.length; i++) {
+          if (originalText[i] === ' ') {
+            result += ' ';
+          } else if (i < originalText.length * progress) {
+            result += originalText[i];
+          } else {
+            result += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          }
+        }
+        
+        element.textContent = result;
+        
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+      
+      update();
+    }
+    
+    // Start scramble after fade in
+    setTimeout(() => {
+      scrambleText(initBrand, 'gracegriefgod', 2000);
+    }, 1000);
+    
+    setTimeout(() => {
+      scrambleText(initTagline, 'you are welcome here', 1500);
+    }, 2000);
+    
+    initEnter.addEventListener('click', () => {
+      initOverlay.classList.add('hidden');
+      audioToggle.classList.add('visible');
+      
+      // Reveal sections
+      document.querySelectorAll('[data-reveal]').forEach((section, i) => {
+        setTimeout(() => {
+          section.classList.add('revealed');
+        }, i * 300);
+      });
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Audio System — Soft Ambient Drone
+    // ─────────────────────────────────────────────────────────────────
+    let audioContext;
+    let isAudioPlaying = false;
+    let masterGain;
+    let noiseNode;
+    let oscillator1, oscillator2;
+    
+    function initAudio() {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioContext.createGain();
+      masterGain.gain.value = 0;
+      masterGain.connect(audioContext.destination);
+      
+      // Very soft pink noise
+      const bufferSize = 2 * audioContext.sampleRate;
+      const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      
+      let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        b0 = 0.99886 * b0 + white * 0.0555179;
+        b1 = 0.99332 * b1 + white * 0.0750759;
+        b2 = 0.96900 * b2 + white * 0.1538520;
+        b3 = 0.86650 * b3 + white * 0.3104856;
+        b4 = 0.55000 * b4 + white * 0.5329522;
+        b5 = -0.7616 * b5 - white * 0.0168980;
+        output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.05;
+        b6 = white * 0.115926;
+      }
+      
+      noiseNode = audioContext.createBufferSource();
+      noiseNode.buffer = noiseBuffer;
+      noiseNode.loop = true;
+      
+      // Very gentle low-pass filter
+      const noiseFilter = audioContext.createBiquadFilter();
+      noiseFilter.type = 'lowpass';
+      noiseFilter.frequency.value = 200;
+      noiseFilter.Q.value = 0.5;
+      
+      const noiseGain = audioContext.createGain();
+      noiseGain.gain.value = 0.15;
+      
+      noiseNode.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(masterGain);
+      
+      // Soft sine wave drones (very low, like a room tone)
+      oscillator1 = audioContext.createOscillator();
+      oscillator1.type = 'sine';
+      oscillator1.frequency.value = 60; // Low hum
+      
+      oscillator2 = audioContext.createOscillator();
+      oscillator2.type = 'sine';
+      oscillator2.frequency.value = 90; // Slight harmony
+      
+      const oscGain1 = audioContext.createGain();
+      oscGain1.gain.value = 0.03;
+      
+      const oscGain2 = audioContext.createGain();
+      oscGain2.gain.value = 0.02;
+      
+      oscillator1.connect(oscGain1);
+      oscillator2.connect(oscGain2);
+      oscGain1.connect(masterGain);
+      oscGain2.connect(masterGain);
+      
+      // Start everything
+      noiseNode.start();
+      oscillator1.start();
+      oscillator2.start();
+      
+      // Gentle LFO for breathing effect
+      const lfo = audioContext.createOscillator();
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.05; // Very slow
+      
+      const lfoGain = audioContext.createGain();
+      lfoGain.gain.value = 0.01;
+      
+      lfo.connect(lfoGain);
+      lfoGain.connect(masterGain.gain);
+      lfo.start();
+    }
+    
+    function toggleAudio() {
+      if (!audioContext) {
+        initAudio();
+      }
+      
+      if (isAudioPlaying) {
+        masterGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
+        audioToggle.classList.add('is-muted');
+      } else {
+        if (audioContext.state === 'suspended') {
+          audioContext.resume();
+        }
+        masterGain.gain.linearRampToValueAtTime(0.5, audioContext.currentTime + 1);
+        audioToggle.classList.remove('is-muted');
+      }
+      
+      isAudioPlaying = !isAudioPlaying;
+    }
+    
+    audioToggle.addEventListener('click', toggleAudio);
+
+    // ─────────────────────────────────────────────────────────────────
+    // Color Card Interactions
+    // ─────────────────────────────────────────────────────────────────
+    const colorCards = document.querySelectorAll('.color-card');
+    let expandedCard = null;
+    
+    colorCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const hex = card.dataset.color;
+        
+        if (expandedCard === card) {
+          // Collapse
+          card.classList.remove('expanded');
+          expandedCard = null;
+        } else if (expandedCard) {
+          // Switch
+          expandedCard.classList.remove('expanded');
+          card.classList.add('expanded');
+          expandedCard = card;
+        } else {
+          // Expand
+          card.classList.add('expanded');
+          expandedCard = card;
+          
+          // Copy to clipboard
+          navigator.clipboard.writeText(hex).then(() => {
+            showToast(`${hex} — copied`);
+          });
+        }
+      });
+    });
+    
+    // Close expanded card on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && expandedCard) {
+        expandedCard.classList.remove('expanded');
+        expandedCard = null;
+      }
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Typography Weight Slider
+    // ─────────────────────────────────────────────────────────────────
+    const displayWeight = document.getElementById('displayWeight');
+    const displayWeightValue = document.getElementById('displayWeightValue');
+    const displaySample = document.getElementById('displaySample');
+    
+    displayWeight.addEventListener('input', () => {
+      const value = displayWeight.value;
+      displayWeightValue.textContent = value;
+      displaySample.style.fontWeight = value;
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Lightbox
+    // ─────────────────────────────────────────────────────────────────
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    
+    document.querySelectorAll('.mood-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    
+    lightboxClose.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+    
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+      }
+    });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Scroll Reveal
+    // ─────────────────────────────────────────────────────────────────
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Only observe if init overlay is already hidden
+    if (initOverlay.classList.contains('hidden')) {
+      document.querySelectorAll('[data-reveal]').forEach(el => {
+        revealObserver.observe(el);
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Toast Notifications
+    // ─────────────────────────────────────────────────────────────────
+    const toastContainer = document.getElementById('toastContainer');
+    
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('removing');
+        setTimeout(() => toast.remove(), 500);
+      }, 2500);
+    }
+
+    // ─────────────────────────────────────────────────────────────────
+    // Keyboard Accessibility
+    // ─────────────────────────────────────────────────────────────────
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && document.activeElement === initEnter) {
+        initEnter.click();
+      }
+      
+      if (e.key === 'Escape') {
+        if (lightbox.classList.contains('active')) {
+          lightbox.classList.remove('active');
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>
