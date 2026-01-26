@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STONE & SOIL — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;0,700;1,400&family=Work+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* CANVAS TIER - The bedrock */
+      --bedrock: #0d0b09;
+      --deep-earth: #1a1612;
+      --rich-soil: #2a231c;
+      
+      /* STRUCTURE TIER - Stone and clay */
+      --wet-clay: #3d3228;
+      --dried-mud: #524536;
+      --weathered-stone: #6b5c4a;
+      --sandstone: #857460;
+      
+      /* UTILITY TIER - Lichen and moss */
+      --lichen: #9a8b78;
+      --dry-grass: #b8a890;
+      
+      /* ACCENT TIER - Fire and mineral */
+      --iron-oxide: #a65d3f;
+      --raw-ochre: #d4a574;
+      --bone-white: #e8e2d8;
+      
+      /* Functional */
+      --font-display: 'Vollkorn', Georgia, serif;
+      --font-body: 'Work Sans', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+      
+      --ease-heavy: cubic-bezier(0.7, 0, 0.3, 1);
+      --ease-settle: cubic-bezier(0.4, 0, 0.2, 1);
+      
+      --grain-opacity: 0.08;
+    }
+
+    html { 
+      font-size: 16px; 
+      background: var(--bedrock);
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      font-weight: 300;
+      color: var(--dry-grass);
+      background: var(--bedrock);
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: var(--raw-ochre);
+      border-radius: 0;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%) rotate(45deg);
+      transition: transform 0.15s var(--ease-heavy), background 0.2s;
+    }
+    
+    .cursor-trail {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(164, 93, 63, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.4s;
+    }
+    
+    .cursor-label {
+      position: fixed;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--raw-ochre);
+      pointer-events: none;
+      z-index: 10001;
+      opacity: 0;
+      transform: translate(12px, -50%);
+      transition: opacity 0.2s;
+    }
+
+    /* ATMOSPHERIC LAYERS */
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .grain-layer {
+      position: absolute;
+      inset: 0;
+      opacity: var(--grain-opacity);
+      mix-blend-mode: overlay;
+    }
+    
+    .dust-particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--lichen);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: dustFloat 20s infinite linear;
+    }
+    
+    @keyframes dustFloat {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-20vh) translateX(30px); opacity: 0; }
+    }
+    
+    .mountain-shadow {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60vh;
+      background: linear-gradient(to top, 
+        rgba(13, 11, 9, 0.9) 0%,
+        rgba(13, 11, 9, 0.4) 40%,
+        transparent 100%
+      );
+    }
+    
+    .hero-glow {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      width: 800px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(212, 165, 116, 0.04) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      animation: sunPulse 12s ease-in-out infinite;
+    }
+    
+    @keyframes sunPulse {
+      0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    }
+
+    /* INIT OVERLAY */
+    .init-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bedrock);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s var(--ease-heavy), visibility 0.8s;
+    }
+    
+    .init-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    
+    .init-brand {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 700;
+      color: var(--bone-white);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+    
+    .init-brand::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--iron-oxide);
+    }
+    
+    .init-tagline {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--lichen);
+      margin-bottom: 3rem;
+    }
+    
+    .init-enter {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--bedrock);
+      background: var(--raw-ochre);
+      border: none;
+      padding: 1rem 3rem;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease-heavy), background 0.3s;
+    }
+    
+    .init-enter:hover {
+      background: var(--iron-oxide);
+      transform: translateY(-2px);
+    }
+    
+    .init-enter::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--bone-white);
+      transform: translateY(100%);
+      transition: transform 0.4s var(--ease-heavy);
+    }
+    
+    .init-enter:hover::before {
+      transform: translateY(0);
+    }
+    
+    .init-enter span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 4rem 0;
+    }
+    
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 12vw, 8rem);
+      font-weight: 700;
+      color: var(--bone-white);
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: revealUp 1s var(--ease-settle) 0.3s forwards;
+    }
+    
+    .hero-title em {
+      font-style: italic;
+      color: var(--raw-ochre);
+    }
+    
+    @keyframes revealUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .hero-subtitle {
+      font-family: var(--font-body);
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--lichen);
+      max-width: 500px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: revealUp 1s var(--ease-settle) 0.5s forwards;
+    }
+    
+    .hero-divider {
+      width: 120px;
+      height: 4px;
+      background: var(--iron-oxide);
+      margin-top: 3rem;
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: revealLine 0.8s var(--ease-heavy) 0.7s forwards;
+    }
+    
+    @keyframes revealLine {
+      to { opacity: 1; transform: scaleX(1); }
+    }
+
+    /* SECTION STYLING */
+    .section {
+      padding: 8rem 0;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.8s var(--ease-settle), transform 0.8s var(--ease-settle);
+    }
+    
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--iron-oxide);
+      margin-bottom: 1rem;
+    }
+    
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--bone-white);
+      margin-bottom: 1rem;
+    }
+    
+    .section-desc {
+      font-size: 1.1rem;
+      color: var(--lichen);
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+
+    /* COLOR PALETTE */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    
+    .color-card {
+      background: var(--deep-earth);
+      border: 1px solid var(--wet-clay);
+      overflow: hidden;
+      cursor: none;
+      transition: transform 0.4s var(--ease-heavy), border-color 0.3s;
+    }
+    
+    .color-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--iron-oxide);
+    }
+    
+    .color-card.expanded .color-swatch {
+      height: 160px;
+    }
+    
+    .color-swatch {
+      height: 100px;
+      transition: height 0.4s var(--ease-heavy);
+    }
+    
+    .color-info {
+      padding: 1rem;
+    }
+    
+    .color-name {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--bone-white);
+      margin-bottom: 0.25rem;
+    }
+    
+    .color-hex {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--lichen);
+      letter-spacing: 0.05em;
+    }
+    
+    .color-tier {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--weathered-stone);
+      margin-top: 0.5rem;
+    }
+
+    /* TYPOGRAPHY */
+    .type-specimen {
+      background: var(--deep-earth);
+      border: 1px solid var(--wet-clay);
+      padding: 3rem;
+      margin-bottom: 2rem;
+    }
+    
+    .type-display {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: var(--specimen-weight, 700);
+      color: var(--bone-white);
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      transition: font-weight 0.3s;
+    }
+    
+    .type-body {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--dry-grass);
+      max-width: 600px;
+      margin-bottom: 1.5rem;
+    }
+    
+    .type-mono {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--iron-oxide);
+    }
+    
+    .weight-control {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--wet-clay);
+    }
+    
+    .weight-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lichen);
+    }
+    
+    .weight-slider {
+      flex: 1;
+      max-width: 300px;
+      height: 4px;
+      background: var(--wet-clay);
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: none;
+    }
+    
+    .weight-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--raw-ochre);
+      cursor: none;
+    }
+    
+    .weight-value {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--raw-ochre);
+      min-width: 40px;
+    }
+    
+    .font-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .font-card {
+      background: var(--deep-earth);
+      border: 1px solid var(--wet-clay);
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s var(--ease-heavy);
+    }
+    
+    .font-card:hover {
+      border-color: var(--iron-oxide);
+      transform: translateY(-2px);
+    }
+    
+    .font-preview {
+      font-size: 2rem;
+      color: var(--bone-white);
+      margin-bottom: 1rem;
+    }
+    
+    .font-preview.display { font-family: var(--font-display); font-weight: 700; }
+    .font-preview.body { font-family: var(--font-body); font-weight: 300; }
+    .font-preview.mono { font-family: var(--font-mono); }
+    
+    .font-name {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--iron-oxide);
+      margin-bottom: 0.5rem;
+    }
+    
+    .font-role {
+      font-size: 0.9rem;
+      color: var(--lichen);
+    }
+
+    /* COMPONENTS */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .component-box {
+      background: var(--deep-earth);
+      border: 1px solid var(--wet-clay);
+      padding: 2.5rem;
+    }
+    
+    .component-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--weathered-stone);
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Buttons */
+    .btn-primary {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--bedrock);
+      background: var(--raw-ochre);
+      border: none;
+      padding: 1rem 2rem;
+      cursor: none;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, transform 0.3s var(--ease-heavy);
+    }
+    
+    .btn-primary:hover {
+      background: var(--iron-oxide);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--bone-white);
+      background: transparent;
+      border: 2px solid var(--weathered-stone);
+      padding: calc(1rem - 2px) calc(2rem - 2px);
+      cursor: none;
+      transition: border-color 0.3s, color 0.3s, transform 0.3s var(--ease-heavy);
+    }
+    
+    .btn-secondary:hover {
+      border-color: var(--raw-ochre);
+      color: var(--raw-ochre);
+      transform: translateY(-2px);
+    }
+    
+    .btn-ghost {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lichen);
+      background: transparent;
+      border: none;
+      padding: 0.75rem 0;
+      cursor: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+    
+    .btn-ghost::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--iron-oxide);
+      transition: width 0.3s var(--ease-heavy);
+    }
+    
+    .btn-ghost:hover {
+      color: var(--bone-white);
+    }
+    
+    .btn-ghost:hover::after {
+      width: 100%;
+    }
+    
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    /* Inputs */
+    .input-field {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--bone-white);
+      background: var(--rich-soil);
+      border: 1px solid var(--wet-clay);
+      padding: 1rem 1.25rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .input-field::placeholder {
+      color: var(--weathered-stone);
+    }
+    
+    .input-field:focus {
+      border-color: var(--iron-oxide);
+      box-shadow: 0 0 0 3px rgba(166, 93, 63, 0.15);
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* MOODBOARD */
+    .moodboard-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .mood-item {
+      position: relative;
+      overflow: hidden;
+      cursor: none;
+    }
+    
+    .mood-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(42, 35, 28, 0.4), rgba(166, 93, 63, 0.2));
+      mix-blend-mode: multiply;
+      z-index: 1;
+      transition: opacity 0.4s;
+    }
+    
+    .mood-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--bedrock);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    
+    .mood-item:hover::before {
+      opacity: 0.6;
+    }
+    
+    .mood-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(20%) saturate(80%) contrast(1.05);
+      transition: transform 0.6s var(--ease-heavy), filter 0.4s;
+    }
+    
+    .mood-item:hover img {
+      transform: scale(1.05);
+      filter: sepia(30%) saturate(90%) contrast(1.1);
+    }
+    
+    .mood-item.tall { grid-row: span 2; }
+    .mood-item.wide { grid-column: span 2; }
+    .mood-item:nth-child(1) { grid-column: span 4; grid-row: span 2; }
+    .mood-item:nth-child(2) { grid-column: span 4; }
+    .mood-item:nth-child(3) { grid-column: span 4; }
+    .mood-item:nth-child(4) { grid-column: span 3; grid-row: span 2; }
+    .mood-item:nth-child(5) { grid-column: span 5; }
+    .mood-item:nth-child(6) { grid-column: span 4; }
+    .mood-item:nth-child(7) { grid-column: span 6; }
+    .mood-item:nth-child(8) { grid-column: span 6; }
+
+    /* AUDIO TOGGLE */
+    .audio-toggle {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 48px;
+      height: 48px;
+      background: var(--deep-earth);
+      border: 1px solid var(--wet-clay);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: none;
+      z-index: 100;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    
+    .audio-toggle:hover {
+      border-color: var(--iron-oxide);
+      background: var(--rich-soil);
+    }
+    
+    .audio-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--lichen);
+      transition: fill 0.3s;
+    }
+    
+    .audio-toggle.active svg {
+      fill: var(--raw-ochre);
+    }
+
+    /* LIGHTBOX */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(13, 11, 9, 0.95);
+      z-index: 9000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s, visibility 0.4s;
+      cursor: none;
+    }
+    
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      filter: sepia(15%) saturate(85%);
+    }
+    
+    .lightbox-close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--lichen);
+      background: none;
+      border: 1px solid var(--wet-clay);
+      padding: 0.75rem 1.5rem;
+      cursor: none;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    
+    .lightbox-close:hover {
+      border-color: var(--iron-oxide);
+      color: var(--bone-white);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--deep-earth);
+      border: 1px solid var(--iron-oxide);
+      padding: 1rem 2rem;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--bone-white);
+      z-index: 9500;
+      opacity: 0;
+      transition: transform 0.4s var(--ease-heavy), opacity 0.4s;
+    }
+    
+    .toast.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 6rem 0 3rem;
+      border-top: 1px solid var(--wet-clay);
+      margin-top: 4rem;
+    }
+    
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--bone-white);
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-tagline {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--weathered-stone);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bedrock); }
+    ::-webkit-scrollbar-thumb { background: var(--wet-clay); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--weathered-stone); }
+  </style>
+</head>
+<body>
+  <!-- CURSOR -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-trail"></div>
+  <div class="cursor-label"></div>
+
+  <!-- ATMOSPHERE -->
+  <div class="atmosphere">
+    <canvas class="grain-layer"></canvas>
+    <div class="mountain-shadow"></div>
+    <div class="hero-glow"></div>
+  </div>
+
+  <!-- INIT OVERLAY -->
+  <div class="init-overlay">
+    <div class="init-brand">Stone & Soil</div>
+    <div class="init-tagline scramble-text">Grounded in the earth</div>
+    <button class="init-enter" data-cursor="Enter"><span>Ground Yourself</span></button>
+  </div>
+
+  <!-- AUDIO TOGGLE -->
+  <button class="audio-toggle" data-cursor="Toggle">
+    <svg viewBox="0 0 24 24">
+      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+  </button>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox">
+    <button class="lightbox-close">Close</button>
+    <img src="" alt="">
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast"></div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- HERO -->
+    <section class="hero">
+      <h1 class="hero-title">Stone <em>&</em> Soil</h1>
+      <p class="hero-subtitle">A design system rooted in the raw beauty of mountains, earth, and the elemental forces that shape our world.</p>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+    <section class="section" id="philosophy">
+      <span class="section-label">Philosophy</span>
+      <h2 class="section-title">Built on Bedrock</h2>
+      <p class="section-desc">This system draws from the permanence of stone, the richness of earth, and the warmth of weathered materials. Every element carries weight and presence—nothing floats, nothing wavers. Colors emerge from clay and mineral, typography stands firm like carved inscription, and motion settles with the gravity of falling stone.</p>
+    </section>
+
+    <!-- COLORS -->
+    <section class="section" id="colors">
+      <span class="section-label">Palette</span>
+      <h2 class="section-title">Earth Tones</h2>
+      <p class="section-desc">Twelve colors extracted from soil strata, weathered rock, and the minerals that give earth its character.</p>
+      
+      <div class="color-grid">
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--bedrock);"></div>
+          <div class="color-info">
+            <div class="color-name">Bedrock</div>
+            <div class="color-hex">#0d0b09</div>
+            <div class="color-tier">Canvas</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--deep-earth);"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Earth</div>
+            <div class="color-hex">#1a1612</div>
+            <div class="color-tier">Canvas</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--rich-soil);"></div>
+          <div class="color-info">
+            <div class="color-name">Rich Soil</div>
+            <div class="color-hex">#2a231c</div>
+            <div class="color-tier">Canvas</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--wet-clay);"></div>
+          <div class="color-info">
+            <div class="color-name">Wet Clay</div>
+            <div class="color-hex">#3d3228</div>
+            <div class="color-tier">Structure</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--dried-mud);"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Mud</div>
+            <div class="color-hex">#524536</div>
+            <div class="color-tier">Structure</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--weathered-stone);"></div>
+          <div class="color-info">
+            <div class="color-name">Weathered Stone</div>
+            <div class="color-hex">#6b5c4a</div>
+            <div class="color-tier">Structure</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--sandstone);"></div>
+          <div class="color-info">
+            <div class="color-name">Sandstone</div>
+            <div class="color-hex">#857460</div>
+            <div class="color-tier">Structure</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--lichen);"></div>
+          <div class="color-info">
+            <div class="color-name">Lichen</div>
+            <div class="color-hex">#9a8b78</div>
+            <div class="color-tier">Utility</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--dry-grass);"></div>
+          <div class="color-info">
+            <div class="color-name">Dry Grass</div>
+            <div class="color-hex">#b8a890</div>
+            <div class="color-tier">Utility</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--iron-oxide);"></div>
+          <div class="color-info">
+            <div class="color-name">Iron Oxide</div>
+            <div class="color-hex">#a65d3f</div>
+            <div class="color-tier">Accent</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--raw-ochre);"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Ochre</div>
+            <div class="color-hex">#d4a574</div>
+            <div class="color-tier">Accent</div>
+          </div>
+        </div>
+        <div class="color-card" data-cursor="Expand">
+          <div class="color-swatch" style="background: var(--bone-white);"></div>
+          <div class="color-info">
+            <div class="color-name">Bone White</div>
+            <div class="color-hex">#e8e2d8</div>
+            <div class="color-tier">Accent</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TYPOGRAPHY -->
+    <section class="section" id="typography">
+      <span class="section-label">Typography</span>
+      <h2 class="section-title">Carved in Stone</h2>
+      <p class="section-desc">Typography that commands presence. Vollkorn for timeless display text, Work Sans for readable body copy, IBM Plex Mono for technical precision.</p>
+      
+      <div class="type-specimen">
+        <div class="type-display">The weight of mountains, the patience of stone.</div>
+        <p class="type-body">Good design is like geology—layers of intention compressed over time into something solid and enduring. Each decision leaves its mark, building toward permanence.</p>
+        <code class="type-mono">--font-display: 'Vollkorn', Georgia, serif;</code>
+        
+        <div class="weight-control">
+          <span class="weight-label">Weight</span>
+          <input type="range" class="weight-slider" min="400" max="700" value="700" data-cursor="Drag">
+          <span class="weight-value">700</span>
+        </div>
+      </div>
+      
+      <div class="font-cards">
+        <div class="font-card">
+          <div class="font-preview display">Vollkorn</div>
+          <div class="font-name">Display · Serif</div>
+          <div class="font-role">Headlines, titles, and statements that need to stand firm.</div>
+        </div>
+        <div class="font-card">
+          <div class="font-preview body">Work Sans</div>
+          <div class="font-name">Body · Sans-serif</div>
+          <div class="font-role">Body text optimized for extended reading at light weights.</div>
+        </div>
+        <div class="font-card">
+          <div class="font-preview mono">IBM Plex</div>
+          <div class="font-name">Mono · Technical</div>
+          <div class="font-role">Code, labels, and system text requiring precision.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPONENTS -->
+    <section class="section" id="components">
+      <span class="section-label">Components</span>
+      <h2 class="section-title">Elemental Forms</h2>
+      <p class="section-desc">Interface elements built with weight and intention. Sharp edges, grounded motion, earthen warmth.</p>
+      
+      <div class="component-grid">
+        <div class="component-box">
+          <div class="component-label">Buttons</div>
+          <div class="btn-row">
+            <button class="btn-primary" data-cursor="Press">Excavate</button>
+            <button class="btn-secondary" data-cursor="Press">Survey</button>
+            <button class="btn-ghost" data-cursor="Press">Explore →</button>
+          </div>
+        </div>
+        
+        <div class="component-box">
+          <div class="component-label">Inputs</div>
+          <div class="input-group">
+            <input type="text" class="input-field" placeholder="Enter coordinates..." data-cursor="Type">
+            <input type="text" class="input-field" placeholder="Site designation..." data-cursor="Type">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOODBOARD -->
+    <section class="section" id="moodboard">
+      <span class="section-label">Moodboard</span>
+      <h2 class="section-title">Visual Territory</h2>
+      <p class="section-desc">The landscapes and textures that inform this system's character.</p>
+      
+      <div class="moodboard-grid">
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" alt="Mountain peaks" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=600&h=400&fit=crop" alt="Rock texture" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=400&fit=crop" alt="Valley landscape" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=600&fit=crop" alt="Mountain lake" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=400&fit=crop" alt="Dramatic peaks" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=600&h=400&fit=crop" alt="Foggy mountains" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&h=400&fit=crop" alt="Snowy summit" loading="lazy">
+        </div>
+        <div class="mood-item" data-cursor="View">
+          <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&h=400&fit=crop" alt="Mountain range" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-brand">Stone & Soil</div>
+      <div class="footer-tagline">Design rooted in the earth</div>
+    </footer>
+  </main>
+
+  <script>
+    // GRAIN TEXTURE
+    const grainCanvas = document.querySelector('.grain-layer');
+    const grainCtx = grainCanvas.getContext('2d');
+    
+    function generateGrain() {
+      grainCanvas.width = window.innerWidth;
+      grainCanvas.height = window.innerHeight;
+      
+      const imageData = grainCtx.createImageData(grainCanvas.width, grainCanvas.height);
+      const data = imageData.data;
+      
+      for (let i = 0; i < data.length; i += 4) {
+        const noise = Math.random() * 60;
+        data[i] = noise;
+        data[i + 1] = noise * 0.9;
+        data[i + 2] = noise * 0.8;
+        data[i + 3] = 255;
+      }
+      
+      grainCtx.putImageData(imageData, 0, 0);
+    }
+    
+    generateGrain();
+    window.addEventListener('resize', generateGrain);
+
+    // DUST PARTICLES
+    const atmosphere = document.querySelector('.atmosphere');
+    for (let i = 0; i < 15; i++) {
+      const dust = document.createElement('div');
+      dust.className = 'dust-particle';
+      dust.style.left = Math.random() * 100 + '%';
+      dust.style.animationDelay = Math.random() * 20 + 's';
+      dust.style.animationDuration = (15 + Math.random() * 10) + 's';
+      atmosphere.appendChild(dust);
+    }
+
+    // CUSTOM CURSOR
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorTrail = document.querySelector('.cursor-trail');
+    const cursorLabel = document.querySelector('.cursor-label');
+    
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+      cursorLabel.style.left = mouseX + 'px';
+      cursorLabel.style.top = mouseY + 'px';
+    });
+    
+    function animateTrail() {
+      trailX += (mouseX - trailX) * 0.08;
+      trailY += (mouseY - trailY) * 0.08;
+      
+      cursorTrail.style.left = trailX + 'px';
+      cursorTrail.style.top = trailY + 'px';
+      
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+    
+    // Cursor labels
+    document.querySelectorAll('[data-cursor]').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursorLabel.textContent = el.dataset.cursor;
+        cursorLabel.style.opacity = '1';
+        cursorDot.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1.5)';
+      });
+      
+      el.addEventListener('mouseleave', () => {
+        cursorLabel.style.opacity = '0';
+        cursorDot.style.transform = 'translate(-50%, -50%) rotate(45deg) scale(1)';
+      });
+    });
+
+    // SCRAMBLE TEXT
+    const earthChars = '▪▫◾◽▬▭░▒▓█';
+    
+    function scrambleText(element, finalText, duration = 1500) {
+      const chars = finalText.split('');
+      let iteration = 0;
+      const totalIterations = duration / 30;
+      
+      const interval = setInterval(() => {
+        element.textContent = chars.map((char, i) => {
+          if (i < iteration) return finalText[i];
+          if (char === ' ') return ' ';
+          return earthChars[Math.floor(Math.random() * earthChars.length)];
+        }).join('');
+        
+        iteration += chars.length / totalIterations;
+        
+        if (iteration >= chars.length) {
+          element.textContent = finalText;
+          clearInterval(interval);
+        }
+      }, 30);
+    }
+
+    // INIT OVERLAY
+    const initOverlay = document.querySelector('.init-overlay');
+    const initEnter = document.querySelector('.init-enter');
+    const scrambleEl = document.querySelector('.scramble-text');
+    
+    scrambleText(scrambleEl, scrambleEl.textContent, 2000);
+    
+    initEnter.addEventListener('click', () => {
+      initOverlay.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    });
+
+    // SCROLL REVEAL
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    
+    sections.forEach(section => observer.observe(section));
+
+    // COLOR CARDS
+    document.querySelectorAll('.color-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('expanded');
+        
+        const hex = card.querySelector('.color-hex').textContent;
+        navigator.clipboard.writeText(hex);
+        showToast(`Copied ${hex}`);
+      });
+    });
+
+    // WEIGHT SLIDER
+    const weightSlider = document.querySelector('.weight-slider');
+    const weightValue = document.querySelector('.weight-value');
+    const typeDisplay = document.querySelector('.type-display');
+    
+    weightSlider.addEventListener('input', () => {
+      const weight = weightSlider.value;
+      weightValue.textContent = weight;
+      typeDisplay.style.setProperty('--specimen-weight', weight);
+      typeDisplay.style.fontWeight = weight;
+    });
+
+    // LIGHTBOX
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const lightboxClose = document.querySelector('.lightbox-close');
+    
+    document.querySelectorAll('.mood-item').forEach(item => {
+      item.addEventListener('click', () => {
+        lightboxImg.src = item.querySelector('img').src;
+        lightbox.classList.add('active');
+      });
+    });
+    
+    lightboxClose.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+    
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.classList.remove('active');
+      }
+    });
+
+    // TOAST
+    const toast = document.querySelector('.toast');
+    let toastTimeout;
+    
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('visible');
+      
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 2000);
+    }
+
+    // AUDIO SYSTEM - Deep earth rumble
+    const audioToggle = document.querySelector('.audio-toggle');
+    let audioContext, isPlaying = false;
+    let noiseNode, gainNode, filterNode, lfoGain;
+    
+    function createEarthAudio() {
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      
+      // Brown noise for deep earth rumble
+      const bufferSize = 2 * audioContext.sampleRate;
+      const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      
+      let lastOut = 0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        output[i] = (lastOut + (0.02 * white)) / 1.02;
+        lastOut = output[i];
+        output[i] *= 3.5; // Boost
+      }
+      
+      noiseNode = audioContext.createBufferSource();
+      noiseNode.buffer = noiseBuffer;
+      noiseNode.loop = true;
+      
+      // Very low-pass filter for deep rumble
+      filterNode = audioContext.createBiquadFilter();
+      filterNode.type = 'lowpass';
+      filterNode.frequency.value = 80;
+      filterNode.Q.value = 0.5;
+      
+      // Second filter for extra depth
+      const filterNode2 = audioContext.createBiquadFilter();
+      filterNode2.type = 'lowpass';
+      filterNode2.frequency.value = 120;
+      
+      // LFO for subtle movement
+      const lfo = audioContext.createOscillator();
+      lfo.frequency.value = 0.03;
+      
+      lfoGain = audioContext.createGain();
+      lfoGain.gain.value = 20;
+      
+      lfo.connect(lfoGain);
+      lfoGain.connect(filterNode.frequency);
+      lfo.start();
+      
+      // Master gain
+      gainNode = audioContext.createGain();
+      gainNode.gain.value = 0.4;
+      
+      // Connect
+      noiseNode.connect(filterNode);
+      filterNode.connect(filterNode2);
+      filterNode2.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      noiseNode.start();
+    }
+    
+    audioToggle.addEventListener('click', () => {
+      if (!audioContext) {
+        createEarthAudio();
+        isPlaying = true;
+        audioToggle.classList.add('active');
+      } else if (isPlaying) {
+        gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.5);
+        isPlaying = false;
+        audioToggle.classList.remove('active');
+      } else {
+        gainNode.gain.linearRampToValueAtTime(0.4, audioContext.currentTime + 0.5);
+        isPlaying = true;
+        audioToggle.classList.add('active');
+      }
+    });
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
