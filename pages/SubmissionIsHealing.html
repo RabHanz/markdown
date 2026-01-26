@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SubmissionIsHealing • Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ══════════════════════════════════════════════════════════════════════════════
+           I. THE 12-COLOR SYSTEM
+           ══════════════════════════════════════════════════════════════════════════════ */
+        :root {
+            --anchor-black:    #000000;
+            --deep-base:       #110a09;
+            --neutral-base:    #121010;
+            --red-black:       #1a0805;
+            --panel-dark:      #1a1715;
+            --primary-surface: #261a17;
+            --wood-brown:      #36241d;
+            --muted-clay:      #4f3a30;
+            --mid-tone:        #8c6d5d;
+            --vintage-paper:   #cba889;
+            --pale-cream:      #e6dccf;
+            --reading-white:   #f6f3ee;
+
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           II. RESET & BASE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: var(--deep-base);
+            color: var(--reading-white);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--vintage-paper); color: var(--deep-base); }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--deep-base); }
+        ::-webkit-scrollbar-thumb { background: var(--muted-clay); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           III. INIT OVERLAY (Entry Gate)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #init-overlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: var(--anchor-black);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.2s ease, visibility 1.2s;
+        }
+        #init-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .init-brand {
+            font-family: var(--font-serif);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--vintage-paper);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .init-sub {
+            font-size: 0.8rem; color: var(--mid-tone);
+            text-transform: uppercase; letter-spacing: 3px;
+            margin-bottom: 3rem;
+        }
+        .init-btn {
+            padding: 18px 50px;
+            background: transparent;
+            border: 1px solid var(--muted-clay);
+            color: var(--vintage-paper);
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            transition: all 0.4s var(--ease-expo);
+            position: relative;
+            overflow: hidden;
+        }
+        .init-btn::before {
+            content: ''; position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--vintage-paper);
+            transition: left 0.4s var(--ease-expo);
+            z-index: -1;
+        }
+        .init-btn:hover { color: var(--deep-base); border-color: var(--vintage-paper); }
+        .init-btn:hover::before { left: 0; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IV. ATMOSPHERE (Grain + Fog)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .atmosphere {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 1;
+            overflow: hidden;
+        }
+
+        .grain {
+            position: absolute; inset: 0; opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .fog {
+            position: absolute;
+            width: 300vw; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(26, 8, 5, 0.4) 50%, transparent 100%);
+            animation: fogDrift 90s linear infinite;
+            opacity: 0.25;
+        }
+        .fog:nth-child(2) { top: 30%; animation-duration: 70s; animation-direction: reverse; opacity: 0.15; }
+        .fog:nth-child(3) { top: 60%; animation-duration: 110s; opacity: 0.2; }
+        @keyframes fogDrift { from { transform: translateX(-100vw); } to { transform: translateX(0); } }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           V. CURSOR SYSTEM
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background: var(--vintage-paper);
+            position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 100000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s var(--ease-expo), opacity 0.2s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-glow {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(203, 168, 137, 0.06) 0%, transparent 60%);
+            position: fixed; border-radius: 50%;
+            pointer-events: none; z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-label {
+            position: fixed; pointer-events: none; z-index: 100001;
+            background: var(--vintage-paper); color: var(--deep-base);
+            padding: 6px 12px; border-radius: 4px;
+            font-size: 0.65rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            opacity: 0; transform: translate(15px, 15px);
+            transition: opacity 0.2s;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VI. AUDIO TOGGLE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .audio-toggle {
+            position: fixed; bottom: 40px; left: 40px; z-index: 1000;
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 20px;
+            background: rgba(18, 16, 16, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--panel-dark);
+            border-radius: 100px;
+            color: var(--mid-tone);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s;
+        }
+        .audio-toggle:hover { border-color: var(--vintage-paper); color: var(--vintage-paper); }
+
+        .equalizer { display: flex; gap: 3px; height: 14px; align-items: flex-end; }
+        .eq-bar {
+            width: 3px; height: 20%;
+            background: currentColor;
+            border-radius: 2px;
+            transition: height 0.1s;
+        }
+        .audio-toggle.playing .eq-bar { animation: eqBounce 0.4s ease infinite alternate; }
+        .audio-toggle.playing .eq-bar:nth-child(2) { animation-delay: 0.1s; }
+        .audio-toggle.playing .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+        .audio-toggle.playing .eq-bar:nth-child(4) { animation-delay: 0.15s; }
+        @keyframes eqBounce { 0% { height: 20%; } 100% { height: 100%; } }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VII. LAYOUT
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            position: relative;
+            z-index: 10;
+        }
+        @media (max-width: 768px) { .container { padding: 0 1.5rem; } }
+
+        section {
+            padding: 10rem 0;
+            border-top: 1px solid rgba(140, 109, 93, 0.1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VIII. TYPOGRAPHY
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .serif { font-family: var(--font-serif); }
+        .mono { font-family: var(--font-mono); }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 400;
+            line-height: 0.85;
+            color: var(--vintage-paper);
+            letter-spacing: -0.03em;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            color: var(--reading-white);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--muted-clay);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        p { color: var(--mid-tone); max-width: 55ch; margin-bottom: 1.5rem; }
+        p strong, .highlight { color: var(--vintage-paper); }
+
+        .scramble { display: inline-block; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IX. HERO SECTION
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 4rem 0;
+        }
+
+        .hero-glow {
+            position: absolute;
+            top: 50%; left: 30%;
+            transform: translate(-50%, -50%);
+            width: 800px; height: 600px;
+            background: radial-gradient(ellipse, var(--red-black) 0%, transparent 60%);
+            filter: blur(80px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            color: var(--reading-white);
+            max-width: 550px;
+            margin-top: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex; gap: 4rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--panel-dark);
+        }
+        .stat-item h4 {
+            font-family: var(--font-serif);
+            font-size: 3rem;
+            color: var(--vintage-paper);
+            line-height: 1;
+        }
+        .stat-item span {
+            font-size: 0.7rem;
+            color: var(--muted-clay);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 4rem; left: 0;
+            display: flex; align-items: center; gap: 15px;
+            color: var(--muted-clay);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .scroll-line {
+            width: 60px; height: 1px;
+            background: var(--muted-clay);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            left: -100%; top: 0;
+            width: 100%; height: 100%;
+            background: var(--vintage-paper);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse { 0%, 100% { left: -100%; } 50% { left: 100%; } }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           X. COLOR DECK (Expanding Cards)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .color-deck {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--panel-dark);
+            margin: 3rem 0;
+        }
+
+        .color-card {
+            flex: 1 1 120px;
+            min-width: 100px;
+            height: 280px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            transition: flex 0.5s var(--ease-expo);
+            overflow: hidden;
+        }
+        .color-card:hover { flex: 1 1 220px; }
+
+        .color-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .color-card:hover::before { opacity: 1; }
+
+        .color-name {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.4s var(--ease-expo);
+            position: relative;
+            z-index: 2;
+        }
+        .color-card:hover .color-name { transform: translateY(0); opacity: 1; }
+
+        .color-hex {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-top: 4px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .color-role {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            margin-top: 8px;
+            position: relative;
+            z-index: 2;
+            transition: opacity 0.3s 0.1s;
+        }
+        .color-card:hover .color-role { opacity: 0.5; }
+
+        /* Light text adjustment */
+        .color-card.light { color: var(--deep-base); }
+        .color-card.light .color-hex { opacity: 0.7; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XI. TYPOGRAPHY PLAYGROUND
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .type-playground {
+            background: var(--primary-surface);
+            border: 1px solid var(--panel-dark);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .type-controls {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--panel-dark);
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .control-label {
+            font-size: 0.65rem;
+            color: var(--muted-clay);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        .control-value {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--vintage-paper);
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            width: 200px;
+            height: 2px;
+            background: var(--panel-dark);
+            border-radius: 2px;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            background: var(--vintage-paper);
+            border-radius: 50%;
+            cursor: none;
+            transition: transform 0.2s;
+        }
+        .range-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+        .type-specimen {
+            font-size: 4rem;
+            line-height: 1.1;
+            color: var(--reading-white);
+            transition: font-weight 0.1s;
+        }
+
+        .type-quote {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--panel-dark);
+        }
+        .type-quote blockquote {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-style: italic;
+            color: var(--reading-white);
+            line-height: 1.4;
+        }
+        .type-quote cite {
+            display: block;
+            margin-top: 1rem;
+            font-style: normal;
+            font-size: 0.85rem;
+            color: var(--mid-tone);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XII. UI COMPONENTS
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .component-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        @media (max-width: 900px) { .component-grid { grid-template-columns: 1fr; } }
+
+        .component-card {
+            background: var(--primary-surface);
+            border: 1px solid var(--panel-dark);
+            border-radius: 12px;
+            padding: 2.5rem;
+            transition: transform 0.3s var(--ease-expo), box-shadow 0.3s;
+        }
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(26, 8, 5, 0.5);
+        }
+
+        .component-title {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--muted-clay);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: none;
+            transition: all 0.3s var(--ease-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--pale-cream) 0%, var(--vintage-paper) 100%);
+            color: var(--deep-base);
+            box-shadow: 0 4px 20px rgba(203, 168, 137, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(203, 168, 137, 0.4);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--muted-clay);
+            color: var(--mid-tone);
+        }
+        .btn-ghost:hover {
+            border-color: var(--vintage-paper);
+            color: var(--vintage-paper);
+        }
+
+        /* Inputs */
+        .input-group { margin-bottom: 1.5rem; }
+        .input-label {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--mid-tone);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--deep-base);
+            border: 1px solid var(--panel-dark);
+            border-radius: 6px;
+            color: var(--reading-white);
+            font-family: var(--font-sans);
+            transition: all 0.3s;
+        }
+        .input-field::placeholder { color: var(--muted-clay); }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--vintage-paper);
+            box-shadow: 0 0 0 3px rgba(203, 168, 137, 0.1);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIII. MOODBOARD (Masonry + Lightbox)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: 160px;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+
+        .mood-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .mood-item:nth-child(1) { grid-column: span 8; grid-row: span 3; }
+        .mood-item:nth-child(2) { grid-column: span 4; grid-row: span 2; }
+        .mood-item:nth-child(3) { grid-column: span 4; grid-row: span 2; }
+        .mood-item:nth-child(4) { grid-column: span 4; grid-row: span 2; }
+        .mood-item:nth-child(5) { grid-column: span 4; grid-row: span 2; }
+        .mood-item:nth-child(6) { grid-column: span 4; grid-row: span 2; }
+
+        @media (max-width: 768px) {
+            .mood-grid { grid-template-columns: 1fr 1fr; }
+            .mood-item { grid-column: span 1 !important; grid-row: span 1 !important; height: 200px; }
+        }
+
+        .mood-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            filter: grayscale(40%) sepia(25%) brightness(75%);
+            transition: transform 0.8s var(--ease-expo), filter 0.6s;
+        }
+        .mood-item:hover .mood-img {
+            transform: scale(1.08);
+            filter: grayscale(0%) sepia(0%) brightness(100%);
+        }
+
+        .mood-item::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at center, transparent 30%, var(--deep-base) 150%);
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+        .mood-item:hover::after { opacity: 0.3; }
+
+        /* Lightbox */
+        #lightbox {
+            position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 50000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+        #lightbox.active { opacity: 1; pointer-events: auto; }
+
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 85vh;
+            border: 1px solid var(--panel-dark);
+            box-shadow: 0 0 100px var(--red-black);
+            transform: scale(0.9);
+            transition: transform 0.5s var(--ease-expo);
+        }
+        #lightbox.active img { transform: scale(1); }
+
+        .lightbox-hint {
+            position: absolute;
+            bottom: 3rem;
+            color: var(--mid-tone);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIV. CODE BLOCK
+           ══════════════════════════════════════════════════════════════════════════════ */
+        pre {
+            background: var(--anchor-black);
+            border: 1px solid var(--panel-dark);
+            border-radius: 12px;
+            padding: 2rem;
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--mid-tone);
+            margin: 2rem 0;
+        }
+        .token-comment { color: var(--muted-clay); font-style: italic; }
+        .token-prop { color: var(--mid-tone); }
+        .token-val { color: var(--vintage-paper); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XV. SCROLL REVEAL
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--ease-expo), transform 1s var(--ease-expo);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVI. TOAST
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #toast {
+            position: fixed;
+            bottom: 40px; right: 40px;
+            background: var(--red-black);
+            border: 1px solid var(--wood-brown);
+            color: var(--vintage-paper);
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            z-index: 60000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s var(--ease-expo);
+        }
+        #toast.visible { transform: translateY(0); opacity: 1; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVII. FOOTER
+           ══════════════════════════════════════════════════════════════════════════════ */
+        footer {
+            padding: 6rem 0;
+            text-align: center;
+            border-top: 1px solid var(--panel-dark);
+        }
+        .footer-brand {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            color: var(--vintage-paper);
+            margin-bottom: 1rem;
+        }
+        .footer-meta {
+            font-size: 0.7rem;
+            color: var(--muted-clay);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         INIT OVERLAY
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div id="init-overlay">
+        <h1 class="init-brand">SubmissionIsHealing</h1>
+        <p class="init-sub">Design System v1.0</p>
+        <button class="init-btn" id="initBtn">Enter the Archive</button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         ATMOSPHERE
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div class="atmosphere">
+        <div class="grain"></div>
+        <div class="fog"></div>
+        <div class="fog"></div>
+        <div class="fog"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         CURSOR
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+    <div class="cursor-label" id="cursorLabel"></div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         AUDIO TOGGLE
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div class="audio-toggle" id="audioToggle">
+        <div class="equalizer">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+        </div>
+        <span id="audioLabel">Ambience Off</span>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         LIGHTBOX
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div id="lightbox">
+        <img id="lightboxImg" src="" alt="">
+        <div class="lightbox-hint">Click anywhere to close</div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         MAIN CONTENT
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="hero">
+            <div class="hero-glow"></div>
+            
+            <span class="section-label reveal">Design System</span>
+            <h1 class="reveal reveal-delay-1">
+                <span class="scramble" data-text="SubmissionIs">SubmissionIs</span>
+            </h1>
+            <h1 class="reveal reveal-delay-2" style="color: var(--mid-tone); margin-top: -1rem;">
+                <span class="scramble" data-text="Healing">Healing</span>
+            </h1>
+            
+            <p class="hero-sub reveal reveal-delay-3">
+                A comprehensive design language built on shadow, warmth, and tactile surfaces. 
+                We move away from clinical white space, embracing the intimacy of <span class="highlight">candlelight</span> 
+                and the texture of <span class="highlight">vintage paper</span>.
+            </p>
+
+            <div class="hero-stats reveal">
+                <div class="stat-item">
+                    <h4>12</h4>
+                    <span>Color Tokens</span>
+                </div>
+                <div class="stat-item">
+                    <h4>AA</h4>
+                    <span>Accessible</span>
+                </div>
+                <div class="stat-item">
+                    <h4>∞</h4>
+                    <span>Atmosphere</span>
+                </div>
+            </div>
+
+            <div class="scroll-hint reveal">
+                <span>Scroll to Explore</span>
+                <div class="scroll-line"></div>
+            </div>
+        </header>
+
+        <!-- 01. COLOR PALETTE -->
+        <section id="colors">
+            <span class="section-label reveal">01. The Pigments</span>
+            <h2 class="reveal">Color DNA</h2>
+            <p class="reveal">The 12-color palette moves from absolute void to warm parchment light. Hover to expand. Click to copy.</p>
+
+            <div class="color-deck reveal">
+                <div class="color-card" style="background: #000000;" data-hex="#000000">
+                    <span class="color-name">Anchor Black</span>
+                    <span class="color-hex">#000000</span>
+                    <span class="color-role">OLED / Void</span>
+                </div>
+                <div class="color-card" style="background: #110a09;" data-hex="#110a09">
+                    <span class="color-name">Deep Base</span>
+                    <span class="color-hex">#110a09</span>
+                    <span class="color-role">Main Background</span>
+                </div>
+                <div class="color-card" style="background: #121010;" data-hex="#121010">
+                    <span class="color-name">Neutral Base</span>
+                    <span class="color-hex">#121010</span>
+                    <span class="color-role">Sidebar / Alt</span>
+                </div>
+                <div class="color-card" style="background: #1a0805;" data-hex="#1a0805">
+                    <span class="color-name">Red Black</span>
+                    <span class="color-hex">#1a0805</span>
+                    <span class="color-role">Warm Shadows</span>
+                </div>
+                <div class="color-card" style="background: #1a1715;" data-hex="#1a1715">
+                    <span class="color-name">Panel Dark</span>
+                    <span class="color-hex">#1a1715</span>
+                    <span class="color-role">Borders</span>
+                </div>
+                <div class="color-card" style="background: #261a17;" data-hex="#261a17">
+                    <span class="color-name">Primary Surface</span>
+                    <span class="color-hex">#261a17</span>
+                    <span class="color-role">Card Background</span>
+                </div>
+                <div class="color-card" style="background: #36241d;" data-hex="#36241d">
+                    <span class="color-name">Wood Brown</span>
+                    <span class="color-hex">#36241d</span>
+                    <span class="color-role">Hover States</span>
+                </div>
+                <div class="color-card" style="background: #4f3a30;" data-hex="#4f3a30">
+                    <span class="color-name">Muted Clay</span>
+                    <span class="color-hex">#4f3a30</span>
+                    <span class="color-role">Inactive</span>
+                </div>
+                <div class="color-card" style="background: #8c6d5d;" data-hex="#8c6d5d">
+                    <span class="color-name">Mid-Tone</span>
+                    <span class="color-hex">#8c6d5d</span>
+                    <span class="color-role">Subtitles</span>
+                </div>
+                <div class="color-card light" style="background: #cba889;" data-hex="#cba889">
+                    <span class="color-name">Vintage Paper</span>
+                    <span class="color-hex">#cba889</span>
+                    <span class="color-role">Primary Action</span>
+                </div>
+                <div class="color-card light" style="background: #e6dccf;" data-hex="#e6dccf">
+                    <span class="color-name">Pale Cream</span>
+                    <span class="color-hex">#e6dccf</span>
+                    <span class="color-role">Highlight</span>
+                </div>
+                <div class="color-card light" style="background: #f6f3ee;" data-hex="#f6f3ee">
+                    <span class="color-name">Reading White</span>
+                    <span class="color-hex">#f6f3ee</span>
+                    <span class="color-role">Body Text</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. TYPOGRAPHY -->
+        <section id="typography">
+            <span class="section-label reveal">02. The Voice</span>
+            <h2 class="reveal">Variable Typography</h2>
+            <p class="reveal">The tension between <strong>historic elegance</strong> and <strong>modern utility</strong>. Drag the slider to explore weights.</p>
+
+            <div class="type-playground reveal">
+                <div class="type-controls">
+                    <div class="control-group">
+                        <span class="control-label">Font Family</span>
+                        <span class="control-value" style="font-family: var(--font-sans);">Inter</span>
+                    </div>
+                    <div class="control-group">
+                        <span class="control-label">Weight</span>
+                        <span class="control-value" id="weightValue">400</span>
+                    </div>
+                    <input type="range" min="200" max="600" value="400" class="range-slider" id="weightSlider">
+                </div>
+
+                <div class="type-specimen" id="typeSpecimen">
+                    The quick brown fox jumps over the lazy dog.
+                </div>
+
+                <div class="type-quote">
+                    <blockquote>
+                        "We define the <span class="highlight">darkness</span> by the light we cast upon it."
+                    </blockquote>
+                    <cite>— Cormorant Garamond, Display</cite>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. COMPONENTS -->
+        <section id="components">
+            <span class="section-label reveal">03. The Elements</span>
+            <h2 class="reveal">UI Components</h2>
+            <p class="reveal">Interactive elements should feel <strong>tactile</strong>. Primary actions glow with warmth.</p>
+
+            <div class="component-grid reveal">
+                <div class="component-card">
+                    <div class="component-title">Buttons</div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary">Primary Action</button>
+                        <button class="btn btn-ghost">Secondary</button>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <div class="component-title">Form Input</div>
+                    <div class="input-group">
+                        <label class="input-label">Pen Name</label>
+                        <input type="text" class="input-field" placeholder="e.g. Edgar Allan...">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04. MOODBOARD -->
+        <section id="moodboard">
+            <span class="section-label reveal">04. The Aesthetic</span>
+            <h2 class="reveal">Visual Archive</h2>
+            <p class="reveal">All imagery receives <strong>sepia + vignette</strong> treatment via CSS. Click to expand.</p>
+
+            <div class="mood-grid reveal">
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80" class="mood-img" alt="Library">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Stars">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Wood">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Books">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?auto=format&fit=crop&w=800&q=80" class="mood-img" alt="Open Book">
+                </div>
+                <div class="mood-item">
+                    <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=600&q=80" class="mood-img" alt="Candle">
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. CODE -->
+        <section id="code">
+            <span class="section-label reveal">05. Implementation</span>
+            <h2 class="reveal">Token Set</h2>
+            <p class="reveal">Copy these CSS variables to your stylesheet root.</p>
+
+            <pre class="reveal"><span class="token-comment">/* SubmissionIsHealing — Design Tokens */</span>
+:root {
+  <span class="token-comment">/* Canvas */</span>
+  <span class="token-prop">--anchor-black:</span>    <span class="token-val">#000000;</span>
+  <span class="token-prop">--deep-base:</span>       <span class="token-val">#110a09;</span>
+  <span class="token-prop">--neutral-base:</span>    <span class="token-val">#121010;</span>
+  
+  <span class="token-comment">/* Structure */</span>
+  <span class="token-prop">--red-black:</span>       <span class="token-val">#1a0805;</span>
+  <span class="token-prop">--panel-dark:</span>      <span class="token-val">#1a1715;</span>
+  <span class="token-prop">--primary-surface:</span> <span class="token-val">#261a17;</span>
+  <span class="token-prop">--wood-brown:</span>      <span class="token-val">#36241d;</span>
+  
+  <span class="token-comment">/* Utility */</span>
+  <span class="token-prop">--muted-clay:</span>      <span class="token-val">#4f3a30;</span>
+  <span class="token-prop">--mid-tone:</span>        <span class="token-val">#8c6d5d;</span>
+  
+  <span class="token-comment">/* Accent */</span>
+  <span class="token-prop">--vintage-paper:</span>   <span class="token-val">#cba889;</span>
+  <span class="token-prop">--pale-cream:</span>      <span class="token-val">#e6dccf;</span>
+  <span class="token-prop">--reading-white:</span>   <span class="token-val">#f6f3ee;</span>
+}</pre>
+        </section>
+
+        <footer>
+            <div class="footer-brand">SubmissionIsHealing</div>
+            <div class="footer-meta">Design System v1.0 • SubmissionIsHealing</div>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════════
+         SCRIPTS
+         ══════════════════════════════════════════════════════════════════════════════ -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // I. INIT OVERLAY & AUDIO CONTEXT
+        // ═══════════════════════════════════════════════════════════════════════════
+        let audioCtx, gainNode, isAudioPlaying = false;
+
+        document.getElementById('initBtn').addEventListener('click', () => {
+            // Initialize Audio Context (requires user gesture)
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Hide overlay
+            document.getElementById('init-overlay').classList.add('hidden');
+            
+            // Trigger scramble effect
+            setTimeout(triggerScramble, 500);
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // II. SCRAMBLE TEXT EFFECT
+        // ═══════════════════════════════════════════════════════════════════════════
+        function triggerScramble() {
+            const chars = '!<>-_\\/[]{}—=+*^?#@$%&';
+            document.querySelectorAll('.scramble').forEach(el => {
+                const finalText = el.dataset.text;
+                let iteration = 0;
+                
+                const interval = setInterval(() => {
+                    el.innerText = finalText
+                        .split('')
+                        .map((char, idx) => {
+                            if (idx < iteration) return finalText[idx];
+                            return chars[Math.floor(Math.random() * chars.length)];
+                        })
+                        .join('');
+                    
+                    if (iteration >= finalText.length) clearInterval(interval);
+                    iteration += 1/3;
+                }, 30);
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // III. CURSOR SYSTEM
+        // ═══════════════════════════════════════════════════════════════════════════
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorGlow = document.getElementById('cursorGlow');
+        const cursorLabel = document.getElementById('cursorLabel');
+
+        document.addEventListener('mousemove', e => {
+            const x = e.clientX, y = e.clientY;
+            
+            cursorDot.style.left = x + 'px';
+            cursorDot.style.top = y + 'px';
+            
+            cursorGlow.animate({
+                left: x + 'px',
+                top: y + 'px'
+            }, { duration: 800, fill: 'forwards' });
+            
+            cursorLabel.style.left = x + 'px';
+            cursorLabel.style.top = y + 'px';
+        });
+
+        // Cursor hover states
+        function setCursorHover(selector, label, scale = 1.5) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorDot.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                    if (label) {
+                        cursorLabel.innerText = label;
+                        cursorLabel.style.opacity = '1';
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+                    cursorLabel.style.opacity = '0';
+                });
+            });
+        }
+
+        setCursorHover('.color-card', 'Copy Hex', 0);
+        setCursorHover('.mood-item', 'Expand', 2);
+        setCursorHover('.range-slider', 'Drag', 2);
+        setCursorHover('.btn', null, 2);
+        setCursorHover('.audio-toggle', 'Toggle', 1.5);
+        setCursorHover('.input-field', null, 0);
+        setCursorHover('.init-btn', 'Enter', 2);
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // IV. COLOR COPY
+        // ═══════════════════════════════════════════════════════════════════════════
+        document.querySelectorAll('.color-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const hex = card.dataset.hex;
+                navigator.clipboard.writeText(hex);
+                
+                const toast = document.getElementById('toast');
+                toast.innerText = `${hex} copied to clipboard`;
+                toast.classList.add('visible');
+                
+                cursorLabel.innerText = 'Copied!';
+                
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                    cursorLabel.innerText = 'Copy Hex';
+                }, 1500);
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // V. TYPOGRAPHY SLIDER
+        // ═══════════════════════════════════════════════════════════════════════════
+        const weightSlider = document.getElementById('weightSlider');
+        const weightValue = document.getElementById('weightValue');
+        const typeSpecimen = document.getElementById('typeSpecimen');
+
+        weightSlider.addEventListener('input', e => {
+            const val = e.target.value;
+            weightValue.innerText = val;
+            typeSpecimen.style.fontWeight = val;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // VI. LIGHTBOX
+        // ═══════════════════════════════════════════════════════════════════════════
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.mood-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // VII. AUDIO (Brown Noise Generator)
+        // ═══════════════════════════════════════════════════════════════════════════
+        const audioToggle = document.getElementById('audioToggle');
+        const audioLabel = document.getElementById('audioLabel');
+
+        function createNoise() {
+            const bufferSize = audioCtx.sampleRate * 2;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            let lastOut = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                data[i] = (lastOut + 0.02 * white) / 1.02;
+                lastOut = data[i];
+                data[i] *= 3.5;
+            }
+
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 350;
+
+            gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0;
+
+            source.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start(0);
+        }
+
+        audioToggle.addEventListener('click', () => {
+            if (!audioCtx) return;
+            
+            if (!gainNode) createNoise();
+            
+            if (isAudioPlaying) {
+                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
+                audioToggle.classList.remove('playing');
+                audioLabel.innerText = 'Ambience Off';
+            } else {
+                gainNode.gain.setTargetAtTime(0.06, audioCtx.currentTime, 0.3);
+                audioToggle.classList.add('playing');
+                audioLabel.innerText = 'Ambience On';
+            }
+            isAudioPlaying = !isAudioPlaying;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // VIII. SCROLL REVEAL
+        // ═══════════════════════════════════════════════════════════════════════════
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-50px' });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
