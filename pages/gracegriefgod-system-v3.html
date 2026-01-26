@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gracegriefgod — Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Caveat:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ══════════════════════════════════════════════════════════════════════════════
+           I. THE COLOR SYSTEM — DARK MODE (from v2)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        :root {
+            /* VOID TIER — The Grief, The Darkness, The Depth */
+            --true-void: #181716;
+            --deep-grief: #1f1e1d;
+            --charcoal-rest: #2a2826;
+            
+            /* STRUCTURE TIER — The Room, The Chair, The Waiting */
+            --shadow-floor: #3d3a36;
+            --worn-wood: #504b45;
+            --soft-linen: #6b645c;
+            --faded-cloth: #8a827a;
+            
+            /* UTILITY TIER — The Marks, The Edges */
+            --pencil-mark: #a9a199;
+            --paper-edge: #c4bbb0;
+            
+            /* LIGHT TIER — The Grace, The Held, The Hope */
+            --warm-parchment: #e2d8c9;
+            --soft-cream: #ede6db;
+            --held-light: #f7f4ef;
+
+            /* Legacy aliases for v1 components */
+            --paper-worn:       #e2d8c9;
+            --paper-aged:       #d9cebb;
+            --paper-shadow:     #cfc3b0;
+            --ink-full:         #181716;
+            --ink-faded:        #2d2b29;
+            --ink-watered:      #4a4745;
+            --breath-soft:      #8a847b;
+            --breath-held:      #a69f94;
+            --breath-released:  #c4bbb0;
+            --grace-warm:       #b8a082;
+            --grace-golden:     #d4c4a8;
+            --grace-light:      #f5f1eb;
+
+            /* Typography */
+            --font-hand: 'Caveat', cursive;
+            --font-display: 'Cormorant', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+
+            /* Motion */
+            --ease-settle: cubic-bezier(0.23, 1, 0.32, 1);
+            --ease-breath: cubic-bezier(0.37, 0, 0.63, 1);
+            --ease-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-slow: 600ms;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           II. RESET & BASE — DARK BACKGROUND
+           ══════════════════════════════════════════════════════════════════════════════ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            background: var(--true-void);
+            color: var(--warm-parchment);
+            font-family: var(--font-body);
+            font-weight: 300;
+            font-size: 18px;
+            line-height: 1.8;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--paper-edge); color: var(--true-void); }
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-track { background: var(--deep-grief); }
+        ::-webkit-scrollbar-thumb { background: var(--faded-cloth); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           III. INIT OVERLAY (Invitation)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #init-overlay {
+            position: fixed; inset: 0; z-index: 99999;
+            background: var(--true-void);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            transition: opacity 1.5s var(--ease-breath), visibility 1.5s;
+        }
+        #init-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .init-welcome {
+            font-family: var(--font-hand);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--warm-parchment);
+            letter-spacing: 0.05em;
+            margin-bottom: 3rem;
+            opacity: 0.7;
+        }
+
+        .init-phrase {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--warm-parchment);
+            text-align: center;
+            line-height: 1.3;
+            max-width: 600px;
+            margin-bottom: 4rem;
+        }
+
+        .init-btn {
+            padding: 18px 45px;
+            background: transparent;
+            border: 1px solid var(--faded-cloth);
+            color: var(--warm-parchment);
+            font-family: var(--font-hand);
+            font-size: 1.3rem;
+            letter-spacing: 0.1em;
+            transition: all 0.6s var(--ease-settle);
+            position: relative;
+            cursor: none;
+        }
+        .init-btn:hover {
+            background: rgba(226, 216, 201, 0.05);
+            border-color: var(--warm-parchment);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IV. ATMOSPHERE (Dark Mode Adapted)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .atmosphere {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Paper grain texture */
+        .paper-grain {
+            position: absolute; inset: 0;
+            opacity: 0.03;
+            mix-blend-mode: overlay;
+        }
+
+        /* Vignette effect */
+        .vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            background: radial-gradient(
+                ellipse 80% 60% at 50% 40%,
+                transparent 0%,
+                transparent 40%,
+                rgba(24, 23, 22, 0.3) 70%,
+                rgba(24, 23, 22, 0.7) 100%
+            );
+        }
+
+        /* Soft held light from above */
+        .window-light {
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 600px;
+            pointer-events: none;
+            z-index: 3;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(247, 244, 239, 0.04) 0%,
+                rgba(226, 216, 201, 0.02) 40%,
+                transparent 70%
+            );
+            animation: lightBreath 8s var(--ease-breath) infinite;
+        }
+        @keyframes lightBreath {
+            0%, 100% { opacity: 0.8; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           V. CURSOR (Soft Dot)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .cursor-pen {
+            width: 6px; height: 6px;
+            background: var(--warm-parchment);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            position: fixed;
+            pointer-events: none; z-index: 100000;
+            opacity: 0.7;
+            transition: transform 0.15s var(--ease-gentle), opacity 0.15s var(--ease-gentle);
+        }
+        .cursor-pen.writing {
+            transform: translate(-50%, -50%) scale(2);
+            opacity: 1;
+        }
+
+        .cursor-ink {
+            position: fixed;
+            width: 200px; height: 200px;
+            pointer-events: none;
+            z-index: 99999;
+            background: radial-gradient(
+                circle at center,
+                rgba(226, 216, 201, 0.03) 0%,
+                transparent 50%
+            );
+            transform: translate(-50%, -50%);
+            transition: transform 0.8s var(--ease-gentle);
+        }
+        .cursor-ink.hovering {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .cursor-word {
+            position: fixed; pointer-events: none; z-index: 100001;
+            font-family: var(--font-hand);
+            font-size: 0.9rem;
+            color: var(--pencil-mark);
+            opacity: 0;
+            transform: translate(15px, -5px);
+            transition: opacity 0.3s var(--ease-gentle);
+            white-space: nowrap;
+        }
+        .cursor-word.visible { opacity: 0.8; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VI. AUDIO TOGGLE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .audio-toggle {
+            position: fixed; bottom: 40px; left: 40px; z-index: 1000;
+            display: flex; align-items: center; gap: 15px;
+            padding: 12px 20px;
+            background: rgba(31, 30, 29, 0.8);
+            border: 1px solid var(--shadow-floor);
+            color: var(--pencil-mark);
+            font-family: var(--font-hand);
+            font-size: 1.1rem;
+            cursor: none;
+            transition: all 0.5s var(--ease-settle);
+        }
+        .audio-toggle:hover { border-color: var(--faded-cloth); color: var(--warm-parchment); }
+        .audio-toggle.playing { border-color: var(--grace-warm); color: var(--warm-parchment); }
+
+        .breath-icon {
+            width: 20px; height: 20px;
+            border: 1px solid currentColor;
+            border-radius: 50%;
+            position: relative;
+            transition: transform 4s var(--ease-breath);
+        }
+        .audio-toggle.playing .breath-icon {
+            animation: breathe 4s var(--ease-breath) infinite;
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.4); opacity: 1; }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VII. LAYOUT
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            position: relative;
+            z-index: 10;
+        }
+        @media (max-width: 768px) { .container { padding: 0 2rem; } }
+
+        section {
+            padding: 12rem 0;
+            position: relative;
+        }
+
+        /* Torn edge divider */
+        .torn-edge {
+            position: relative;
+            height: 40px;
+            margin: 0 -4rem;
+            overflow: hidden;
+        }
+        .torn-edge svg {
+            position: absolute;
+            width: calc(100% + 8rem);
+            left: -4rem;
+            fill: var(--shadow-floor);
+            opacity: 0.4;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           VIII. TYPOGRAPHY
+           ══════════════════════════════════════════════════════════════════════════════ */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-weight: 300;
+            line-height: 1;
+            color: var(--warm-parchment);
+            letter-spacing: -0.02em;
+        }
+
+        h1 em {
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        /* Handwritten annotation style */
+        .annotation {
+            font-family: var(--font-hand);
+            font-size: 1.4rem;
+            color: var(--pencil-mark);
+            display: inline-block;
+            transform: rotate(-2deg);
+            margin-left: 1rem;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--warm-parchment);
+            margin-bottom: 1rem;
+        }
+
+        .section-marker {
+            font-family: var(--font-hand);
+            font-size: 1rem;
+            color: var(--faded-cloth);
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        p { 
+            color: var(--pencil-mark); 
+            max-width: 50ch; 
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        /* Strikethrough for vulnerability */
+        .struck {
+            text-decoration: line-through;
+            text-decoration-color: var(--faded-cloth);
+            opacity: 0.6;
+        }
+
+        /* Underline like pen */
+        .underline-hand {
+            position: relative;
+            display: inline;
+        }
+        .underline-hand::after {
+            content: '';
+            position: absolute;
+            bottom: 2px; left: 0;
+            width: 100%; height: 2px;
+            background: var(--grace-warm);
+            transform: rotate(-0.5deg);
+            opacity: 0.7;
+        }
+
+        /* Margin note */
+        .margin-note {
+            font-family: var(--font-hand);
+            font-size: 0.95rem;
+            color: var(--faded-cloth);
+            position: absolute;
+            right: -180px;
+            width: 150px;
+            transform: rotate(1deg);
+            line-height: 1.4;
+        }
+        @media (max-width: 1200px) { .margin-note { display: none; } }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           IX. HERO — V2 STYLE (Dark, Elegant)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            padding: 6rem 0;
+        }
+
+        .hero-brand {
+            font-family: var(--font-display);
+            font-weight: 300;
+            font-size: clamp(3rem, 10vw, 7rem);
+            line-height: 1;
+            letter-spacing: 0.05em;
+            color: var(--warm-parchment);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-tagline {
+            font-family: var(--font-hand);
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--pencil-mark);
+            margin-bottom: 3rem;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-philosophy {
+            max-width: 600px;
+            font-size: 1.1rem;
+            color: var(--pencil-mark);
+            line-height: 2;
+        }
+
+        .hero-philosophy em {
+            font-family: var(--font-display);
+            font-style: italic;
+            color: var(--warm-parchment);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 4rem; left: 0;
+            font-family: var(--font-hand);
+            color: var(--faded-cloth);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .scroll-line {
+            width: 50px; height: 1px;
+            background: var(--shadow-floor);
+            position: relative;
+            overflow: hidden;
+        }
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 20px; height: 1px;
+            background: var(--grace-warm);
+            animation: scrollMove 2s var(--ease-breath) infinite;
+        }
+        @keyframes scrollMove {
+            0% { transform: translateX(-20px); }
+            100% { transform: translateX(70px); }
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           X. COLOR PALETTE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .color-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .color-group-title {
+            font-family: var(--font-hand);
+            font-size: 1.2rem;
+            color: var(--faded-cloth);
+            margin-bottom: 1.5rem;
+        }
+
+        .color-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .color-swatch {
+            height: 80px;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            transition: all 0.5s var(--ease-settle);
+            position: relative;
+        }
+        .color-swatch:hover {
+            transform: translateX(10px);
+        }
+
+        /* Torn left edge effect */
+        .color-swatch::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: inherit;
+            filter: brightness(0.9);
+            clip-path: polygon(
+                0 0, 100% 2%, 100% 8%, 0 10%,
+                100% 15%, 100% 22%, 0 25%,
+                100% 30%, 100% 38%, 0 40%,
+                100% 45%, 100% 52%, 0 55%,
+                100% 60%, 100% 68%, 0 70%,
+                100% 75%, 100% 82%, 0 85%,
+                100% 90%, 100% 100%, 0 100%
+            );
+        }
+
+        .color-name {
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+        .color-hex {
+            font-family: var(--font-hand);
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        .color-swatch.dark { color: var(--warm-parchment); }
+        .color-swatch.light { color: var(--ink-full); }
+
+        /* Primary colors highlighted */
+        .color-primary {
+            height: 140px;
+            margin-bottom: 1rem;
+        }
+        .color-primary .color-name {
+            font-size: 1.1rem;
+        }
+        .color-primary .color-hex {
+            font-size: 1.3rem;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XI. TYPOGRAPHY SPECIMEN
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .type-specimen-area {
+            margin: 4rem 0;
+        }
+
+        .type-sample {
+            margin-bottom: 4rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--shadow-floor);
+        }
+
+        .type-label {
+            font-family: var(--font-hand);
+            font-size: 0.95rem;
+            color: var(--faded-cloth);
+            margin-bottom: 1rem;
+        }
+
+        .type-display {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 300;
+            line-height: 1.2;
+            color: var(--warm-parchment);
+        }
+        .type-display em { font-style: italic; }
+
+        .type-hand {
+            font-family: var(--font-hand);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.4;
+            color: var(--pencil-mark);
+        }
+
+        .type-body-sample {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--pencil-mark);
+            max-width: 55ch;
+        }
+
+        /* Weight slider */
+        .type-control {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .control-label {
+            font-family: var(--font-hand);
+            font-size: 1rem;
+            color: var(--faded-cloth);
+        }
+        .weight-slider {
+            -webkit-appearance: none;
+            width: 200px;
+            height: 1px;
+            background: var(--shadow-floor);
+        }
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px; height: 16px;
+            background: var(--deep-grief);
+            border: 1px solid var(--faded-cloth);
+            border-radius: 50%;
+            cursor: none;
+            transition: all 0.3s;
+        }
+        .weight-slider::-webkit-slider-thumb:hover {
+            border-color: var(--warm-parchment);
+            transform: scale(1.2);
+        }
+        .weight-value {
+            font-family: var(--font-hand);
+            font-size: 1.5rem;
+            color: var(--pencil-mark);
+            min-width: 50px;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XII. COMPONENTS
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .component-showcase {
+            margin: 4rem 0;
+        }
+
+        .component-block {
+            margin-bottom: 5rem;
+        }
+
+        .component-title {
+            font-family: var(--font-hand);
+            font-size: 1.1rem;
+            color: var(--faded-cloth);
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn-row { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center; }
+
+        .btn {
+            padding: 16px 36px;
+            font-family: var(--font-body);
+            font-weight: 300;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            border: none;
+            transition: all 0.5s var(--ease-settle);
+            position: relative;
+            cursor: none;
+        }
+
+        .btn-primary {
+            background: var(--warm-parchment);
+            color: var(--true-void);
+        }
+        .btn-primary:hover {
+            background: var(--soft-cream);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(226, 216, 201, 0.15);
+        }
+
+        .btn-soft {
+            background: transparent;
+            border: 1px solid var(--shadow-floor);
+            color: var(--pencil-mark);
+        }
+        .btn-soft:hover {
+            border-color: var(--grace-warm);
+            color: var(--warm-parchment);
+        }
+
+        .btn-hand {
+            background: transparent;
+            border: none;
+            color: var(--faded-cloth);
+            font-family: var(--font-hand);
+            font-size: 1.2rem;
+            padding: 10px 0;
+            position: relative;
+        }
+        .btn-hand::after {
+            content: '';
+            position: absolute;
+            bottom: 8px; left: 0;
+            width: 0; height: 1px;
+            background: var(--grace-warm);
+            transition: width 0.4s var(--ease-settle);
+        }
+        .btn-hand:hover::after { width: 100%; }
+        .btn-hand:hover { color: var(--warm-parchment); }
+
+        /* Inputs */
+        .input-group { margin-bottom: 2rem; max-width: 400px; }
+        .input-label {
+            display: block;
+            font-family: var(--font-hand);
+            font-size: 1rem;
+            color: var(--faded-cloth);
+            margin-bottom: 10px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 16px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--shadow-floor);
+            color: var(--warm-parchment);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 300;
+            transition: all 0.4s var(--ease-settle);
+        }
+        .input-field::placeholder { color: var(--faded-cloth); }
+        .input-field:focus {
+            outline: none;
+            border-bottom-color: var(--warm-parchment);
+        }
+
+        /* Textarea for longer writing */
+        .textarea-field {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            background: var(--deep-grief);
+            border: none;
+            color: var(--warm-parchment);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 300;
+            line-height: 1.8;
+            resize: vertical;
+        }
+        .textarea-field::placeholder { color: var(--faded-cloth); }
+        .textarea-field:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 1px var(--shadow-floor);
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIII. FRAGMENT CARDS (Torn Paper Style — Dark Mode)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .fragment-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        @media (max-width: 700px) { .fragment-grid { grid-template-columns: 1fr; } }
+
+        .fragment {
+            background: var(--deep-grief);
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.6s var(--ease-settle);
+            border-left: 2px solid var(--shadow-floor);
+        }
+        .fragment:hover {
+            transform: rotate(-0.5deg) translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-color: var(--faded-cloth);
+        }
+
+        /* Torn top edge */
+        .fragment::before {
+            content: '';
+            position: absolute;
+            top: -8px; left: 0; right: 0;
+            height: 8px;
+            background: var(--deep-grief);
+            clip-path: polygon(
+                0 100%, 3% 60%, 6% 100%, 9% 50%, 12% 100%, 15% 70%,
+                18% 100%, 21% 40%, 24% 100%, 27% 60%, 30% 100%, 33% 50%,
+                36% 100%, 39% 70%, 42% 100%, 45% 40%, 48% 100%, 51% 60%,
+                54% 100%, 57% 50%, 60% 100%, 63% 70%, 66% 100%, 69% 40%,
+                72% 100%, 75% 60%, 78% 100%, 81% 50%, 84% 100%, 87% 70%,
+                90% 100%, 93% 40%, 96% 100%, 100% 60%, 100% 100%
+            );
+        }
+
+        .fragment-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--warm-parchment);
+            margin-bottom: 1rem;
+        }
+
+        .fragment-text {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--pencil-mark);
+            line-height: 1.7;
+        }
+
+        .fragment-hand {
+            font-family: var(--font-hand);
+            font-size: 1.1rem;
+            color: var(--faded-cloth);
+            margin-top: 1.5rem;
+            transform: rotate(-1deg);
+            display: inline-block;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIV. IMAGERY (Muted, Soft)
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .image-section {
+            margin: 4rem 0;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 700px) { .image-grid { grid-template-columns: 1fr; } }
+
+        .image-frame {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(30%) contrast(0.95);
+            transition: all 0.8s var(--ease-settle);
+        }
+        .image-frame:hover img {
+            filter: grayscale(0%) contrast(1);
+            transform: scale(1.02);
+        }
+
+        /* Dark overlay effect */
+        .image-frame::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: var(--true-void);
+            mix-blend-mode: soft-light;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .image-frame.tall { aspect-ratio: 3/4; }
+        .image-frame.wide { aspect-ratio: 4/3; }
+        .image-frame.square { aspect-ratio: 1/1; }
+
+        /* Image caption */
+        .image-caption {
+            font-family: var(--font-hand);
+            font-size: 0.95rem;
+            color: var(--faded-cloth);
+            margin-top: 1rem;
+            transform: rotate(-1deg);
+        }
+
+        /* Lightbox */
+        #lightbox {
+            position: fixed; inset: 0;
+            background: rgba(24, 23, 22, 0.98);
+            z-index: 50000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s var(--ease-settle);
+        }
+        #lightbox.active { opacity: 1; pointer-events: auto; }
+
+        #lightbox img {
+            max-width: 85vw;
+            max-height: 85vh;
+            filter: grayscale(20%);
+            transform: scale(0.95);
+            transition: transform 0.6s var(--ease-settle);
+        }
+        #lightbox.active img { transform: scale(1); }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem; right: 2rem;
+            font-family: var(--font-hand);
+            color: var(--warm-parchment);
+            font-size: 1.2rem;
+            opacity: 0.6;
+            cursor: none;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XV. QUOTE/PULL
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .pull-quote {
+            margin: 6rem 0;
+            padding: 3rem 0;
+            border-top: 1px solid var(--shadow-floor);
+            border-bottom: 1px solid var(--shadow-floor);
+            position: relative;
+        }
+
+        .pull-quote blockquote {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--warm-parchment);
+            line-height: 1.5;
+            max-width: 700px;
+        }
+
+        .pull-quote cite {
+            display: block;
+            margin-top: 2rem;
+            font-style: normal;
+            font-family: var(--font-hand);
+            font-size: 1.1rem;
+            color: var(--faded-cloth);
+        }
+
+        /* Hand-drawn quotation mark */
+        .pull-quote::before {
+            content: '"';
+            position: absolute;
+            top: 2rem; left: -2rem;
+            font-family: var(--font-display);
+            font-size: 6rem;
+            color: var(--shadow-floor);
+            line-height: 1;
+        }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVI. CODE
+           ══════════════════════════════════════════════════════════════════════════════ */
+        pre {
+            background: var(--charcoal-rest);
+            color: var(--warm-parchment);
+            padding: 2rem;
+            overflow-x: auto;
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            margin: 2rem 0;
+            position: relative;
+        }
+        pre::before {
+            content: 'tokens';
+            position: absolute;
+            top: 0.8rem; right: 1rem;
+            font-family: var(--font-hand);
+            font-size: 0.9rem;
+            color: var(--faded-cloth);
+        }
+        .token-comment { color: var(--faded-cloth); }
+        .token-prop { color: var(--pencil-mark); }
+        .token-val { color: var(--grace-warm); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVII. SCROLL REVEAL
+           ══════════════════════════════════════════════════════════════════════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s var(--ease-settle), transform 1s var(--ease-settle);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+
+        /* Fade in from side for asymmetry */
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 1s var(--ease-settle), transform 1s var(--ease-settle);
+        }
+        .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XVIII. TOAST
+           ══════════════════════════════════════════════════════════════════════════════ */
+        #toast {
+            position: fixed;
+            bottom: 40px; right: 40px;
+            background: var(--warm-parchment);
+            color: var(--true-void);
+            padding: 14px 28px;
+            font-family: var(--font-hand);
+            font-size: 1rem;
+            z-index: 60000;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.5s var(--ease-settle);
+        }
+        #toast.visible { transform: translateY(0); opacity: 1; }
+
+        /* ══════════════════════════════════════════════════════════════════════════════
+           XIX. FOOTER
+           ══════════════════════════════════════════════════════════════════════════════ */
+        footer {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .footer-phrase {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--warm-parchment);
+            margin-bottom: 1rem;
+        }
+
+        .footer-hand {
+            font-family: var(--font-hand);
+            font-size: 1.1rem;
+            color: var(--faded-cloth);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INIT OVERLAY -->
+    <div id="init-overlay">
+        <p class="init-welcome">you are welcome here</p>
+        <h1 class="init-phrase">Not everything needs to be heard, but to be said.</h1>
+        <button class="init-btn" id="initBtn">enter quietly</button>
+    </div>
+
+    <!-- ATMOSPHERE -->
+    <div class="atmosphere">
+        <canvas class="paper-grain" id="paperGrain"></canvas>
+        <div class="vignette"></div>
+        <div class="window-light"></div>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor-pen" id="cursorPen"></div>
+    <div class="cursor-ink" id="cursorInk"></div>
+    <div class="cursor-word" id="cursorWord"></div>
+
+    <!-- AUDIO TOGGLE -->
+    <button class="audio-toggle" id="audioToggle">
+        <div class="breath-icon"></div>
+        <span id="audioLabel">silence</span>
+    </button>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox">
+        <img id="lightboxImg" src="" alt="">
+        <span class="lightbox-close">close</span>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <!-- HERO — V2 STYLE -->
+        <header class="hero">
+            <h1 class="hero-brand reveal">gracegriefgod</h1>
+            
+            <p class="hero-tagline reveal reveal-delay-1">
+                raw · fragmented · vulnerable · conversational
+            </p>
+
+            <div class="hero-philosophy reveal reveal-delay-2">
+                <p>This is not a polished system.</p>
+                <p>It is a <em>held space</em>—for the unfinished,</p>
+                <p>the torn edges, the words that need to be said</p>
+                <p>even when no one is listening.</p>
+            </div>
+
+            <div class="scroll-hint reveal reveal-delay-3">
+                <div class="scroll-line"></div>
+                <span>keep going</span>
+            </div>
+        </header>
+
+        <div class="torn-edge">
+            <svg viewBox="0 0 1200 40" preserveAspectRatio="none">
+                <path d="M0,20 Q30,5 60,20 T120,20 T180,20 T240,20 T300,20 T360,20 T420,20 T480,20 T540,20 T600,20 T660,20 T720,20 T780,20 T840,20 T900,20 T960,20 T1020,20 T1080,20 T1140,20 T1200,20 L1200,40 L0,40 Z"/>
+            </svg>
+        </div>
+
+        <!-- COLORS -->
+        <section id="colors">
+            <span class="section-marker reveal">i. the palette</span>
+            <h2 class="reveal">Ink & Paper</h2>
+            <p class="reveal">Two truths. The weight of what's written. The space that holds it.</p>
+
+            <div class="color-section reveal">
+                <!-- Primary pair -->
+                <div>
+                    <div class="color-group-title">the foundation</div>
+                    <div class="color-stack">
+                        <div class="color-swatch color-primary light" style="background: #e2d8c9;" data-hex="#e2d8c9">
+                            <span class="color-name">Paper Worn</span>
+                            <span class="color-hex">#e2d8c9</span>
+                        </div>
+                        <div class="color-swatch color-primary dark" style="background: #181716;" data-hex="#181716">
+                            <span class="color-name">Ink Full</span>
+                            <span class="color-hex">#181716</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Supporting -->
+                <div>
+                    <div class="color-group-title">the breath between</div>
+                    <div class="color-stack">
+                        <div class="color-swatch light" style="background: #d9cebb;" data-hex="#d9cebb">
+                            <span class="color-name">Paper Aged</span>
+                            <span class="color-hex">#d9cebb</span>
+                        </div>
+                        <div class="color-swatch light" style="background: #cfc3b0;" data-hex="#cfc3b0">
+                            <span class="color-name">Paper Shadow</span>
+                            <span class="color-hex">#cfc3b0</span>
+                        </div>
+                        <div class="color-swatch dark" style="background: #2d2b29;" data-hex="#2d2b29">
+                            <span class="color-name">Ink Faded</span>
+                            <span class="color-hex">#2d2b29</span>
+                        </div>
+                        <div class="color-swatch dark" style="background: #4a4745;" data-hex="#4a4745">
+                            <span class="color-name">Ink Watered</span>
+                            <span class="color-hex">#4a4745</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="color-group-title">the mid-tones (breath)</div>
+                    <div class="color-stack">
+                        <div class="color-swatch light" style="background: #c4bbb0;" data-hex="#c4bbb0">
+                            <span class="color-name">Breath Released</span>
+                            <span class="color-hex">#c4bbb0</span>
+                        </div>
+                        <div class="color-swatch light" style="background: #a69f94;" data-hex="#a69f94">
+                            <span class="color-name">Breath Held</span>
+                            <span class="color-hex">#a69f94</span>
+                        </div>
+                        <div class="color-swatch dark" style="background: #8a847b;" data-hex="#8a847b">
+                            <span class="color-name">Breath Soft</span>
+                            <span class="color-hex">#8a847b</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="color-group-title">grace (warmth)</div>
+                    <div class="color-stack">
+                        <div class="color-swatch light" style="background: #f5f1eb;" data-hex="#f5f1eb">
+                            <span class="color-name">Grace Light</span>
+                            <span class="color-hex">#f5f1eb</span>
+                        </div>
+                        <div class="color-swatch light" style="background: #d4c4a8;" data-hex="#d4c4a8">
+                            <span class="color-name">Grace Golden</span>
+                            <span class="color-hex">#d4c4a8</span>
+                        </div>
+                        <div class="color-swatch light" style="background: #b8a082;" data-hex="#b8a082">
+                            <span class="color-name">Grace Warm</span>
+                            <span class="color-hex">#b8a082</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section id="typography">
+            <span class="section-marker reveal">ii. the voice</span>
+            <h2 class="reveal">Words on Paper</h2>
+            <p class="reveal">The elegant and the intimate. What's composed and what's scrawled in the margin.</p>
+
+            <div class="type-specimen-area reveal">
+                <div class="type-sample">
+                    <div class="type-label">Cormorant — for what's considered</div>
+                    <div class="type-display">
+                        <em>Grace</em> is the space between<br>what happened and what you do next.
+                    </div>
+                </div>
+
+                <div class="type-sample">
+                    <div class="type-label">Caveat — for what's felt</div>
+                    <div class="type-hand">
+                        this is what it looks like to be in process. not polished. not finished. just... here.
+                    </div>
+                </div>
+
+                <div class="type-sample">
+                    <div class="type-label">Source Serif 4 — for what's spoken</div>
+                    <div class="type-body-sample" id="bodySpecimen">
+                        Sometimes the most sacred thing we can do is hold space for what hurts. Not fix it. Not explain it. Just let it be what it is, and trust that's enough.
+                    </div>
+                    <div class="type-control">
+                        <span class="control-label">weight</span>
+                        <input type="range" min="300" max="400" value="300" step="100" class="weight-slider" id="weightSlider">
+                        <span class="weight-value" id="weightValue">300</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PULL QUOTE -->
+        <div class="pull-quote reveal">
+            <blockquote>
+                "Grief, I've learned, is really just love. It's all the love you want to give, but cannot."
+            </blockquote>
+            <cite>— Jamie Anderson</cite>
+        </div>
+
+        <!-- COMPONENTS -->
+        <section id="components">
+            <span class="section-marker reveal">iii. the elements</span>
+            <h2 class="reveal">Holding Space</h2>
+            <p class="reveal">Soft edges. Room to breathe. An invitation, not a demand.</p>
+
+            <div class="component-showcase reveal">
+                <div class="component-block">
+                    <div class="component-title">ways to enter</div>
+                    <div class="btn-row">
+                        <button class="btn btn-primary">Begin</button>
+                        <button class="btn btn-soft">Perhaps later</button>
+                        <button class="btn btn-hand">keep reading →</button>
+                    </div>
+                </div>
+
+                <div class="component-block">
+                    <div class="component-title">a place to write</div>
+                    <div class="input-group">
+                        <label class="input-label">what's on your heart?</label>
+                        <input type="text" class="input-field" placeholder="start wherever you are...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">more space, if you need it</label>
+                        <textarea class="textarea-field" placeholder="there's no right way to say this..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FRAGMENTS -->
+        <section id="fragments">
+            <span class="section-marker reveal">iv. torn pages</span>
+            <h2 class="reveal">Unfinished Thoughts</h2>
+            <p class="reveal">Not everything needs a conclusion. Some things just need to be witnessed.</p>
+
+            <div class="fragment-grid">
+                <div class="fragment reveal">
+                    <h3 class="fragment-title">On Grief</h3>
+                    <p class="fragment-text">
+                        It doesn't arrive and then leave. It moves in. It rearranges the furniture. You learn to live with it the way you learn to live with a limp.
+                    </p>
+                    <span class="fragment-hand">— still learning</span>
+                </div>
+
+                <div class="fragment reveal reveal-delay-1">
+                    <h3 class="fragment-title">On Grace</h3>
+                    <p class="fragment-text">
+                        The unearned kindness. The second chance you didn't ask for. The softness that appears precisely when you've given up on softness.
+                    </p>
+                    <span class="fragment-hand">— received, somehow</span>
+                </div>
+
+                <div class="fragment reveal reveal-delay-2">
+                    <h3 class="fragment-title">On God</h3>
+                    <p class="fragment-text">
+                        I don't know what I believe anymore. But I believe in the ache that points toward something. The longing that won't let me alone.
+                    </p>
+                    <span class="fragment-hand">— questioning, still</span>
+                </div>
+
+                <div class="fragment reveal reveal-delay-3">
+                    <h3 class="fragment-title">On Being Here</h3>
+                    <p class="fragment-text">
+                        You don't have to have it figured out. You just have to show up. Again. Again. Again. That's the whole thing, I think.
+                    </p>
+                    <span class="fragment-hand">— one day at a time</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMAGERY -->
+        <section id="imagery">
+            <span class="section-marker reveal">v. what we see</span>
+            <h2 class="reveal">Soft Light</h2>
+            <p class="reveal">Muted. Gentle. Like morning through a window you forgot to close.</p>
+
+            <div class="image-grid reveal">
+                <div class="image-frame tall">
+                    <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80" alt="Open book">
+                </div>
+                <div class="image-frame square">
+                    <img src="https://images.unsplash.com/photo-1667312939934-60fc3bfa4ec0?q=80" alt="Vase on Books">
+                </div>
+            </div>
+            <p class="image-caption reveal">empty chairs waiting. soft light falling. pages left open.</p>
+
+            <div class="image-grid reveal" style="margin-top: 2rem; grid-template-columns: 0.8fr 1.2fr;">
+                <div class="image-frame square">
+                    <img src="https://images.unsplash.com/photo-1610116306796-6fea9f4fae38?q=80" alt="Open Books">
+                </div>
+                <div class="image-frame wide">
+                    <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80" alt="Books stacked">
+                </div>
+            </div>
+        </section>
+
+        <!-- CODE -->
+        <section id="code">
+            <span class="section-marker reveal">vi. the structure</span>
+            <h2 class="reveal">Design Tokens</h2>
+            <p class="reveal">For those who build. The bones beneath the skin.</p>
+
+            <pre class="reveal"><span class="token-comment">/* GraceGriefGod — Design Tokens */</span>
+:root {
+  <span class="token-comment">/* Paper */</span>
+  <span class="token-prop">--paper-worn:</span>       <span class="token-val">#e2d8c9;</span>
+  <span class="token-prop">--paper-aged:</span>       <span class="token-val">#d9cebb;</span>
+  <span class="token-prop">--paper-shadow:</span>     <span class="token-val">#cfc3b0;</span>
+
+  <span class="token-comment">/* Ink */</span>
+  <span class="token-prop">--ink-full:</span>         <span class="token-val">#181716;</span>
+  <span class="token-prop">--ink-faded:</span>        <span class="token-val">#2d2b29;</span>
+  <span class="token-prop">--ink-watered:</span>      <span class="token-val">#4a4745;</span>
+
+  <span class="token-comment">/* Breath */</span>
+  <span class="token-prop">--breath-soft:</span>      <span class="token-val">#8a847b;</span>
+  <span class="token-prop">--breath-held:</span>      <span class="token-val">#a69f94;</span>
+  <span class="token-prop">--breath-released:</span>  <span class="token-val">#c4bbb0;</span>
+
+  <span class="token-comment">/* Grace */</span>
+  <span class="token-prop">--grace-warm:</span>       <span class="token-val">#b8a082;</span>
+  <span class="token-prop">--grace-golden:</span>     <span class="token-val">#d4c4a8;</span>
+  <span class="token-prop">--grace-light:</span>      <span class="token-val">#f5f1eb;</span>
+}</pre>
+        </section>
+
+        <footer>
+            <p class="footer-phrase reveal">"You are welcome here."</p>
+            <p class="footer-hand reveal reveal-delay-1">— always</p>
+        </footer>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast"></div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PAPER GRAIN TEXTURE (Dark Mode)
+        // ═══════════════════════════════════════════════════════════════════════════
+        function generatePaperGrain() {
+            const canvas = document.getElementById('paperGrain');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const imageData = ctx.createImageData(canvas.width, canvas.height);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                // Subtle grain for dark mode
+                const noise = Math.random() * 30;
+                data[i] = 30 + noise;      // R
+                data[i + 1] = 28 + noise;  // G
+                data[i + 2] = 26 + noise;  // B
+                data[i + 3] = 25;          // Very subtle alpha
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+        
+        generatePaperGrain();
+        window.addEventListener('resize', generatePaperGrain);
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════════════════
+        let audioCtx;
+
+        document.getElementById('initBtn').addEventListener('click', () => {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            document.getElementById('init-overlay').classList.add('hidden');
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CURSOR
+        // ═══════════════════════════════════════════════════════════════════════════
+        const cursorPen = document.getElementById('cursorPen');
+        const cursorInk = document.getElementById('cursorInk');
+        const cursorWord = document.getElementById('cursorWord');
+
+        let mouseX = 0, mouseY = 0;
+        let inkX = 0, inkY = 0;
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorPen.style.left = mouseX + 'px';
+            cursorPen.style.top = mouseY + 'px';
+            
+            cursorWord.style.left = mouseX + 'px';
+            cursorWord.style.top = mouseY + 'px';
+        });
+
+        // Smooth following ink ring
+        function updateInk() {
+            inkX += (mouseX - inkX) * 0.08;
+            inkY += (mouseY - inkY) * 0.08;
+            
+            cursorInk.style.left = inkX + 'px';
+            cursorInk.style.top = inkY + 'px';
+            
+            requestAnimationFrame(updateInk);
+        }
+        updateInk();
+
+        // Hover states
+        function setCursorState(selector, word, isWriting = false) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorInk.classList.add('hovering');
+                    if (isWriting) cursorPen.classList.add('writing');
+                    if (word) {
+                        cursorWord.innerText = word;
+                        cursorWord.classList.add('visible');
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorInk.classList.remove('hovering');
+                    cursorPen.classList.remove('writing');
+                    cursorWord.classList.remove('visible');
+                });
+            });
+        }
+
+        setCursorState('.color-swatch', 'copy');
+        setCursorState('.image-frame', 'view');
+        setCursorState('.btn', 'enter');
+        setCursorState('.input-field, .textarea-field', null, true);
+        setCursorState('.fragment', 'hold');
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // COLOR COPY
+        // ═══════════════════════════════════════════════════════════════════════════
+        document.querySelectorAll('.color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                const hex = swatch.dataset.hex;
+                navigator.clipboard.writeText(hex);
+                
+                const toast = document.getElementById('toast');
+                toast.innerText = `${hex} copied`;
+                toast.classList.add('visible');
+                
+                setTimeout(() => toast.classList.remove('visible'), 2000);
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TYPOGRAPHY SLIDER
+        // ═══════════════════════════════════════════════════════════════════════════
+        const weightSlider = document.getElementById('weightSlider');
+        const weightValue = document.getElementById('weightValue');
+        const bodySpecimen = document.getElementById('bodySpecimen');
+
+        weightSlider.addEventListener('input', e => {
+            const val = e.target.value;
+            weightValue.innerText = val;
+            bodySpecimen.style.fontWeight = val;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // LIGHTBOX
+        // ═══════════════════════════════════════════════════════════════════════════
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('.image-frame').forEach(frame => {
+            frame.addEventListener('click', () => {
+                const img = frame.querySelector('img');
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => lightbox.classList.remove('active'));
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') lightbox.classList.remove('active');
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // AUDIO (Gentle Room Tone / Breath)
+        // ═══════════════════════════════════════════════════════════════════════════
+        const audioToggle = document.getElementById('audioToggle');
+        const audioLabel = document.getElementById('audioLabel');
+        let gainNode, isPlaying = false;
+
+        function createRoomTone() {
+            // Very gentle brown noise (like a quiet room)
+            const bufferSize = audioCtx.sampleRate * 4;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            let lastOut = 0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                // Brown noise algorithm
+                data[i] = (lastOut + (0.02 * white)) / 1.02;
+                lastOut = data[i];
+                data[i] *= 3.5; // Amplify slightly
+            }
+
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+
+            // Low pass for warmth
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 200;
+
+            gainNode = audioCtx.createGain();
+            gainNode.gain.value = 0;
+
+            source.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            source.start(0);
+        }
+
+        audioToggle.addEventListener('click', () => {
+            if (!audioCtx) return;
+            
+            if (!gainNode) createRoomTone();
+            
+            if (isPlaying) {
+                gainNode.gain.setTargetAtTime(0, audioCtx.currentTime, 0.5);
+                audioToggle.classList.remove('playing');
+                audioLabel.innerText = 'silence';
+            } else {
+                gainNode.gain.setTargetAtTime(0.15, audioCtx.currentTime, 0.5);
+                audioToggle.classList.add('playing');
+                audioLabel.innerText = 'breathing';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCROLL REVEAL
+        // ═══════════════════════════════════════════════════════════════════════════
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-50px' });
+
+        document.querySelectorAll('.reveal, .reveal-left').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
