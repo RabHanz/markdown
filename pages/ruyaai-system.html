@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruyaai — Design System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Roboto+Mono:wght@300;400;500&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           RUYAAI DESIGN SYSTEM — Light Mode
+           Counselling Through Quran · Faith · Spirituality · Productivity
+           ═══════════════════════════════════════════════════════════════════════════════ */
+
+        :root {
+            /* ─────────────────────────────────────────────────────────────
+               COLOR TOKENS — 5-Color Palette
+               ───────────────────────────────────────────────────────────── */
+            
+            /* PRIMARY — The Heart, The Blood */
+            --maroon: #3c0000;
+            
+            /* CANVAS — The Light, The Paper */
+            --cream: #f6f4ee;
+            
+            /* INK — The Word, The Weight */
+            --black: #0d0d0d;
+            
+            /* EARTH — The Grounding */
+            --brown: #3c2f29;
+            
+            /* ACCENT — The Gold (from image) */
+            --gold: #e9a319;
+            
+            /* ─────────────────────────────────────────────────────────────
+               SEMANTIC ALIASES
+               ───────────────────────────────────────────────────────────── */
+            --canvas-primary: var(--cream);
+            --canvas-elevated: #ffffff;
+            --canvas-muted: #ebe8e1;
+            
+            --text-primary: var(--black);
+            --text-secondary: var(--brown);
+            --text-muted: #6b5f56;
+            --text-inverse: var(--cream);
+            
+            --accent-primary: var(--maroon);
+            --accent-hover: #5a0000;
+            --accent-subtle: #f5e6e6;
+            
+            --border-light: #e0dcd4;
+            --border-medium: #ccc6bc;
+            
+            /* ─────────────────────────────────────────────────────────────
+               TYPOGRAPHY
+               ───────────────────────────────────────────────────────────── */
+            --font-display: 'Poppins', -apple-system, sans-serif;
+            --font-body: 'Poppins', -apple-system, sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+            --font-arabic: 'Amiri', serif;
+            
+            --weight-light: 300;
+            --weight-regular: 400;
+            --weight-medium: 500;
+            --weight-semibold: 600;
+            --weight-bold: 700;
+            
+            /* ─────────────────────────────────────────────────────────────
+               SPACING
+               ───────────────────────────────────────────────────────────── */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 3rem;
+            --space-xl: 6rem;
+            --space-2xl: 10rem;
+            
+            /* ─────────────────────────────────────────────────────────────
+               MOTION
+               ───────────────────────────────────────────────────────────── */
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-gentle: cubic-bezier(0.23, 1, 0.32, 1);
+            --duration-fast: 150ms;
+            --duration-normal: 300ms;
+            --duration-slow: 600ms;
+            
+            /* ─────────────────────────────────────────────────────────────
+               BORDERS & RADIUS
+               ───────────────────────────────────────────────────────────── */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           RESET & BASE
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: var(--weight-regular);
+            background: var(--canvas-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: var(--maroon);
+            color: var(--cream);
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--canvas-muted); }
+        ::-webkit-scrollbar-thumb { 
+            background: var(--brown); 
+            border-radius: var(--radius-full);
+        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--maroon); }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           ATMOSPHERIC LAYERS
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .atmosphere {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Subtle Paper Texture */
+        .paper-texture {
+            position: absolute;
+            inset: 0;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+            mix-blend-mode: multiply;
+        }
+
+        /* Soft Light from Top */
+        .divine-light {
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1200px;
+            height: 800px;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(60, 0, 0, 0.03) 0%,
+                transparent 60%
+            );
+            animation: gentleBreath 12s var(--ease-gentle) infinite;
+        }
+
+        @keyframes gentleBreath {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           CUSTOM CURSOR
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--maroon);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100000;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s var(--ease-smooth), 
+                        width 0.2s var(--ease-smooth),
+                        height 0.2s var(--ease-smooth);
+        }
+
+        .cursor-dot.hovering {
+            width: 12px;
+            height: 12px;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--maroon);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .cursor-ring.hovering {
+            width: 60px;
+            height: 60px;
+            opacity: 0.6;
+        }
+
+        .cursor-label {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100001;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: var(--weight-medium);
+            color: var(--maroon);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0;
+            transform: translate(20px, -10px);
+            transition: opacity 0.2s var(--ease-smooth);
+        }
+
+        .cursor-label.visible { opacity: 1; }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           INIT OVERLAY
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .init-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90000;
+            background: var(--maroon);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-lg);
+            transition: opacity 1s var(--ease-gentle), visibility 1s;
+        }
+
+        .init-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .init-bismillah {
+            font-family: var(--font-arabic);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--cream);
+            opacity: 0.7;
+            animation: fadeUp 1s var(--ease-gentle) 0.3s forwards;
+            opacity: 0;
+        }
+
+        .init-brand {
+            font-family: var(--font-display);
+            font-weight: var(--weight-bold);
+            font-size: clamp(3rem, 10vw, 7rem);
+            color: var(--cream);
+            letter-spacing: 0.05em;
+            animation: fadeUp 1s var(--ease-gentle) 0.8s forwards;
+            opacity: 0;
+        }
+
+        .init-tagline {
+            font-family: var(--font-body);
+            font-weight: var(--weight-light);
+            font-size: 1rem;
+            color: var(--cream);
+            opacity: 0.8;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            animation: fadeUp 1s var(--ease-gentle) 1.3s forwards;
+            opacity: 0;
+        }
+
+        .init-enter {
+            margin-top: var(--space-md);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--cream);
+            border: none;
+            color: var(--maroon);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: var(--weight-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            cursor: none;
+            animation: fadeUp 1s var(--ease-gentle) 1.8s forwards;
+            opacity: 0;
+            transition: all var(--duration-normal) var(--ease-smooth);
+        }
+
+        .init-enter:hover {
+            background: var(--black);
+            color: var(--cream);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           NAVIGATION
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--space-sm) var(--space-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--cream), transparent);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.6s var(--ease-gentle);
+        }
+
+        .nav-bar.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-weight: var(--weight-bold);
+            font-size: 1.4rem;
+            color: var(--maroon);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+
+        .nav-link {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: var(--weight-medium);
+            color: var(--brown);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color var(--duration-fast) var(--ease-smooth);
+        }
+
+        .nav-link:hover { color: var(--maroon); }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           MAIN CONTAINER
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 var(--space-md); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           HERO
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-2xl) 0;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: var(--weight-medium);
+            color: var(--maroon);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-weight: var(--weight-bold);
+            font-size: clamp(3rem, 9vw, 6rem);
+            line-height: 1.05;
+            color: var(--black);
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-title .highlight {
+            color: var(--maroon);
+        }
+
+        .hero-arabic {
+            font-family: var(--font-arabic);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--brown);
+            direction: rtl;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-subtitle {
+            font-weight: var(--weight-light);
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            line-height: 1.8;
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           SECTIONS
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .section {
+            padding: var(--space-xl) 0;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s var(--ease-gentle);
+        }
+
+        .section.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .section-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: var(--weight-medium);
+            color: var(--maroon);
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-weight: var(--weight-semibold);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--black);
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-desc {
+            font-weight: var(--weight-light);
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 550px;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border-light);
+            margin: var(--space-lg) 0;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           COLOR PALETTE
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 700px) {
+            .color-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        .color-card {
+            aspect-ratio: 1;
+            padding: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            cursor: none;
+            position: relative;
+            transition: transform var(--duration-normal) var(--ease-smooth);
+        }
+
+        .color-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .color-name {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: var(--weight-semibold);
+            margin-bottom: 4px;
+        }
+
+        .color-hex {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .color-card.light-text { color: var(--cream); }
+        .color-card.dark-text { color: var(--black); }
+
+        /* Color Usage Examples */
+        .color-usage {
+            margin-top: var(--space-lg);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+
+        @media (max-width: 700px) {
+            .color-usage { grid-template-columns: 1fr; }
+        }
+
+        .usage-card {
+            padding: var(--space-md);
+            border-radius: var(--radius-md);
+        }
+
+        .usage-card.maroon-bg {
+            background: var(--maroon);
+            color: var(--cream);
+        }
+
+        .usage-card.cream-bg {
+            background: var(--cream);
+            color: var(--black);
+            border: 1px solid var(--border-light);
+        }
+
+        .usage-card.black-bg {
+            background: var(--black);
+            color: var(--cream);
+        }
+
+        .usage-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin-bottom: var(--space-xs);
+        }
+
+        .usage-text {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: var(--weight-medium);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           TYPOGRAPHY
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .type-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .type-specimen {
+            padding: var(--space-lg);
+            background: var(--canvas-elevated);
+            border: 1px solid var(--border-light);
+            border-left: 4px solid var(--maroon);
+            border-radius: var(--radius-md);
+            transition: border-color var(--duration-normal) var(--ease-smooth),
+                        box-shadow var(--duration-normal) var(--ease-smooth);
+        }
+
+        .type-specimen:hover {
+            box-shadow: 0 8px 30px rgba(60, 0, 0, 0.08);
+        }
+
+        .type-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+        }
+
+        .type-name {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: var(--weight-medium);
+            color: var(--maroon);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        .type-weights {
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .type-weight {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            background: var(--canvas-muted);
+            border-radius: var(--radius-full);
+        }
+
+        .type-sample-display {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: var(--weight-semibold);
+            line-height: 1.25;
+            color: var(--black);
+        }
+
+        .type-sample-body {
+            font-family: var(--font-body);
+            font-size: 1.05rem;
+            font-weight: var(--weight-light);
+            line-height: 1.9;
+            color: var(--text-secondary);
+            max-width: 60ch;
+        }
+
+        .type-sample-mono {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--brown);
+        }
+
+        .type-sample-arabic {
+            font-family: var(--font-arabic);
+            font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+            line-height: 1.7;
+            color: var(--maroon);
+            direction: rtl;
+            text-align: right;
+        }
+
+        /* Weight Slider */
+        .type-control {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border-light);
+        }
+
+        .control-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .weight-slider {
+            -webkit-appearance: none;
+            width: 180px;
+            height: 2px;
+            background: var(--border-medium);
+            border-radius: var(--radius-full);
+        }
+
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--maroon);
+            border-radius: 50%;
+            cursor: none;
+            transition: transform var(--duration-fast) var(--ease-smooth);
+        }
+
+        .weight-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        .weight-value {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--maroon);
+            font-weight: var(--weight-medium);
+            min-width: 35px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           COMPONENTS
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-md);
+        }
+
+        @media (max-width: 768px) {
+            .components-grid { grid-template-columns: 1fr; }
+        }
+
+        .component-block {
+            padding: var(--space-lg);
+            background: var(--canvas-elevated);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+        }
+
+        .component-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: var(--weight-medium);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--space-md);
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            font-family: var(--font-body);
+            font-weight: var(--weight-medium);
+            font-size: 0.85rem;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: none;
+            transition: all var(--duration-normal) var(--ease-smooth);
+        }
+
+        .btn-primary {
+            background: var(--maroon);
+            color: var(--cream);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(60, 0, 0, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--brown);
+            color: var(--brown);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--maroon);
+            color: var(--maroon);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 12px 0;
+            position: relative;
+        }
+
+        .btn-ghost::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--maroon);
+            transition: width var(--duration-normal) var(--ease-smooth);
+        }
+
+        .btn-ghost:hover { color: var(--maroon); }
+        .btn-ghost:hover::after { width: 100%; }
+
+        /* Inputs */
+        .input-group {
+            margin-bottom: var(--space-md);
+        }
+
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .input-label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            font-weight: var(--weight-medium);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--canvas-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+
+        .input-field::placeholder { color: var(--text-muted); }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 3px var(--accent-subtle);
+        }
+
+        .textarea-field {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px 14px;
+            background: var(--canvas-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            resize: vertical;
+            transition: all var(--duration-fast) var(--ease-smooth);
+        }
+
+        .textarea-field::placeholder { color: var(--text-muted); }
+
+        .textarea-field:focus {
+            outline: none;
+            border-color: var(--maroon);
+            box-shadow: 0 0 0 3px var(--accent-subtle);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           CARDS
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+        }
+
+        @media (max-width: 900px) {
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .cards-grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--canvas-elevated);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            cursor: none;
+            transition: all var(--duration-normal) var(--ease-smooth);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--maroon);
+        }
+
+        .card-image {
+            aspect-ratio: 16/10;
+            background: var(--canvas-muted);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--duration-slow) var(--ease-smooth);
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: var(--space-sm);
+            left: var(--space-sm);
+            padding: 5px 10px;
+            background: var(--maroon);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            font-weight: var(--weight-medium);
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .card-body {
+            padding: var(--space-md);
+        }
+
+        .card-title {
+            font-family: var(--font-display);
+            font-weight: var(--weight-semibold);
+            font-size: 1rem;
+            color: var(--black);
+            margin-bottom: var(--space-xs);
+        }
+
+        .card-desc {
+            font-size: 0.85rem;
+            font-weight: var(--weight-light);
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           QUOTE BLOCK
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .quote-block {
+            padding: var(--space-xl);
+            background: var(--maroon);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-block::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-display);
+            font-size: 12rem;
+            color: rgba(246, 244, 238, 0.05);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .quote-arabic {
+            font-family: var(--font-arabic);
+            font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+            color: var(--cream);
+            direction: rtl;
+            margin-bottom: var(--space-md);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-translation {
+            font-family: var(--font-display);
+            font-weight: var(--weight-light);
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-style: italic;
+            color: rgba(246, 244, 238, 0.85);
+            max-width: 600px;
+            margin: 0 auto var(--space-md);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-source {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: rgba(246, 244, 238, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           CODE BLOCK
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .code-block {
+            background: var(--black);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .code-header {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--brown);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-title {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(246, 244, 238, 0.3);
+        }
+
+        .code-dot:first-child { background: var(--maroon); }
+
+        pre {
+            padding: var(--space-md);
+            overflow-x: auto;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            line-height: 1.9;
+            color: var(--cream);
+        }
+
+        .token-comment { color: #6b5f56; }
+        .token-property { color: #c9b896; }
+        .token-value { color: #e9a319; }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .footer {
+            padding: var(--space-xl) 0;
+            text-align: center;
+            border-top: 1px solid var(--border-light);
+            margin-top: var(--space-xl);
+        }
+
+        .footer-brand {
+            font-family: var(--font-display);
+            font-weight: var(--weight-bold);
+            font-size: 1.8rem;
+            color: var(--maroon);
+            margin-bottom: var(--space-xs);
+        }
+
+        .footer-tagline {
+            font-family: var(--font-arabic);
+            font-size: 1.1rem;
+            color: var(--brown);
+            margin-bottom: var(--space-lg);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            list-style: none;
+            margin-bottom: var(--space-lg);
+        }
+
+        .footer-link {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: color var(--duration-fast) var(--ease-smooth);
+        }
+
+        .footer-link:hover { color: var(--maroon); }
+
+        .footer-copy {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           TOAST
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .toast-container {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            z-index: 80000;
+        }
+
+        .toast {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--black);
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--cream);
+            animation: toastIn 0.3s var(--ease-bounce);
+        }
+
+        .toast.removing {
+            animation: toastOut 0.3s var(--ease-smooth) forwards;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes toastOut {
+            to { opacity: 0; transform: translateY(20px); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════════════════════
+           REVEAL ANIMATIONS
+           ═══════════════════════════════════════════════════════════════════════════════ */
+        
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: all 0.7s var(--ease-gentle);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+
+    <!-- INIT OVERLAY -->
+    <div class="init-overlay" id="initOverlay">
+        <p class="init-bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+        <h1 class="init-brand">RUYAAI</h1>
+        <p class="init-tagline">Counselling Through Quran</p>
+        <button class="init-enter" id="initEnter">Begin Your Journey</button>
+    </div>
+
+    <!-- ATMOSPHERE -->
+    <div class="atmosphere">
+        <div class="paper-texture"></div>
+        <div class="divine-light"></div>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+    <div class="cursor-label" id="cursorLabel"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="nav-bar" id="navBar">
+        <div class="nav-logo">RUYAAI</div>
+        <ul class="nav-links">
+            <li><a href="#colors" class="nav-link">Colors</a></li>
+            <li><a href="#typography" class="nav-link">Type</a></li>
+            <li><a href="#components" class="nav-link">Components</a></li>
+        </ul>
+    </nav>
+
+    <!-- TOAST -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="hero">
+            <p class="hero-eyebrow reveal">Design System v2.0</p>
+            <h1 class="hero-title reveal reveal-delay-1">
+                <span class="highlight">Ruyaai</span><br>
+                Design System
+            </h1>
+            <p class="hero-arabic reveal reveal-delay-2">رُؤيَاي — رؤية قلبية</p>
+            <p class="hero-subtitle reveal reveal-delay-3">
+                A visual language for spiritual growth and Quranic guidance. 
+                Built with intention, clarity, and warmth.
+            </p>
+            <div class="hero-cta reveal reveal-delay-4">
+                <button class="btn btn-primary">Explore System</button>
+                <button class="btn btn-secondary">View Guidelines</button>
+            </div>
+        </header>
+
+        <div class="divider"></div>
+
+        <!-- COLORS -->
+        <section id="colors" class="section">
+            <div class="section-header">
+                <p class="section-eyebrow">01 — Palette</p>
+                <h2 class="section-title">Five Essential Colors</h2>
+                <p class="section-desc">
+                    A focused palette. Maroon for the heart, cream for clarity, 
+                    black for weight, brown for grounding.
+                </p>
+            </div>
+
+            <div class="color-grid">
+                <div class="color-card light-text" style="background: #3c0000;" data-hex="#3c0000">
+                    <span class="color-name">Maroon</span>
+                    <span class="color-hex">#3c0000</span>
+                </div>
+                <div class="color-card dark-text" style="background: #f6f4ee;" data-hex="#f6f4ee">
+                    <span class="color-name">Cream</span>
+                    <span class="color-hex">#f6f4ee</span>
+                </div>
+                <div class="color-card light-text" style="background: #0d0d0d;" data-hex="#0d0d0d">
+                    <span class="color-name">Black</span>
+                    <span class="color-hex">#0d0d0d</span>
+                </div>
+                <div class="color-card light-text" style="background: #3c2f29;" data-hex="#3c2f29">
+                    <span class="color-name">Brown</span>
+                    <span class="color-hex">#3c2f29</span>
+                </div>
+                <div class="color-card dark-text" style="background: #e9a319;" data-hex="#e9a319">
+                    <span class="color-name">Gold</span>
+                    <span class="color-hex">#e9a319</span>
+                </div>
+            </div>
+
+            <div class="color-usage">
+                <div class="usage-card maroon-bg">
+                    <p class="usage-label">Primary Action</p>
+                    <p class="usage-text">Begin Your Journey →</p>
+                </div>
+                <div class="usage-card cream-bg">
+                    <p class="usage-label">Background</p>
+                    <p class="usage-text">Clean & Readable</p>
+                </div>
+                <div class="usage-card black-bg">
+                    <p class="usage-label">Headlines</p>
+                    <p class="usage-text">Strong Presence</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- TYPOGRAPHY -->
+        <section id="typography" class="section">
+            <div class="section-header">
+                <p class="section-eyebrow">02 — Typography</p>
+                <h2 class="section-title">Voices of Wisdom</h2>
+                <p class="section-desc">
+                    Poppins for modern clarity. Roboto Mono for precision. 
+                    Amiri for the beauty of Arabic script.
+                </p>
+            </div>
+
+            <div class="type-showcase">
+                <!-- Display -->
+                <div class="type-specimen">
+                    <div class="type-meta">
+                        <span class="type-name">Poppins — Display</span>
+                        <div class="type-weights">
+                            <span class="type-weight">300</span>
+                            <span class="type-weight">400</span>
+                            <span class="type-weight">500</span>
+                            <span class="type-weight">600</span>
+                            <span class="type-weight">700</span>
+                        </div>
+                    </div>
+                    <div class="type-sample-display" id="displaySample">
+                        Connect with the Quran.<br>
+                        Transform your heart.
+                    </div>
+                    <div class="type-control">
+                        <span class="control-label">Weight</span>
+                        <input type="range" min="300" max="700" value="600" step="100" class="weight-slider" id="displayWeight">
+                        <span class="weight-value" id="displayWeightValue">600</span>
+                    </div>
+                </div>
+
+                <!-- Body -->
+                <div class="type-specimen">
+                    <div class="type-meta">
+                        <span class="type-name">Poppins — Body</span>
+                        <div class="type-weights">
+                            <span class="type-weight">300</span>
+                            <span class="type-weight">400</span>
+                        </div>
+                    </div>
+                    <p class="type-sample-body">
+                        Ruyaai is a dream to help people connect and heal through the Quran. 
+                        Not just by learning it, but by living its message. Every lesson is 
+                        designed to touch the heart, spark reflection, and inspire action.
+                    </p>
+                </div>
+
+                <!-- Mono -->
+                <div class="type-specimen">
+                    <div class="type-meta">
+                        <span class="type-name">Roboto Mono — Technical</span>
+                        <div class="type-weights">
+                            <span class="type-weight">400</span>
+                            <span class="type-weight">500</span>
+                        </div>
+                    </div>
+                    <p class="type-sample-mono">
+                        SURAH: AL-ALAQ · VERSES: 1-5<br>
+                        MODULE_03 → PRODUCTIVITY_THROUGH_FAITH<br>
+                        status: active | students: 2,847
+                    </p>
+                </div>
+
+                <!-- Arabic -->
+                <div class="type-specimen">
+                    <div class="type-meta">
+                        <span class="type-name">Amiri — Arabic Script</span>
+                        <div class="type-weights">
+                            <span class="type-weight">400</span>
+                            <span class="type-weight">700</span>
+                        </div>
+                    </div>
+                    <p class="type-sample-arabic">
+                        اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ
+                        <br>
+                        خَلَقَ الْإِنسَانَ مِنْ عَلَقٍ
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- QUOTE -->
+        <div class="quote-block">
+            <p class="quote-arabic">إِنَّ مَعَ الْعُسْرِ يُسْرًا</p>
+            <p class="quote-translation">"Indeed, with hardship comes ease."</p>
+            <p class="quote-source">Surah Ash-Sharh · 94:6</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- COMPONENTS -->
+        <section id="components" class="section">
+            <div class="section-header">
+                <p class="section-eyebrow">03 — Components</p>
+                <h2 class="section-title">Building Blocks</h2>
+                <p class="section-desc">
+                    Clean, accessible interface elements designed for focus and clarity.
+                </p>
+            </div>
+
+            <div class="components-grid">
+                <!-- Buttons -->
+                <div class="component-block">
+                    <div class="component-title">Buttons</div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary">Primary</button>
+                        <button class="btn btn-secondary">Secondary</button>
+                        <button class="btn btn-ghost">Ghost Link →</button>
+                    </div>
+                </div>
+
+                <!-- Inputs -->
+                <div class="component-block">
+                    <div class="component-title">Form Fields</div>
+                    <div class="input-group">
+                        <label class="input-label">Your Name</label>
+                        <input type="text" class="input-field" placeholder="Enter your name...">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Your Reflection</label>
+                        <textarea class="textarea-field" placeholder="Share your thoughts..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- CARDS -->
+        <section class="section">
+            <div class="section-header">
+                <p class="section-eyebrow">04 — Cards</p>
+                <h2 class="section-title">Content Blocks</h2>
+                <p class="section-desc">
+                    Flexible containers for courses, articles, and student stories.
+                </p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=600&q=80" alt="Quran">
+                        <span class="card-tag">Course</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Surah Al-Alaq Deep Dive</h3>
+                        <p class="card-desc">Understanding the first revelation and its impact.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?auto=format&fit=crop&w=600&q=80" alt="Study">
+                        <span class="card-tag">Student Diary</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Meet Nawal Fatima</h3>
+                        <p class="card-desc">How one lecture sparked a journey of transformation.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" alt="Learning">
+                        <span class="card-tag">Guide</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">How to Join Ruyaai</h3>
+                        <p class="card-desc">Your journey begins with just a few simple steps.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- CODE -->
+        <section class="section">
+            <div class="section-header">
+                <p class="section-eyebrow">05 — Tokens</p>
+                <h2 class="section-title">Design Tokens</h2>
+                <p class="section-desc">For developers building the Ruyaai experience.</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">CSS Variables</span>
+                    <div class="code-dots">
+                        <span class="code-dot"></span>
+                        <span class="code-dot"></span>
+                        <span class="code-dot"></span>
+                    </div>
+                </div>
+                <pre><span class="token-comment">/* Ruyaai Design Tokens */</span>
+:root {
+  <span class="token-comment">/* Primary Palette */</span>
+  <span class="token-property">--maroon:</span> <span class="token-value">#3c0000</span>;
+  <span class="token-property">--cream:</span> <span class="token-value">#f6f4ee</span>;
+  <span class="token-property">--black:</span> <span class="token-value">#0d0d0d</span>;
+  <span class="token-property">--brown:</span> <span class="token-value">#3c2f29</span>;
+  <span class="token-property">--gold:</span> <span class="token-value">#e9a319</span>;
+
+  <span class="token-comment">/* Typography */</span>
+  <span class="token-property">--font-display:</span> <span class="token-value">'Poppins'</span>;
+  <span class="token-property">--font-mono:</span> <span class="token-value">'Roboto Mono'</span>;
+  <span class="token-property">--font-arabic:</span> <span class="token-value">'Amiri'</span>;
+}</pre>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <h2 class="footer-brand">RUYAAI</h2>
+            <p class="footer-tagline">رُؤيَاي — رؤية قلبية</p>
+            <ul class="footer-links">
+                <li><a href="#" class="footer-link">Courses</a></li>
+                <li><a href="#" class="footer-link">Community</a></li>
+                <li><a href="#" class="footer-link">About</a></li>
+                <li><a href="#" class="footer-link">Contact</a></li>
+            </ul>
+            <p class="footer-copy">© 2026 Ruyaai. Designed with intention.</p>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INIT
+        // ═══════════════════════════════════════════════════════════════════════════
+        const initOverlay = document.getElementById('initOverlay');
+        const initEnter = document.getElementById('initEnter');
+        const navBar = document.getElementById('navBar');
+
+        initEnter.addEventListener('click', () => {
+            initOverlay.classList.add('hidden');
+            setTimeout(() => navBar.classList.add('visible'), 500);
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // CURSOR
+        // ═══════════════════════════════════════════════════════════════════════════
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorRing = document.getElementById('cursorRing');
+        const cursorLabel = document.getElementById('cursorLabel');
+
+        let mouseX = 0, mouseY = 0;
+        let ringX = 0, ringY = 0;
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+            
+            cursorLabel.style.left = mouseX + 'px';
+            cursorLabel.style.top = mouseY + 'px';
+        });
+
+        function updateRing() {
+            ringX += (mouseX - ringX) * 0.1;
+            ringY += (mouseY - ringY) * 0.1;
+            
+            cursorRing.style.left = ringX + 'px';
+            cursorRing.style.top = ringY + 'px';
+            
+            requestAnimationFrame(updateRing);
+        }
+        updateRing();
+
+        function setCursorHover(selector, label) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursorDot.classList.add('hovering');
+                    cursorRing.classList.add('hovering');
+                    if (label) {
+                        cursorLabel.textContent = label;
+                        cursorLabel.classList.add('visible');
+                    }
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursorDot.classList.remove('hovering');
+                    cursorRing.classList.remove('hovering');
+                    cursorLabel.classList.remove('visible');
+                });
+            });
+        }
+
+        setCursorHover('.btn', 'click');
+        setCursorHover('.color-card', 'copy');
+        setCursorHover('.card', 'view');
+        setCursorHover('.nav-link', 'go');
+        setCursorHover('.input-field, .textarea-field', 'type');
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // COLOR COPY
+        // ═══════════════════════════════════════════════════════════════════════════
+        const toastContainer = document.getElementById('toastContainer');
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('removing');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        document.querySelectorAll('.color-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const hex = card.dataset.hex;
+                navigator.clipboard.writeText(hex);
+                showToast(`${hex} copied`);
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TYPOGRAPHY SLIDER
+        // ═══════════════════════════════════════════════════════════════════════════
+        const displayWeight = document.getElementById('displayWeight');
+        const displayWeightValue = document.getElementById('displayWeightValue');
+        const displaySample = document.getElementById('displaySample');
+
+        displayWeight.addEventListener('input', () => {
+            const value = displayWeight.value;
+            displayWeightValue.textContent = value;
+            displaySample.style.fontWeight = value;
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SCROLL REVEAL
+        // ═══════════════════════════════════════════════════════════════════════════
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '-30px' });
+
+        document.querySelectorAll('.reveal, .section').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        initEnter.addEventListener('click', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => {
+                    revealObserver.observe(el);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
